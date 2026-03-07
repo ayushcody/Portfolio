@@ -1,9 +1,9 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import SelectedProjects from "@/components/SelectedProjects";
-import Skills from "@/components/Skills";
 import Experience from "@/components/Experience";
 import Interests from "@/components/Interests";
+import Achievements from "@/components/Achievements";
 import Contact from "@/components/Contact";
 
 export default function Home() {
@@ -12,9 +12,9 @@ export default function Home() {
       <Navbar />
       <Hero />
       <SelectedProjects />
-      <Skills />
       <Experience />
       <Interests />
+      <Achievements />
       <Contact />
     </main>
   );

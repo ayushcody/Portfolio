@@ -4,73 +4,85 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 const navItems = [
-    { name: 'Projects', href: '#projects' },
-    { name: 'Skills', href: '#skills' },
-    { name: 'Experience', href: '#experience' },
-    { name: 'Interests', href: '#interests' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Home', href: '/' },
+    { name: 'Projects', href: '/#projects' },
+    { name: 'Experience', href: '/#experience' },
+    { name: 'Interests', href: '/#interests' },
+    { name: 'Achievements', href: '/#achievements' },
 ];
 
 export default function Navbar() {
-    const [activeSection, setActiveSection] = useState('');
+    const pathname = usePathname();
+    const [scrolled, setScrolled] = useState(false);
 
-    // Simple scroll spy (can be enhanced later)
     useEffect(() => {
         const handleScroll = () => {
-            const sections = navItems.map(item => item.href.substring(1));
-
-            for (const section of sections) {
-                const element = document.getElementById(section);
-                if (element) {
-                    const rect = element.getBoundingClientRect();
-                    if (rect.top >= 0 && rect.top <= 300) {
-                        setActiveSection(section);
-                        break;
-                    }
-                }
-            }
+            setScrolled(window.scrollY > 20);
         };
-
         window.addEventListener('scroll', handleScroll);
+        // initialize
+        handleScroll();
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
     return (
-        <nav className="fixed top-0 left-0 right-0 z-50 py-4 px-6 md:px-12 transition-all duration-300 backdrop-blur-md bg-background/80 border-b border-muted/10">
-            <div className="max-w-7xl mx-auto flex justify-between items-center">
-                <Link href="/" className="text-xl font-bold tracking-tight hover:opacity-70 transition-opacity">
-                    AC.
+        <motion.nav
+            initial={{ y: -100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className={cn(
+                "fixed top-6 left-0 right-0 z-50 transition-all duration-300 flex justify-center px-4 pointer-events-none",
+            )}
+        >
+            <div className={cn(
+                "pointer-events-auto flex items-center gap-1 sm:gap-4 px-4 py-2 rounded-full border transition-all duration-300",
+                scrolled
+                    ? "bg-surface/70 backdrop-blur-xl border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_8px_32px_rgba(0,0,0,0.5)]"
+                    : "bg-surface/30 backdrop-blur-md border-white/5 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05),0_4px_16px_rgba(0,0,0,0.3)]"
+            )}>
+                <Link href="/" className="mr-2 sm:mr-4 text-sm sm:text-base font-bold tracking-tighter text-white hover:text-cyan transition-colors ml-2">
+                    AC
                 </Link>
 
-                <ul className="hidden md:flex gap-8">
+                <ul className="flex items-center gap-0.5 sm:gap-1">
                     {navItems.map((item) => {
-                        const isActive = activeSection === item.href.substring(1);
+                        // Very simple active state for now
+                        const isActive = pathname === item.href || (pathname === '/' && item.href === '/');
                         return (
                             <li key={item.name}>
                                 <Link
                                     href={item.href}
                                     className={cn(
-                                        "text-sm uppercase tracking-wider font-medium transition-colors hover:text-accent-1 relative",
-                                        isActive ? "text-accent-1" : "text-muted"
+                                        "relative px-3 sm:px-4 py-1.5 sm:py-2 text-[13px] sm:text-sm font-medium rounded-full transition-all duration-300 block",
+                                        "hover:text-white",
+                                        isActive ? "text-white" : "text-muted"
                                     )}
                                 >
-                                    {item.name}
+                                    <span className="relative z-10">{item.name}</span>
                                     {isActive && (
-                                        <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-accent-1 rounded-full animate-in fade-in zoom-in duration-300" />
+                                        <motion.div
+                                            layoutId="nav-indicator"
+                                            className="absolute inset-0 rounded-full bg-surface-hover shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_0_15px_rgba(110,91,255,0.2)] border border-white/5 pointer-events-none"
+                                            transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                                        />
                                     )}
                                 </Link>
                             </li>
                         );
                     })}
+                    <li>
+                        <Link
+                            href="/resume"
+                            className="relative px-3 sm:px-4 py-1.5 sm:py-2 text-[13px] sm:text-sm font-bold text-orange rounded-full transition-all duration-300 block hover:bg-orange/10 ml-2"
+                        >
+                            Resume
+                        </Link>
+                    </li>
                 </ul>
-
-                {/* Mobile Menu Toggle (to be implemented if needed, sticking to desktop focus for now as per brief "clean enough to scan") */}
-                <Link href="#contact" className="md:hidden text-sm uppercase font-bold text-accent-1">
-                    Menu
-                </Link>
             </div>
-        </nav>
+        </motion.nav>
     );
 }

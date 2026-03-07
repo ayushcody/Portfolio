@@ -1,137 +1,173 @@
 'use client';
 
-import { ArrowUpRight } from 'lucide-react';
-import Image from 'next/image';
-import Link from 'next/link';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Code2, Terminal, Cpu, Database, Network, Mic2 } from 'lucide-react';
+import { SkeuomorphicCard } from './ui/SkeuomorphicCard';
+import { ProjectModal } from './ui/ProjectModal';
 import { cn } from '@/lib/utils';
-import FadeIn from './FadeIn';
 
-// Mock Data
-const projects = [
+const projectsData = [
     {
-        id: 1,
-        title: "E-Commerce Checkout Redesign",
-        role: "Lead Designer",
-        timeline: "3 months • 2024",
-        problem: "Checkout had 68% abandonment rate due to complexity.",
-        process: [
-            "Heatmap analysis of user friction",
-            "Simplified form fields (12 → 5)",
-            "A/B tested trust badges",
+        id: "agentic-soc",
+        title: "Agentic SOC",
+        description: "Autonomous security operations center utilizing multi-agent reasoning to triage and remediate alerts.",
+        problem: "Triaging thousands of daily security alerts leads to extreme alert fatigue and missed critical incidents among security analysts.",
+        architecture: "A hierarchical multi-agent system where specialized agents (Analysis, Threat Intel, Remediation) collaborate using a central LLM orchestrator. Built with LangGraph, utilizing memory across sessions.",
+        tech: ["Python", "LangChain", "OpenAI", "FastAPI"],
+        highlights: [
+            "Reduced median alert triage time by 85%",
+            "Implements dynamic tool selection for retrieving internal logs",
+            "Self-correcting agent loop for handling ambiguous alerts"
         ],
-        impact: "Abandonment ↓ to 41% • Revenue ↑ 23%",
-        imageGradient: "from-blue-100 to-blue-50", // Placeholder gradient
-        link: "#case-study-1",
+        github: "https://github.com/ayushcody",
+        icon: Network,
+        color: "text-red-400",
+        bg: "bg-red-400/10"
     },
     {
-        id: 2,
-        title: "SaaS Dashboard System",
-        role: "Product Designer",
-        timeline: "6 months • 2023",
-        problem: "Users struggled to visualize complex data sets.",
-        process: [
-            "Interviewed 15 power users",
-            "Created modular widget system",
-            "Implemented dark mode support",
+        id: "research-saathi",
+        title: "Research Saathi",
+        description: "Advanced RAG system for analyzing and synthesizing complex academic papers.",
+        problem: "Researchers spend countless hours literature reviewing and cross-referencing papers manually.",
+        architecture: "Hybrid RAG approach combining dense vector retrieval with keyword search. Employs a cross-encoder reranker before feeding context to the generation model.",
+        tech: ["Next.js", "Weaviate", "Mistral", "HuggingFace"],
+        highlights: [
+            "Processes PDF layouts perfectly using OCR-based chunking",
+            "Citations are mathematically verified against original text",
+            "Interactive graph view of paper references"
         ],
-        impact: "User retention ↑ 15% • Support tickets ↓ 40%",
-        imageGradient: "from-amber-100 to-amber-50",
-        link: "#case-study-2",
+        github: "https://github.com/ayushcody",
+        icon: Database,
+        color: "text-blue-400",
+        bg: "bg-blue-400/10"
     },
     {
-        id: 3,
-        title: "Mobile Banking App",
-        role: "UX Researcher & Designer",
-        timeline: "4 months • 2023",
-        problem: "Low engagement with savings features.",
-        process: [
-            "Gamified savings goals",
-            "Simplified transfer flow",
-            "Prototyped 3 distinct visual directions",
+        id: "email-twin",
+        title: "Email Digital Twin",
+        description: "Personalized AI that drafts and manages emails mimicking exact personal tone.",
+        problem: "Writing context-aware, tonally accurate replies to varying email threads is a high cognitive load task.",
+        architecture: "Fine-tuned LoRA adapter on top of Llama-3, trained on thousands of sent items. Integrated via webhook directly into Gmail API.",
+        tech: ["PyTorch", "Llama-3", "AWS Lambda", "Google API"],
+        highlights: [
+            "Achieved 92% approval rate on zero-shot drafts",
+            "Privacy-first: runs entirely on local edge nodes",
+            "Context-aware memory of previous conversations"
         ],
-        impact: "Savings account creation ↑ 50%",
-        imageGradient: "from-gray-100 to-gray-50",
-        link: "#case-study-3",
+        github: undefined,
+        icon: Code2,
+        color: "text-purple",
+        bg: "bg-purple/10"
     },
+    {
+        id: "synergy-learn",
+        title: "Synergy Learn",
+        description: "Adaptive reinforcement learning environment for personalized curriculum pacing.",
+        problem: "One-size-fits-all education paths leave struggling students behind and bore advanced learners.",
+        architecture: "A Knowledge Tracing model coupled with a Deep Q-Network that selects the optimal next piece of content to maximize retention.",
+        tech: ["TensorFlow", "React", "PostgreSQL", "RLlib"],
+        highlights: [
+            "Dynamically scales difficulty based on real-time performance",
+            "Visually maps user knowledge graph",
+            "Micro-service design for scalable content delivery"
+        ],
+        github: "https://github.com/ayushcody",
+        icon: Cpu,
+        color: "text-cyan",
+        bg: "bg-cyan/10"
+    },
+    {
+        id: "voice-cloner",
+        title: "Voice Cloner",
+        description: "Zero-shot voice cloning pipeline capable of robust synthesis from 3-second samples.",
+        problem: "Creating custom text-to-speech voices typically requires hours of clean studio recording data.",
+        architecture: "A VITS-based end-to-end TTS model adapted with a speaker encoder network for few-shot conditioning.",
+        tech: ["Python", "Librosa", "PyTorch", "Gradio"],
+        highlights: [
+            "Synthesizes natural speech from 3s noisy audio",
+            "Real-time inference factor of 0.4x on consumer GPUs",
+            "Web interface for easy demonstration and endpoint API"
+        ],
+        github: "https://github.com/ayushcody",
+        icon: Mic2,
+        color: "text-orange",
+        bg: "bg-orange/10"
+    }
 ];
 
 export default function SelectedProjects() {
-    return (
-        <section id="projects" className="py-24 px-6 md:px-12 max-w-7xl mx-auto">
-            <FadeIn>
-                <div className="mb-16">
-                    <h2 className="text-3xl md:text-4xl font-bold mb-4">Selected Work</h2>
-                    <div className="h-1 w-24 bg-accent-2" />
-                </div>
-            </FadeIn>
+    const [selectedProject, setSelectedProject] = useState<any | null>(null);
 
-            <div className="space-y-24">
-                {projects.map((project, index) => (
-                    <FadeIn key={project.id} delay={index * 0.1}>
-                        <div className="group grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-                            {/* Project Image Area (Placeholder) */}
-                            <Link
-                                href={project.link}
-                                className={cn(
-                                    "col-span-1 lg:col-span-5 aspect-[4/3] rounded-2xl overflow-hidden relative block shadow-sm hover:shadow-md transition-all duration-500",
-                                    `bg-gradient-to-br ${project.imageGradient}`
-                                )}
-                            >
-                                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/5">
-                                    <span className="bg-white px-4 py-2 rounded-full text-foreground text-sm font-medium flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                                        View Case Study <ArrowUpRight size={16} />
+    return (
+        <section id="projects" className="py-24 px-6 md:px-12 relative z-10 w-full">
+            <div className="max-w-7xl mx-auto">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 0.6 }}
+                    className="mb-16"
+                >
+                    <div className="flex items-center gap-3 mb-4">
+                        <Code2 className="text-cyan w-6 h-6" />
+                        <h2 className="text-sm font-bold tracking-widest text-cyan uppercase">Project Explorer</h2>
+                    </div>
+                    <h3 className="text-4xl md:text-5xl font-bold tracking-tight">Selected Systems</h3>
+                </motion.div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {projectsData.map((project, index) => (
+                        <motion.div
+                            key={project.id}
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.5, delay: index * 0.1 }}
+                            onClick={() => setSelectedProject(project)}
+                            className="cursor-pointer group h-full"
+                        >
+                            <SkeuomorphicCard className="h-full flex flex-col relative overflow-hidden">
+                                {/* Soft glowing edge */}
+                                <div className={cn("absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-10 transition-opacity duration-500", project.bg)} />
+
+                                <div className="flex items-center justify-between mb-6 relative z-10">
+                                    <div className={cn("w-12 h-12 rounded-xl flex items-center justify-center border border-white/5", project.bg, project.color)}>
+                                        <project.icon className="w-6 h-6" />
+                                    </div>
+                                    <div className="flex gap-2">
+                                        {project.tech.slice(0, 2).map(t => (
+                                            <span key={t} className="px-2 py-1 text-[10px] font-mono font-bold rounded-md bg-white/5 border border-white/10 text-muted">
+                                                {t}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <h4 className="text-xl font-bold text-white mb-2 relative z-10">{project.title}</h4>
+                                <p className="text-muted text-sm leading-relaxed mb-8 flex-grow relative z-10">
+                                    {project.description}
+                                </p>
+
+                                {/* Hover Reveal */}
+                                <div className="mt-auto border-t border-white/5 pt-4 flex items-center justify-between relative z-10">
+                                    <span className="text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-muted group-hover:from-cyan group-hover:to-purple transition-all duration-300">
+                                        Explore System
+                                    </span>
+                                    <span className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-white group-hover:bg-white/20 transition-all duration-300">
+                                        →
                                     </span>
                                 </div>
-                                {/* Actual Image would go here */}
-                                {/* <Image src={...} alt={project.title} fill className="object-cover" /> */}
-                            </Link>
-
-                            {/* Project Details */}
-                            <div className="col-span-1 lg:col-span-7 space-y-8">
-                                <div>
-                                    <h3 className="text-2xl md:text-3xl font-bold group-hover:text-accent-1 transition-colors">
-                                        <Link href={project.link}>{project.title}</Link>
-                                    </h3>
-                                    <p className="text-muted text-sm uppercase tracking-wide mt-2 font-medium">
-                                        {project.role} • {project.timeline}
-                                    </p>
-                                </div>
-
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-4 border-t border-muted/20">
-                                    {/* Problem */}
-                                    <div className="space-y-3">
-                                        <h4 className="text-xs font-bold text-muted uppercase tracking-wider">Problem</h4>
-                                        <p className="text-sm leading-relaxed">
-                                            {project.problem}
-                                        </p>
-                                    </div>
-
-                                    {/* Process */}
-                                    <div className="space-y-3">
-                                        <h4 className="text-xs font-bold text-muted uppercase tracking-wider">Process</h4>
-                                        <ul className="space-y-2">
-                                            {project.process.map((step, i) => (
-                                                <li key={i} className="text-sm flex items-start gap-2">
-                                                    <span className="text-accent-1 opacity-70 mt-1">→</span>
-                                                    <span>{step}</span>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-
-                                    {/* Impact */}
-                                    <div className="space-y-3">
-                                        <h4 className="text-xs font-bold text-muted uppercase tracking-wider">Impact</h4>
-                                        <p className="text-sm font-bold text-accent-2 block leading-relaxed">
-                                            {project.impact}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </FadeIn>
-                ))}
+                            </SkeuomorphicCard>
+                        </motion.div>
+                    ))}
+                </div>
             </div>
+
+            <ProjectModal
+                isOpen={!!selectedProject}
+                onClose={() => setSelectedProject(null)}
+                project={selectedProject}
+            />
         </section>
     );
 }

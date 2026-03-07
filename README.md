@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ayush Chougula - Premium AI Portfolio
 
-## Getting Started
+This is a highly customized, skeuomorphic portfolio website designed specifically for an AI/ML Engineer. It focuses on presenting a premium "product landing page" feel, combining tactile UI elements with fluid animations.
 
-First, run the development server:
+## Tech Stack
+- **Framework:** Next.js 14 (App Router)
+- **Styling:** Tailwind CSS v4
+- **Animations:** Framer Motion & GSAP
+- **Icons:** Lucide React
+- **Markdown:** React Markdown & Remark GFM
 
+## Core Features
+- **Skeuomorphic Design System:** Tactile depth, frosted glass, subtle inner shadows, and dynamic gradient glows.
+- **Interactive Project Explorer:** A visual grid of projects with a fluid, scale-in "product modal" for case studies.
+- **Engineering Notes (Blog):** Zero-dependency markdown parser that allows technical publishing with code highlighting out of the box.
+- **Micro-interactions:** Magnetic hover buttons, scroll-driven nav morphing, and a dynamic HTML5 Canvas neural background.
+
+## Running Locally
+
+1. Install dependencies:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Run the development server:
+```bash
+npm run dev
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Open [http://localhost:3000](http://localhost:3000)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deployment (Vercel)
+This project is fully optimized for Vercel.
+1. Push to GitHub
+2. Import project in Vercel
+3. The default build command (`npm run build`) and output directory will work automatically since it uses Next.js.

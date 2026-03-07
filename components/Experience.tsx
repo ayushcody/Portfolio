@@ -1,87 +1,124 @@
-import FadeIn from './FadeIn';
+'use client';
+
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronRight, Briefcase } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { SkeuomorphicCard } from './ui/SkeuomorphicCard';
+
+const experiences = [
+    {
+        id: "persistent",
+        company: "Persistent Systems",
+        role: "GenAI Intern",
+        period: "2024 — Present",
+        details: "Built RAG pipelines and integrated LLM workflows for enterprise scale applications. Enhanced inference speeds and reduced latency.",
+    },
+    {
+        id: "syniris",
+        company: "Syniris Technologies",
+        role: "Web Development Intern",
+        period: "2023 — 2024",
+        details: "Developed full-stack web applications using React and Node.js. Improved core application performance by 40%.",
+    },
+    {
+        id: "nexus",
+        company: "Nexus",
+        role: "Web Dev Intern (Project Lead)",
+        period: "2022 — 2023",
+        details: "Led a team of developers to build and deploy complex full-stack solutions. Established CI/CD pipelines and coding standards.",
+    },
+    {
+        id: "acs",
+        company: "Association for Cyber Security",
+        role: "DevSec Intern",
+        period: "2022",
+        details: "Conducted security audits and implemented secure coding practices across internal tools.",
+    }
+];
 
 export default function Experience() {
-    const experiences = [
-        // ... (data items)
-        {
-            company: "Stealth Startup",
-            role: "Senior Product Designer",
-            period: "2023 — Present",
-            achievements: [
-                "Led design system migration reducing dev time by 30%",
-                "Shipped MVP of core product in 3 months",
-            ],
-            current: true,
-        },
-        {
-            company: "Tech Giant Co.",
-            role: "Product Designer",
-            period: "2021 — 2023",
-            achievements: [
-                "Designed feature used by 2M+ daily active users",
-                "Mentored 3 junior designers",
-            ],
-            current: false,
-        },
-        {
-            company: "Digital Agency",
-            role: "UI/UX Designer",
-            period: "2019 — 2021",
-            achievements: [
-                "Delivered 15+ client projects across fintech and healthcare",
-                "Established accessibility standards for the studio",
-            ],
-            current: false,
-        },
-    ];
+    const [expandedId, setExpandedId] = useState<string | null>(experiences[0].id);
 
     return (
-        <section id="experience" className="py-24 px-6 md:px-12 max-w-7xl mx-auto">
-            <FadeIn>
-                <div className="mb-16">
-                    <h2 className="text-3xl md:text-4xl font-bold mb-4">Experience</h2>
-                    <div className="h-1 w-24 bg-accent-2" />
-                </div>
-            </FadeIn>
+        <section id="experience" className="py-24 px-6 md:px-12 relative z-10 w-full overflow-hidden">
+            <div className="max-w-7xl mx-auto">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ duration: 0.6 }}
+                    className="mb-16"
+                >
+                    <div className="flex items-center gap-3 mb-4">
+                        <Briefcase className="text-cyan w-6 h-6" />
+                        <h2 className="text-sm font-bold tracking-widest text-cyan uppercase">Career Timeline</h2>
+                    </div>
+                    <h3 className="text-4xl md:text-5xl font-bold tracking-tight">Experience</h3>
+                </motion.div>
 
-            <div className="relative border-l-2 border-muted/20 ml-3 md:ml-6 space-y-12 pl-8 md:pl-12">
-                {experiences.map((exp, index) => (
-                    <FadeIn key={index} delay={index * 0.1}>
-                        <div className="relative group">
-                            {/* Timeline Dot */}
-                            <span
-                                className={`absolute -left-[41px] md:-left-[57px] top-6 w-5 h-5 rounded-full border-4 border-background transition-colors duration-300 ${exp.current ? 'bg-accent-2' : 'bg-muted/40 group-hover:bg-accent-1'
-                                    }`}
-                            />
+                <div className="flex flex-col lg:flex-row gap-6 h-auto lg:h-[350px]">
+                    {experiences.map((exp, index) => {
+                        const isExpanded = expandedId === exp.id;
+                        return (
+                            <motion.div
+                                key={exp.id}
+                                layout
+                                onClick={() => setExpandedId(exp.id)}
+                                initial={{ opacity: 0, x: 20 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.5, delay: index * 0.1 }}
+                                className={cn(
+                                    "relative cursor-pointer group flex-shrink-0",
+                                    isExpanded ? "lg:flex-[2.5] flex-auto" : "lg:flex-1 flex-auto"
+                                )}
+                            >
+                                <SkeuomorphicCard
+                                    className="h-full flex flex-col justify-start overflow-hidden"
+                                    hover={!isExpanded}
+                                >
+                                    {/* Timeline line visual effect */}
+                                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-                            <div className={`p-6 md:p-8 rounded-2xl border transition-all duration-300 ${exp.current
-                                ? 'bg-white border-accent-2 shadow-lg ring-1 ring-accent-2/20'
-                                : 'bg-white border-muted/20 hover:border-accent-1/50 hover:shadow-md'
-                                }`}>
-                                <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-4">
-                                    <div>
-                                        <h3 className="text-2xl font-bold">{exp.company}</h3>
-                                        <p className={`text-lg font-medium ${exp.current ? 'text-accent-2' : 'text-muted'}`}>
+                                    <motion.div layout className="relative z-10">
+                                        <div className="flex justify-between items-start mb-6">
+                                            <motion.span layout className="text-xs font-bold font-mono text-cyan bg-cyan/10 px-3 py-1 rounded-full border border-cyan/20">
+                                                {exp.period}
+                                            </motion.span>
+                                            {!isExpanded && (
+                                                <div className="w-8 h-8 rounded-full bg-surface-hover flex items-center justify-center border border-white/5 group-hover:bg-white/10 transition-colors">
+                                                    <ChevronRight className="w-4 h-4 text-muted" />
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <motion.h4 layout className="text-xl md:text-2xl font-bold mb-2 text-white">
+                                            {exp.company}
+                                        </motion.h4>
+                                        <motion.p layout className="text-purple font-medium text-sm md:text-base">
                                             {exp.role}
-                                        </p>
-                                    </div>
-                                    <span className="text-sm font-bold uppercase tracking-wider text-muted py-1 px-3 bg-muted/10 rounded-full self-start md:self-auto">
-                                        {exp.period}
-                                    </span>
-                                </div>
+                                        </motion.p>
+                                    </motion.div>
 
-                                <ul className="space-y-2">
-                                    {exp.achievements.map((item, i) => (
-                                        <li key={i} className="flex items-start gap-2 text-base text-foreground/80">
-                                            <span className="mt-2 w-1.5 h-1.5 rounded-full bg-accent-1 opacity-60" />
-                                            <span>{item}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </div>
-                    </FadeIn>
-                ))}
+                                    <AnimatePresence>
+                                        {isExpanded && (
+                                            <motion.div
+                                                initial={{ opacity: 0, height: 0 }}
+                                                animate={{ opacity: 1, height: 'auto' }}
+                                                exit={{ opacity: 0, height: 0 }}
+                                                transition={{ duration: 0.3 }}
+                                                className="mt-6 text-muted text-sm md:text-base leading-relaxed border-t border-white/10 pt-4"
+                                            >
+                                                {exp.details}
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+                                </SkeuomorphicCard>
+                            </motion.div>
+                        );
+                    })}
+                </div>
             </div>
         </section>
     );
