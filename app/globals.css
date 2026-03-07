@@ -1,26 +1,52 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Studio Brutalism Palette */
+  --background: #F5F5F0;
+  /* Warm off-white */
+  --foreground: #1A1A1A;
+  /* Near-black */
+  --accent-1: #2A5F7A;
+  /* Editorial Blue */
+  --accent-2: #E8A546;
+  /* Amber */
+  --muted: #7A7A7A;
+  /* Utility Text */
+
+  --font-sans: var(--font-inter);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-accent-1: var(--accent-1);
+  --color-accent-2: var(--accent-2);
+  --color-muted: var(--muted);
+
+  --font-sans: var(--font-sans);
 }
 
+/* Dark mode preferences (optional, but good to have a strategy) */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Dark mode mapping - adjusted for contrast */
+    --background: #1A1A1A;
+    --foreground: #F5F5F0;
+    --accent-1: #4A8FB0;
+    --accent-2: #F0B056;
+    --muted: #A3A3A3;
   }
+}
+
+html {
+  scroll-padding-top: 100px;
+  /* Offset for sticky header */
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
