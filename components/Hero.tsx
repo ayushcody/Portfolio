@@ -1,87 +1,186 @@
 'use client';
 
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { ArrowRight, Download, TerminalSquare } from 'lucide-react';
+import Image from 'next/image';
+import { useState } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
+import { ArrowRight, Download, Github, Linkedin } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { profile as fallbackProfile } from '@/config/portfolio';
+import type { Profile } from '@/src/data/profile';
 
-export default function Hero() {
+type HeroProps = {
+    profile?: Profile;
+    profileSource?: 'firestore' | 'fallback';
+};
+
+const focusLabelMap: Record<string, string> = {
+    'Agentic AI workflows': 'Agentic AI',
+    'RAG systems': 'RAG Systems',
+    'Voice AI agents': 'Voice AI',
+    'AI infrastructure': 'AI Infrastructure',
+    'Full-stack AI products': 'Full-Stack AI Products',
+};
+
+export default function Hero({ profile, profileSource }: HeroProps) {
+    const prefersReducedMotion = useReducedMotion();
+    const [photoFailed, setPhotoFailed] = useState(false);
+    const activeProfile = profile ?? fallbackProfile;
+    const focusChips = activeProfile.currentFocus.slice(0, 5).map((focus) => focusLabelMap[focus] ?? focus);
+    const profilePhoto = activeProfile.profilePhoto?.trim() || '/profile.png';
+
+    const motionProps = prefersReducedMotion
+        ? {}
+        : {
+            initial: { opacity: 0, y: 18 },
+            animate: { opacity: 1, y: 0 },
+            transition: { duration: 0.45, ease: 'easeOut' as const },
+        };
+
+    const resumeHref = activeProfile.links.resume || activeProfile.resumePath || '/resume';
+    const availability =
+        activeProfile.availability ||
+        'Open to AI engineering internships, full-stack roles, and product engineering opportunities.';
+
     return (
-        <section className="relative min-h-screen flex flex-col justify-center px-6 md:px-12 pt-20 max-w-7xl mx-auto overflow-hidden" id="home">
-            <div className="relative z-10 space-y-8 max-w-4xl">
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, ease: "easeOut" }}
+        <section
+            id="home"
+            aria-labelledby="hero-heading"
+            data-profile-source={profileSource}
+            className="relative mx-auto grid min-h-[calc(100svh-1rem)] max-w-7xl items-center overflow-hidden px-6 pb-16 pt-28 sm:pt-32 md:px-12 lg:min-h-[760px] lg:grid-cols-12 lg:gap-12 lg:pb-20"
+        >
+            <div className="pointer-events-none absolute left-0 top-24 -z-10 h-72 w-72 rounded-full bg-purple/12 blur-[90px]" />
+            <div className="pointer-events-none absolute bottom-16 right-0 -z-10 h-64 w-64 rounded-full bg-cyan/10 blur-[100px]" />
+            <div className="pointer-events-none absolute left-1/3 top-1/2 -z-10 h-56 w-56 rounded-full bg-pink/8 blur-[100px]" />
+
+            <motion.div {...motionProps} className="relative z-10 max-w-3xl lg:col-span-7">
+                <h1
+                    id="hero-heading"
+                    className="max-w-4xl bg-gradient-to-br from-white via-cyan/95 to-purple bg-clip-text pb-2 text-5xl font-black leading-[1.02] tracking-tight text-transparent sm:text-6xl md:text-7xl lg:text-[80px]"
                 >
-                    <h1 className="text-6xl md:text-7xl lg:text-[80px] font-bold tracking-tighter leading-[1.1] bg-clip-text text-transparent bg-gradient-to-br from-white via-white/90 to-white/60 pb-2">
-                        Ayush Chougula
-                    </h1>
-                </motion.div>
+                    {activeProfile.fullName}
+                </h1>
 
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-                    className="space-y-6"
-                >
-                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-medium text-cyan tracking-tight font-mono">
-                        AI Systems Engineer
-                    </h2>
+                <p className="mt-4 max-w-2xl bg-gradient-to-r from-cyan via-white to-orange bg-clip-text text-xl font-semibold leading-tight text-transparent sm:text-2xl md:text-3xl">
+                    {activeProfile.headline}
+                </p>
 
-                    <div className="flex flex-wrap items-center gap-2 text-sm md:text-base font-semibold text-purple bg-purple/10 w-fit px-4 py-2 rounded-full border border-purple/20">
-                        <TerminalSquare className="w-5 h-5 text-purple" />
-                        <span>LLM Infrastructure • Agentic AI • RAG Systems</span>
-                    </div>
+                <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg md:text-xl">
+                    {activeProfile.heroDescription} I focus on shipped projects, clear architecture, reliable integrations, and AI behavior that can be evaluated.
+                </p>
 
-                    <p className="text-lg md:text-xl lg:text-2xl text-muted font-light leading-relaxed max-w-3xl">
-                        "I build production-grade AI systems — from agentic workflows to RAG pipelines and voice AI. I enjoy turning complex research ideas into working products."
-                    </p>
-                </motion.div>
+                <div className="mt-6 flex max-w-2xl flex-wrap gap-2" aria-label="Current engineering focus areas">
+                    {focusChips.map((chip) => (
+                        <span
+                            key={chip}
+                            className="rounded-full border border-cyan/15 bg-gradient-to-r from-cyan/10 via-purple/10 to-orange/10 px-3 py-1.5 text-xs font-bold text-white/85 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] sm:text-sm"
+                        >
+                            {chip}
+                        </span>
+                    ))}
+                </div>
 
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-                    className="flex flex-wrap items-center gap-4 pt-6"
-                >
+                <p className="mt-6 max-w-2xl rounded-2xl border border-orange/20 bg-orange/10 px-4 py-3 text-sm font-semibold leading-relaxed text-orange">
+                    {availability}
+                </p>
+
+                <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                     <Link
-                        href="#projects"
+                        href="/#projects"
                         className={cn(
-                            "group relative inline-flex items-center gap-2 px-8 py-4 rounded-full text-base font-bold text-background bg-white overflow-hidden",
-                            "hover:scale-[1.02] transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)]"
+                            "group inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-cyan via-purple to-orange px-6 py-3.5 text-sm font-black text-white shadow-[0_0_28px_rgba(0,229,255,0.18)] transition hover:translate-y-[-1px] hover:shadow-[0_0_36px_rgba(110,91,255,0.26)] sm:w-auto",
+                            "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan"
                         )}
+                        aria-label="View featured portfolio work"
                     >
-                        <span className="relative z-10">View Projects</span>
-                        <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
-                        <div className="absolute inset-0 bg-gradient-to-r from-white via-cyan/20 to-white opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                        View Featured Work
+                        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
                     </Link>
 
                     <Link
-                        href="#interests"
+                        href={resumeHref}
                         className={cn(
-                            "group inline-flex items-center gap-2 px-8 py-4 rounded-full text-base font-bold text-white bg-surface-hover border border-white/10",
-                            "hover:bg-surface hover:border-white/20 hover:scale-[1.02] transition-all duration-300 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05),0_8px_16px_rgba(0,0,0,0.4)]"
+                            "inline-flex w-full items-center justify-center gap-2 rounded-full border border-purple/25 bg-purple/10 px-6 py-3.5 text-sm font-black text-white transition hover:border-cyan/40 hover:bg-cyan/10 sm:w-auto",
+                            "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan"
                         )}
+                        aria-label="Open resume page"
                     >
-                        Explore Systems
-                    </Link>
-
-                    <Link
-                        href="/resume"
-                        className={cn(
-                            "group inline-flex items-center gap-2 px-8 py-4 rounded-full text-base font-bold text-orange bg-orange/10 border border-orange/20",
-                            "hover:bg-orange/20 hover:border-orange/30 hover:scale-[1.02] transition-all duration-300"
-                        )}
-                    >
-                        <Download className="w-5 h-5 group-hover:-translate-y-1 transition-transform" />
+                        <Download className="h-4 w-4" aria-hidden="true" />
                         Download Resume
                     </Link>
-                </motion.div>
-            </div>
+                </div>
 
-            {/* Soft background glow behind hero text */}
-            <div className="absolute top-1/2 left-0 -translate-y-1/2 -z-10 w-[600px] h-[600px] bg-purple/10 rounded-full blur-[120px] pointer-events-none" />
+                <div className="mt-5 flex flex-wrap items-center gap-4 text-sm font-bold text-muted">
+                    <Link
+                        href={activeProfile.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 transition hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan"
+                        aria-label={`Open ${activeProfile.fullName} GitHub profile in a new tab`}
+                    >
+                        <Github className="h-4 w-4" aria-hidden="true" />
+                        GitHub
+                    </Link>
+                    <Link
+                        href={activeProfile.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 transition hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan"
+                        aria-label={`Open ${activeProfile.fullName} LinkedIn profile in a new tab`}
+                    >
+                        <Linkedin className="h-4 w-4" aria-hidden="true" />
+                        LinkedIn
+                    </Link>
+                    <span className="text-white/45" aria-hidden="true">
+                        {activeProfile.locationShort}
+                    </span>
+                </div>
+            </motion.div>
+
+            <motion.div
+                {...(prefersReducedMotion
+                    ? {}
+                    : {
+                        initial: { opacity: 0, scale: 0.97 },
+                        animate: { opacity: 1, scale: 1 },
+                        transition: { duration: 0.5, delay: 0.12, ease: 'easeOut' as const },
+                })}
+                className="relative z-10 mt-10 flex justify-center lg:col-span-5 lg:mt-0"
+            >
+                <div className="relative aspect-[4/5] w-full max-w-[320px] overflow-hidden rounded-[2rem] border border-white/10 bg-surface/80 p-3 shadow-[0_24px_80px_rgba(0,0,0,0.35),0_0_48px_rgba(255,79,216,0.12)] backdrop-blur-xl sm:max-w-[360px]">
+                    <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-pink/70 to-transparent" />
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_35%_20%,rgba(0,229,255,0.14),transparent_32%),radial-gradient(circle_at_72%_65%,rgba(255,79,216,0.14),transparent_35%),radial-gradient(circle_at_55%_90%,rgba(255,122,24,0.12),transparent_30%)]" aria-hidden="true" />
+
+                    <div className="relative z-10 h-full overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.035] shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+                        {!photoFailed ? (
+                            <Image
+                                src={profilePhoto}
+                                alt="Portrait of Ayush Chougula"
+                                fill
+                                sizes="(min-width: 1024px) 360px, 320px"
+                                className="object-cover"
+                                priority
+                                unoptimized
+                                onError={() => setPhotoFailed(true)}
+                            />
+                        ) : (
+                            <div
+                                className="flex h-full w-full items-center justify-center bg-gradient-to-br from-cyan/18 via-purple/20 to-orange/14 text-6xl font-black text-white"
+                                role="img"
+                                aria-label="Portrait placeholder for Ayush Chougula"
+                            >
+                                {activeProfile.initials}
+                            </div>
+                        )}
+
+                        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/28 via-transparent to-white/[0.02]" aria-hidden="true" />
+                        <div className="pointer-events-none absolute inset-x-4 bottom-4 h-px bg-gradient-to-r from-transparent via-white/35 to-transparent" aria-hidden="true" />
+                        <div className="pointer-events-none absolute left-4 top-4 rounded-full border border-white/10 bg-background/45 px-3 py-1 text-xs font-black uppercase tracking-[0.18em] text-white/75 backdrop-blur-md">
+                            {activeProfile.locationShort}
+                        </div>
+                    </div>
+                </div>
+            </motion.div>
         </section>
     );
 }

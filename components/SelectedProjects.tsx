@@ -1,173 +1,362 @@
 'use client';
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Code2, Terminal, Cpu, Database, Network, Mic2 } from 'lucide-react';
+import Link from 'next/link';
+import { motion, useReducedMotion } from 'framer-motion';
+import {
+    ArrowRight,
+    Code2,
+    ExternalLink,
+    Github,
+    Layers3,
+} from 'lucide-react';
+import { useMemo, useState } from 'react';
 import { SkeuomorphicCard } from './ui/SkeuomorphicCard';
-import { ProjectModal } from './ui/ProjectModal';
+import ProjectArchitecture from './ProjectArchitecture';
 import { cn } from '@/lib/utils';
 
-const projectsData = [
-    {
-        id: "agentic-soc",
-        title: "Agentic SOC",
-        description: "Autonomous security operations center utilizing multi-agent reasoning to triage and remediate alerts.",
-        problem: "Triaging thousands of daily security alerts leads to extreme alert fatigue and missed critical incidents among security analysts.",
-        architecture: "A hierarchical multi-agent system where specialized agents (Analysis, Threat Intel, Remediation) collaborate using a central LLM orchestrator. Built with LangGraph, utilizing memory across sessions.",
-        tech: ["Python", "LangChain", "OpenAI", "FastAPI"],
-        highlights: [
-            "Reduced median alert triage time by 85%",
-            "Implements dynamic tool selection for retrieving internal logs",
-            "Self-correcting agent loop for handling ambiguous alerts"
-        ],
-        github: "https://github.com/ayushcody",
-        icon: Network,
-        color: "text-red-400",
-        bg: "bg-red-400/10"
-    },
-    {
-        id: "research-saathi",
-        title: "Research Saathi",
-        description: "Advanced RAG system for analyzing and synthesizing complex academic papers.",
-        problem: "Researchers spend countless hours literature reviewing and cross-referencing papers manually.",
-        architecture: "Hybrid RAG approach combining dense vector retrieval with keyword search. Employs a cross-encoder reranker before feeding context to the generation model.",
-        tech: ["Next.js", "Weaviate", "Mistral", "HuggingFace"],
-        highlights: [
-            "Processes PDF layouts perfectly using OCR-based chunking",
-            "Citations are mathematically verified against original text",
-            "Interactive graph view of paper references"
-        ],
-        github: "https://github.com/ayushcody",
-        icon: Database,
-        color: "text-blue-400",
-        bg: "bg-blue-400/10"
-    },
-    {
-        id: "email-twin",
-        title: "Email Digital Twin",
-        description: "Personalized AI that drafts and manages emails mimicking exact personal tone.",
-        problem: "Writing context-aware, tonally accurate replies to varying email threads is a high cognitive load task.",
-        architecture: "Fine-tuned LoRA adapter on top of Llama-3, trained on thousands of sent items. Integrated via webhook directly into Gmail API.",
-        tech: ["PyTorch", "Llama-3", "AWS Lambda", "Google API"],
-        highlights: [
-            "Achieved 92% approval rate on zero-shot drafts",
-            "Privacy-first: runs entirely on local edge nodes",
-            "Context-aware memory of previous conversations"
-        ],
-        github: undefined,
-        icon: Code2,
-        color: "text-purple",
-        bg: "bg-purple/10"
-    },
-    {
-        id: "synergy-learn",
-        title: "Synergy Learn",
-        description: "Adaptive reinforcement learning environment for personalized curriculum pacing.",
-        problem: "One-size-fits-all education paths leave struggling students behind and bore advanced learners.",
-        architecture: "A Knowledge Tracing model coupled with a Deep Q-Network that selects the optimal next piece of content to maximize retention.",
-        tech: ["TensorFlow", "React", "PostgreSQL", "RLlib"],
-        highlights: [
-            "Dynamically scales difficulty based on real-time performance",
-            "Visually maps user knowledge graph",
-            "Micro-service design for scalable content delivery"
-        ],
-        github: "https://github.com/ayushcody",
-        icon: Cpu,
-        color: "text-cyan",
-        bg: "bg-cyan/10"
-    },
-    {
-        id: "voice-cloner",
-        title: "Voice Cloner",
-        description: "Zero-shot voice cloning pipeline capable of robust synthesis from 3-second samples.",
-        problem: "Creating custom text-to-speech voices typically requires hours of clean studio recording data.",
-        architecture: "A VITS-based end-to-end TTS model adapted with a speaker encoder network for few-shot conditioning.",
-        tech: ["Python", "Librosa", "PyTorch", "Gradio"],
-        highlights: [
-            "Synthesizes natural speech from 3s noisy audio",
-            "Real-time inference factor of 0.4x on consumer GPUs",
-            "Web interface for easy demonstration and endpoint API"
-        ],
-        github: "https://github.com/ayushcody",
-        icon: Mic2,
-        color: "text-orange",
-        bg: "bg-orange/10"
-    }
+import { projectsData, type ProjectEntry } from '@/config/portfolio';
+
+const filters = [
+    { label: 'All', match: 'all' },
+    { label: 'Agentic AI', match: 'agentic' },
+    { label: 'RAG', match: 'rag' },
+    { label: 'Full Stack', match: 'full' },
+    { label: 'Tools', match: 'tool' },
+    { label: 'Labs', match: 'lab' },
 ];
 
-export default function SelectedProjects() {
-    const [selectedProject, setSelectedProject] = useState<any | null>(null);
+type SelectedProjectsProps = {
+    mode?: 'preview' | 'full';
+};
 
+function getYearValue(project: ProjectEntry) {
+    const year = Number(project.year);
+    return Number.isFinite(year) ? year : 0;
+}
+
+function sortProjects(projects: ProjectEntry[]) {
+    return [...projects].sort((a, b) => {
+        const priorityA = a.priority ?? Number.MAX_SAFE_INTEGER;
+        const priorityB = b.priority ?? Number.MAX_SAFE_INTEGER;
+
+        if (priorityA !== priorityB) return priorityA - priorityB;
+        return getYearValue(b) - getYearValue(a);
+    });
+}
+
+function getSummary(project: ProjectEntry) {
+    return project.oneLine || project.summary || project.description;
+}
+
+function getTechStack(project: ProjectEntry) {
+    return project.techStack ?? project.stack ?? project.tech ?? [];
+}
+
+function getGithub(project: ProjectEntry) {
+    return project.links?.github || project.github;
+}
+
+function getLive(project: ProjectEntry) {
+    return project.links?.live || project.live;
+}
+
+function getDemo(project: ProjectEntry) {
+    return project.links?.demo;
+}
+
+function getInitials(title: string) {
+    return title
+        .split(/\s+/)
+        .filter(Boolean)
+        .map((word) => word[0])
+        .join('')
+        .slice(0, 3)
+        .toUpperCase();
+}
+
+function matchesFilter(project: ProjectEntry, activeFilter: string) {
+    if (activeFilter === 'all') return true;
+
+    const haystack = [
+        project.title,
+        project.category,
+        project.summary,
+        project.description,
+        ...(project.tags ?? []),
+        ...getTechStack(project),
+    ]
+        .join(' ')
+        .toLowerCase();
+
+    if (activeFilter === 'agentic') return haystack.includes('agent') || haystack.includes('llm');
+    if (activeFilter === 'rag') return haystack.includes('rag') || haystack.includes('retrieval') || haystack.includes('vector');
+    if (activeFilter === 'full') return haystack.includes('full') || haystack.includes('react') || haystack.includes('next');
+    if (activeFilter === 'tool') return haystack.includes('tool') || haystack.includes('cli') || haystack.includes('developer');
+    if (activeFilter === 'lab') return haystack.includes('lab') || haystack.includes('forecast') || haystack.includes('yolo');
+
+    return true;
+}
+
+function ProjectPlaceholder({ project }: { project: ProjectEntry }) {
     return (
-        <section id="projects" className="py-24 px-6 md:px-12 relative z-10 w-full">
-            <div className="max-w-7xl mx-auto">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-100px" }}
-                    transition={{ duration: 0.6 }}
-                    className="mb-16"
-                >
-                    <div className="flex items-center gap-3 mb-4">
-                        <Code2 className="text-cyan w-6 h-6" />
-                        <h2 className="text-sm font-bold tracking-widest text-cyan uppercase">Project Explorer</h2>
-                    </div>
-                    <h3 className="text-4xl md:text-5xl font-bold tracking-tight">Selected Systems</h3>
-                </motion.div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {projectsData.map((project, index) => (
-                        <motion.div
-                            key={project.id}
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.5, delay: index * 0.1 }}
-                            onClick={() => setSelectedProject(project)}
-                            className="cursor-pointer group h-full"
-                        >
-                            <SkeuomorphicCard className="h-full flex flex-col relative overflow-hidden">
-                                {/* Soft glowing edge */}
-                                <div className={cn("absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-10 transition-opacity duration-500", project.bg)} />
-
-                                <div className="flex items-center justify-between mb-6 relative z-10">
-                                    <div className={cn("w-12 h-12 rounded-xl flex items-center justify-center border border-white/5", project.bg, project.color)}>
-                                        <project.icon className="w-6 h-6" />
-                                    </div>
-                                    <div className="flex gap-2">
-                                        {project.tech.slice(0, 2).map(t => (
-                                            <span key={t} className="px-2 py-1 text-[10px] font-mono font-bold rounded-md bg-white/5 border border-white/10 text-muted">
-                                                {t}
-                                            </span>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                <h4 className="text-xl font-bold text-white mb-2 relative z-10">{project.title}</h4>
-                                <p className="text-muted text-sm leading-relaxed mb-8 flex-grow relative z-10">
-                                    {project.description}
-                                </p>
-
-                                {/* Hover Reveal */}
-                                <div className="mt-auto border-t border-white/5 pt-4 flex items-center justify-between relative z-10">
-                                    <span className="text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-muted group-hover:from-cyan group-hover:to-purple transition-all duration-300">
-                                        Explore System
-                                    </span>
-                                    <span className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-white group-hover:bg-white/20 transition-all duration-300">
-                                        →
-                                    </span>
-                                </div>
-                            </SkeuomorphicCard>
-                        </motion.div>
-                    ))}
+        <div className="relative overflow-hidden rounded-[1.25rem] border border-white/10 bg-surface-hover p-4">
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_28%_20%,rgba(0,229,255,0.18),transparent_32%),radial-gradient(circle_at_78%_70%,rgba(110,91,255,0.18),transparent_35%),radial-gradient(circle_at_50%_100%,rgba(255,122,24,0.14),transparent_30%)]" />
+            <div className="pointer-events-none absolute inset-0 opacity-[0.16] [background-image:linear-gradient(to_right,rgba(255,255,255,0.13)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.13)_1px,transparent_1px)] [background-size:24px_24px]" />
+            <div className="relative z-10 flex min-h-32 flex-col justify-between">
+                <div className="flex items-center justify-between gap-3">
+                    <span className={cn("rounded-full px-3 py-1 text-xs font-black uppercase tracking-[0.18em]", project.bg, project.color)}>
+                        {project.category}
+                    </span>
+                    <Layers3 className={cn("h-5 w-5", project.color)} aria-hidden="true" />
+                </div>
+                <div>
+                    <p className="text-4xl font-black tracking-tight text-white/90">{getInitials(project.title)}</p>
+                    <p className="mt-2 text-xs font-bold uppercase tracking-[0.22em] text-white/45">
+                        Case study
+                    </p>
                 </div>
             </div>
+        </div>
+    );
+}
 
-            <ProjectModal
-                isOpen={!!selectedProject}
-                onClose={() => setSelectedProject(null)}
-                project={selectedProject}
-            />
+function ProjectCard({ project, index }: { project: ProjectEntry; index: number }) {
+    const prefersReducedMotion = useReducedMotion();
+    const Icon = project.icon ?? Code2;
+    const summary = getSummary(project);
+    const techStack = getTechStack(project).slice(0, 5);
+    const impact = (project.impact ?? []).slice(0, 3);
+    const github = getGithub(project);
+    const live = getLive(project);
+    const demo = getDemo(project);
+
+    const card = (
+        <SkeuomorphicCard className="group relative flex h-full flex-col overflow-hidden p-4 transition duration-200 hover:-translate-y-1 hover:border-cyan/25 md:p-5">
+            <div className="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-cyan/55 to-purple/45 opacity-0 transition group-hover:opacity-100" />
+            <ProjectPlaceholder project={project} />
+
+            <div className="mt-5 flex flex-1 flex-col">
+                <div className="mb-3 flex flex-wrap items-center gap-2">
+                    <span className={cn("inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-black uppercase tracking-[0.16em]", project.bg, project.color)}>
+                        <Icon className="h-3.5 w-3.5" aria-hidden="true" />
+                        {project.category}
+                    </span>
+                    <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-bold text-white/70">
+                        {project.status}
+                    </span>
+                    {project.year ? (
+                        <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-bold text-muted">
+                            {project.year}
+                        </span>
+                    ) : null}
+                </div>
+
+                <h3 className="text-2xl font-black leading-tight text-white">
+                    {project.title}
+                </h3>
+
+                <p className="mt-3 text-sm leading-relaxed text-muted">
+                    {summary}
+                </p>
+
+                <div className="mt-5">
+                    <ProjectArchitecture project={project} compact />
+                </div>
+
+                <div className="mt-5 grid gap-3">
+                    {project.problem ? (
+                        <div className="rounded-2xl border border-white/10 bg-white/[0.035] p-3">
+                            <p className="mb-1 text-[11px] font-black uppercase tracking-[0.2em] text-cyan">Problem</p>
+                            <p className="text-sm leading-relaxed text-muted">{project.problem}</p>
+                        </div>
+                    ) : null}
+
+                    {project.solution ? (
+                        <div className="rounded-2xl border border-purple/15 bg-purple/[0.045] p-3">
+                            <p className="mb-1 text-[11px] font-black uppercase tracking-[0.2em] text-purple">Built</p>
+                            <p className="text-sm leading-relaxed text-muted">{project.solution}</p>
+                        </div>
+                    ) : null}
+                </div>
+
+                {impact.length > 0 ? (
+                    <div className="mt-5">
+                        <p className="mb-2 text-[11px] font-black uppercase tracking-[0.2em] text-orange">Why it matters</p>
+                        <ul className="space-y-2">
+                            {impact.map((item) => (
+                                <li key={item} className="flex gap-2 text-sm leading-relaxed text-muted">
+                                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-orange" aria-hidden="true" />
+                                    <span>{item}</span>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                ) : null}
+
+                {techStack.length > 0 ? (
+                    <div className="mt-5 flex flex-wrap gap-2">
+                        {techStack.map((tech) => (
+                            <span key={tech} className="rounded-full border border-white/10 bg-surface px-2.5 py-1 text-[11px] font-bold text-muted">
+                                {tech}
+                            </span>
+                        ))}
+                    </div>
+                ) : null}
+
+                <div className="mt-auto flex flex-col gap-3 border-t border-white/10 pt-5 sm:flex-row sm:flex-wrap sm:items-center">
+                    <Link
+                        href={`/projects/${project.id}`}
+                        className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-cyan to-purple px-4 py-2.5 text-sm font-black text-white transition hover:translate-y-[-1px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan sm:w-auto"
+                        aria-label={`Read ${project.title} case study`}
+                    >
+                        Read Case Study
+                        <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                    </Link>
+
+                    {github ? (
+                        <a
+                            href={github}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2.5 text-sm font-bold text-white transition hover:border-purple/35 hover:bg-white/[0.08] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan sm:w-auto"
+                            aria-label={`View ${project.title} source code on GitHub`}
+                        >
+                            <Github className="h-4 w-4" aria-hidden="true" />
+                            GitHub
+                        </a>
+                    ) : null}
+
+                    {live ? (
+                        <a
+                            href={live}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2.5 text-sm font-bold text-white transition hover:border-cyan/35 hover:bg-white/[0.08] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan sm:w-auto"
+                            aria-label={`Open ${project.title} live demo`}
+                        >
+                            <ExternalLink className="h-4 w-4" aria-hidden="true" />
+                            Live Demo
+                        </a>
+                    ) : null}
+
+                    {demo ? (
+                        <a
+                            href={demo}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2.5 text-sm font-bold text-white transition hover:border-cyan/35 hover:bg-white/[0.08] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan sm:w-auto"
+                            aria-label={`Open ${project.title} demo`}
+                        >
+                            <ExternalLink className="h-4 w-4" aria-hidden="true" />
+                            Demo
+                        </a>
+                    ) : null}
+                </div>
+            </div>
+        </SkeuomorphicCard>
+    );
+
+    if (prefersReducedMotion) {
+        return <div className="h-full">{card}</div>;
+    }
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ duration: 0.35, delay: Math.min(index * 0.05, 0.2) }}
+            className="h-full"
+        >
+            {card}
+        </motion.div>
+    );
+}
+
+export default function SelectedProjects({ mode = 'preview' }: SelectedProjectsProps) {
+    const [activeFilter, setActiveFilter] = useState('all');
+    const isPreview = mode === 'preview';
+
+    const visibleProjects = useMemo(() => {
+        const baseProjects = isPreview
+            ? projectsData.filter((project) => project.featured === true && project.showOnHome === true && project.archived !== true)
+            : projectsData.filter((project) => project.archived !== true);
+
+        const filtered = isPreview
+            ? baseProjects
+            : baseProjects.filter((project) => matchesFilter(project, activeFilter));
+
+        return sortProjects(filtered).slice(0, isPreview ? 6 : filtered.length);
+    }, [activeFilter, isPreview]);
+
+    return (
+        <section id="projects" className="relative z-10 w-full scroll-mt-28 overflow-hidden px-6 py-20 md:px-12 md:py-24">
+            <div className="pointer-events-none absolute left-0 top-24 -z-10 h-72 w-72 rounded-full bg-cyan/12 blur-[110px]" />
+            <div className="pointer-events-none absolute right-0 top-1/2 -z-10 h-72 w-72 rounded-full bg-purple/12 blur-[120px]" />
+            <div className="pointer-events-none absolute left-1/3 bottom-20 -z-10 h-64 w-64 rounded-full bg-orange/8 blur-[110px]" />
+
+            <div className="mx-auto max-w-7xl">
+                <div className="mb-10">
+                    <div className="mb-4 flex flex-wrap items-center gap-3">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-cyan/20 bg-cyan/10">
+                            <Code2 className="h-5 w-5 text-cyan" aria-hidden="true" />
+                        </div>
+                        <p className="text-sm font-bold uppercase tracking-widest text-cyan">
+                            {isPreview ? 'Featured AI Systems' : 'Selected Engineering Work'}
+                        </p>
+                    </div>
+
+                    <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+                        <div>
+                            <h2 className="max-w-4xl text-4xl font-black tracking-tight text-white md:text-5xl">
+                                {isPreview ? 'Featured Engineering Work' : 'Case-study ready project archive'}
+                            </h2>
+                            <p className="mt-4 max-w-3xl text-base leading-relaxed text-muted md:text-lg">
+                                Curated projects across agentic AI, RAG systems, voice AI, developer tooling, and full-stack product engineering.
+                            </p>
+                        </div>
+                        <div className="w-fit rounded-full border border-orange/20 bg-orange/10 px-4 py-2 text-sm font-bold text-orange">
+                            {isPreview ? `${visibleProjects.length} featured` : `${visibleProjects.length} visible`}
+                        </div>
+                    </div>
+                </div>
+
+                {!isPreview ? (
+                    <div className="mb-8 flex gap-2 overflow-x-auto rounded-[1.4rem] border border-white/10 bg-gradient-to-r from-cyan/5 via-surface/60 to-purple/5 p-2 backdrop-blur-xl">
+                        {filters.map((filter) => (
+                            <button
+                                key={filter.match}
+                                onClick={() => setActiveFilter(filter.match)}
+                                className={cn(
+                                    "shrink-0 rounded-full px-4 py-2 text-sm font-bold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan",
+                                    activeFilter === filter.match
+                                        ? "bg-gradient-to-r from-cyan to-purple text-white shadow-[0_0_20px_rgba(0,229,255,0.18)]"
+                                        : "text-muted hover:bg-white/10 hover:text-white"
+                                )}
+                                type="button"
+                            >
+                                {filter.label}
+                            </button>
+                        ))}
+                    </div>
+                ) : null}
+
+                <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                    {visibleProjects.map((project, index) => (
+                        <ProjectCard key={project.id} project={project} index={index} />
+                    ))}
+                </div>
+
+                <div className="mt-10 flex justify-center">
+                    <Link
+                        href="/projects"
+                        className="inline-flex items-center gap-2 rounded-full border border-cyan/20 bg-gradient-to-r from-cyan via-purple to-orange px-6 py-3.5 text-sm font-black text-white shadow-[0_0_30px_rgba(0,229,255,0.14)] transition hover:translate-y-[-1px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan"
+                    >
+                        View all projects
+                        <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                    </Link>
+                </div>
+            </div>
         </section>
     );
 }

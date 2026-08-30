@@ -1,14 +1,15 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Github } from 'lucide-react';
+import { X, Github, ExternalLink } from 'lucide-react';
 import { SkeuomorphicCard } from './SkeuomorphicCard';
 import { useEffect } from 'react';
+import { ProjectEntry } from '@/config/portfolio';
 
 interface ProjectModalProps {
     isOpen: boolean;
     onClose: () => void;
-    project: any;
+    project: ProjectEntry | null;
 }
 
 export function ProjectModal({ isOpen, onClose, project }: ProjectModalProps) {
@@ -49,25 +50,29 @@ export function ProjectModal({ isOpen, onClose, project }: ProjectModalProps) {
                         >
                             <SkeuomorphicCard hover={false} className="h-full flex flex-col p-0 overflow-hidden relative shadow-[0_0_50px_rgba(0,0,0,0.5)]">
                                 {/* Header Area */}
-                                <div className="relative h-48 md:h-64 bg-surface-hover flex items-center justify-center border-b border-white/5">
+                                <div className="relative h-48 md:h-56 bg-surface-hover flex items-center justify-center border-b border-white/5">
                                     <div className="absolute inset-0 bg-gradient-to-br from-purple/20 to-cyan/20 opacity-40 mix-blend-overlay" />
-                                    <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
+                                    {/* Removed external texture URL to prevent hotlinking and ensure reliability */}
+                                    <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at center, #ffffff 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
 
                                     <project.icon className="w-20 h-20 text-white/50 relative z-10 drop-shadow-2xl" />
 
                                     <button
                                         onClick={onClose}
                                         className="absolute top-4 right-4 w-10 h-10 bg-black/50 backdrop-blur-md rounded-full flex items-center justify-center border border-white/10 hover:bg-white/10 transition-colors z-20"
+                                        aria-label="Close modal"
                                     >
                                         <X className="w-5 h-5 text-white" />
                                     </button>
                                 </div>
 
                                 {/* Body */}
-                                <div className="p-6 md:p-8 overflow-y-auto max-h-[calc(90vh-16rem)] custom-scrollbar">
+                                <div className="p-6 md:p-8 overflow-y-auto max-h-[calc(90vh-14rem)] custom-scrollbar">
                                     <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-8">
                                         <div>
-                                            <h3 className="text-3xl font-bold text-white mb-3">{project.title}</h3>
+                                            <h3 className="text-3xl font-bold text-white mb-2">{project.title}</h3>
+                                            <p className={`text-sm font-bold uppercase tracking-widest ${project.color} mb-4`}>{project.category}</p>
+                                            
                                             <div className="flex flex-wrap gap-2">
                                                 {project.tech.map((t: string) => (
                                                     <span key={t} className="px-3 py-1 text-xs font-mono font-bold rounded-full bg-white/5 border border-white/10 text-muted">
@@ -76,10 +81,15 @@ export function ProjectModal({ isOpen, onClose, project }: ProjectModalProps) {
                                                 ))}
                                             </div>
                                         </div>
-                                        <div className="flex gap-3">
+                                        <div className="flex flex-wrap gap-3">
                                             {project.github && (
-                                                <a href={project.github} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 transition-colors text-sm font-bold text-white">
+                                                <a href={project.github} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 transition-colors text-sm font-bold text-white">
                                                     <Github className="w-4 h-4" /> Code
+                                                </a>
+                                            )}
+                                            {project.demo && (
+                                                <a href={project.demo} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 bg-purple text-white rounded-full hover:bg-purple/90 transition-colors text-sm font-bold shadow-[0_0_15px_rgba(110,91,255,0.4)]">
+                                                    <ExternalLink className="w-4 h-4" /> Live Demo
                                                 </a>
                                             )}
                                         </div>

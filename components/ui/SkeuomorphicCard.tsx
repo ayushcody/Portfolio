@@ -9,10 +9,10 @@ export function SkeuomorphicCard({ children, className, hover = true, ...props }
     return (
         <div
             className={cn(
-                "relative bg-surface rounded-2xl p-6 transition-all duration-300",
-                "border border-white/5",
+                "relative bg-surface/90 rounded-2xl p-6 transition-all duration-300 backdrop-blur-sm",
+                "border border-white/10",
                 "shadow-[inset_0_1px_1px_rgba(255,255,255,0.05),0_8px_20px_rgba(0,0,0,0.4)]",
-                hover && "hover:-translate-y-1 hover:shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_15px_30px_rgba(0,0,0,0.6)] hover:border-white/10",
+                hover && "hover:-translate-y-1 hover:shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_18px_35px_rgba(0,0,0,0.55)] hover:border-white/20",
                 className
             )}
             {...props}

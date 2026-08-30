@@ -1,119 +1,128 @@
 import { getBlogPostBySlug, getBlogPosts } from '@/lib/markdown';
-import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import Navbar from '@/components/Navbar';
+import { notFound } from 'next/navigation';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { ArrowLeft, Calendar, Tag } from 'lucide-react';
-import { SkeuomorphicCard } from '@/components/ui/SkeuomorphicCard';
-import { cn } from '@/lib/utils';
+import { ArrowLeft, Calendar, Clock, Tag } from 'lucide-react';
 
 export async function generateStaticParams() {
-    const posts = getBlogPosts();
-    return posts.map((post) => ({
+    return getBlogPosts().map((post) => ({
         slug: post.slug,
     }));
 }
 
-export async function generateMetadata(
-    { params }: { params: Promise<{ slug: string }> }
-) {
-    const p = await params;
-    const post = getBlogPostBySlug(p.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
+    const post = getBlogPostBySlug(slug);
+
     if (!post) {
         return { title: 'Post Not Found' };
     }
+
     return {
-        title: `${post.title} | Ayush Chougula`,
+        title: post.title,
         description: post.description,
+        openGraph: {
+            title: `${post.title} | Ayush Chougula`,
+            description: post.description,
+            type: 'article',
+        },
     };
 }
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
-    const p = await params;
-    const post = getBlogPostBySlug(p.slug);
+    const { slug } = await params;
+    const post = getBlogPostBySlug(slug);
 
-    if (!post) {
-        notFound();
-    }
+    if (!post) notFound();
 
     return (
-        <main className="min-h-screen relative selection:bg-purple/30 selection:text-white pb-24">
-            <Navbar />
-
-            <article className="pt-32 px-6 md:px-12 max-w-4xl mx-auto relative z-10 w-full">
-                <Link href="/blog" className="inline-flex items-center text-sm font-bold text-muted hover:text-cyan transition-colors mb-12 group">
-                    <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" /> Back to Notes
+        <main className="min-h-screen selection:bg-purple/30 selection:text-white">
+            <article className="relative z-10 mx-auto max-w-4xl px-6 pb-24 pt-32 md:px-12">
+                <Link
+                    href="/blog"
+                    className="mb-10 inline-flex items-center gap-2 text-sm font-bold text-muted transition hover:text-cyan focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan"
+                >
+                    <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+                    Back to Writing
                 </Link>
 
-                <div className="mb-16">
-                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-8 leading-tight">
+                <header className="mb-10">
+                    <h1 className="text-4xl font-black leading-tight tracking-tight text-white md:text-6xl">
                         {post.title}
                     </h1>
 
-                    <div className="flex flex-wrap items-center gap-6 text-sm text-muted font-medium bg-surface/50 border border-white/5 p-4 rounded-xl backdrop-blur-sm w-fit">
-                        <div className="flex items-center gap-2">
-                            <Calendar className="w-4 h-4 text-cyan" />
-                            {post.date}
-                        </div>
-                        {post.tags.length > 0 && (
-                            <div className="flex items-center gap-2 border-l border-white/10 pl-6">
-                                <Tag className="w-4 h-4 text-purple" />
-                                <div className="flex gap-2">
-                                    {post.tags.map(tag => (
-                                        <span key={tag} className="bg-white/5 px-2 py-0.5 rounded-md border border-white/10">{tag}</span>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
+                    <div className="mt-6 flex flex-wrap items-center gap-3 text-sm font-semibold text-muted">
+                        {post.date ? (
+                            <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5">
+                                <Calendar className="h-4 w-4 text-cyan" aria-hidden="true" />
+                                {post.date}
+                            </span>
+                        ) : null}
+                        <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5">
+                            <Clock className="h-4 w-4 text-orange" aria-hidden="true" />
+                            {post.readingTime}
+                        </span>
                     </div>
-                </div>
 
-                <SkeuomorphicCard hover={false} className="p-8 md:p-12 prose prose-invert prose-lg max-w-none">
+                    {post.tags.length > 0 ? (
+                        <div className="mt-4 flex flex-wrap gap-2" aria-label="Post tags">
+                            {post.tags.map((tag) => (
+                                <span key={tag} className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-surface px-3 py-1 text-xs font-bold text-muted">
+                                    <Tag className="h-3.5 w-3.5 text-purple" aria-hidden="true" />
+                                    {tag}
+                                </span>
+                            ))}
+                        </div>
+                    ) : null}
+                </header>
+
+                <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-6 md:p-10">
                     <ReactMarkdown
                         remarkPlugins={[remarkGfm]}
                         components={{
-                            h1: ({ node, ...props }) => <h1 className="text-3xl font-bold mt-12 mb-6 text-white" {...props} />,
-                            h2: ({ node, ...props }) => <h2 className="text-2xl font-bold mt-10 mb-5 text-white border-b border-white/10 pb-2" {...props} />,
-                            h3: ({ node, ...props }) => <h3 className="text-xl font-bold mt-8 mb-4 text-white" {...props} />,
-                            p: ({ node, ...props }) => <p className="leading-relaxed text-muted mb-6" {...props} />,
-                            a: ({ node, ...props }) => <a className="text-cyan hover:text-purple transition-colors underline underline-offset-4" {...props} />,
-                            ul: ({ node, ...props }) => <ul className="list-disc pl-6 mb-6 space-y-2 text-muted" {...props} />,
-                            ol: ({ node, ...props }) => <ol className="list-decimal pl-6 mb-6 space-y-2 text-muted" {...props} />,
-                            li: ({ node, ...props }) => <li className="marker:text-purple" {...props} />,
-                            blockquote: ({ node, ...props }) => (
-                                <blockquote className="border-l-4 border-purple pl-6 py-2 my-8 italic bg-white/5 rounded-r-xl text-white/80" {...props} />
+                            h1: ({ ...props }) => <h2 className="mb-5 mt-10 text-3xl font-black text-white" {...props} />,
+                            h2: ({ ...props }) => <h2 className="mb-4 mt-10 border-b border-white/10 pb-3 text-2xl font-black text-white" {...props} />,
+                            h3: ({ ...props }) => <h3 className="mb-3 mt-8 text-xl font-black text-white" {...props} />,
+                            p: ({ ...props }) => <p className="mb-6 text-base leading-8 text-muted" {...props} />,
+                            a: ({ href = '', ...props }) => {
+                                const isExternal = href.startsWith('http://') || href.startsWith('https://');
+                                return (
+                                    <a
+                                        href={href}
+                                        target={isExternal ? '_blank' : undefined}
+                                        rel={isExternal ? 'noopener noreferrer' : undefined}
+                                        className="text-cyan underline underline-offset-4 transition hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan"
+                                        {...props}
+                                    />
+                                );
+                            },
+                            ul: ({ ...props }) => <ul className="mb-6 list-disc space-y-2 pl-6 text-muted" {...props} />,
+                            ol: ({ ...props }) => <ol className="mb-6 list-decimal space-y-2 pl-6 text-muted" {...props} />,
+                            li: ({ ...props }) => <li className="leading-7 marker:text-purple" {...props} />,
+                            blockquote: ({ ...props }) => (
+                                <blockquote className="my-8 rounded-r-xl border-l-4 border-purple bg-white/[0.04] py-2 pl-6 text-white/80" {...props} />
                             ),
-                            code: ({ node, className, children, ...props }) => {
-                                const match = /language-(\w+)/.exec(className || '')
+                            code: ({ className, children, ...props }) => {
+                                const match = /language-(\w+)/.exec(className || '');
                                 const isInline = !match;
                                 return isInline ? (
-                                    <code className="bg-surface border border-white/10 px-1.5 py-0.5 rounded-md text-orange font-mono text-[0.9em]" {...props}>
+                                    <code className="rounded-md border border-white/10 bg-surface px-1.5 py-0.5 font-mono text-[0.9em] text-orange" {...props}>
                                         {children}
                                     </code>
                                 ) : (
-                                    <div className="relative my-8 rounded-xl overflow-hidden border border-white/10 shadow-2xl">
-                                        <div className="flex items-center px-4 py-2 bg-surface-hover border-b border-white/10">
-                                            <div className="flex gap-1.5">
-                                                <div className="w-3 h-3 rounded-full bg-red-500/80" />
-                                                <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-                                                <div className="w-3 h-3 rounded-full bg-green-500/80" />
-                                            </div>
-                                            <span className="ml-4 text-xs font-mono text-muted uppercase tracking-wider">{match?.[1]}</span>
-                                        </div>
-                                        <pre className="p-6 overflow-x-auto bg-black/80 font-mono text-sm leading-relaxed text-white">
-                                            <code className={className} {...props}>
-                                                {children}
-                                            </code>
-                                        </pre>
-                                    </div>
-                                )
-                            }
+                                    <pre className="my-8 overflow-x-auto rounded-xl border border-white/10 bg-black/70 p-5 font-mono text-sm leading-relaxed text-white">
+                                        <code className={className} {...props}>
+                                            {children}
+                                        </code>
+                                    </pre>
+                                );
+                            },
                         }}
                     >
                         {post.content}
                     </ReactMarkdown>
-                </SkeuomorphicCard>
+                </div>
             </article>
         </main>
     );

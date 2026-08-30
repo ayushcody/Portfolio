@@ -1,59 +1,10 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Network, Database, BrainCircuit, ServerCrash, Mic2, ShieldCheck, Cpu } from 'lucide-react';
+import { Cpu } from 'lucide-react';
 import { SkeuomorphicCard } from './ui/SkeuomorphicCard';
 
-const systems = [
-    {
-        id: "agentic",
-        icon: Network,
-        title: "Agentic AI Systems",
-        color: "text-purple",
-        bg: "bg-purple/10",
-        desc: "Autonomous agents capable of multi-step reasoning, tool use, and self-correction to solve complex workflows."
-    },
-    {
-        id: "rag",
-        icon: Database,
-        title: "RAG Architectures",
-        color: "text-cyan",
-        bg: "bg-cyan/10",
-        desc: "Advanced retrieval systems using vector databases, hybrid search, and reranking pipelines for grounded LLM generation."
-    },
-    {
-        id: "pipelines",
-        icon: BrainCircuit,
-        title: "LLM Pipelines",
-        color: "text-orange",
-        bg: "bg-orange/10",
-        desc: "End-to-end inference optimization, prompt engineering architectures, and evaluation frameworks for language models."
-    },
-    {
-        id: "infra",
-        icon: ServerCrash,
-        title: "AI Infrastructure",
-        color: "text-white",
-        bg: "bg-white/10",
-        desc: "Scalable deployment architectures, model parallel inference, and high-throughput streaming endpoints."
-    },
-    {
-        id: "voice",
-        icon: Mic2,
-        title: "Voice AI",
-        color: "text-purple",
-        bg: "bg-purple/10",
-        desc: "Real-time speech-to-text, zero-shot voice cloning, and low-latency voice synthesis pipelines."
-    },
-    {
-        id: "security",
-        icon: ShieldCheck,
-        title: "AI Security",
-        color: "text-cyan",
-        bg: "bg-cyan/10",
-        desc: "Adversarial testing, prompt injection prevention, and red-teaming enterprise AI applications."
-    }
-];
+import { systemsData } from '@/config/portfolio';
 
 const container = {
     hidden: { opacity: 0 },
@@ -72,7 +23,9 @@ const itemAnim = {
 
 export default function Interests() {
     return (
-        <section id="interests" className="py-24 px-6 md:px-12 relative z-10 w-full">
+        <section id="interests" className="relative z-10 w-full overflow-hidden px-6 py-24 md:px-12">
+            <div className="pointer-events-none absolute right-0 top-16 -z-10 h-72 w-72 rounded-full bg-pink/8 blur-[110px]" />
+            <div className="pointer-events-none absolute left-0 bottom-10 -z-10 h-64 w-64 rounded-full bg-lime/6 blur-[110px]" />
             <div className="max-w-7xl mx-auto">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -85,7 +38,7 @@ export default function Interests() {
                         <Cpu className="text-purple w-6 h-6" />
                         <h2 className="text-sm font-bold tracking-widest text-purple uppercase">Architecture Focus</h2>
                     </div>
-                    <h3 className="text-4xl md:text-5xl font-bold tracking-tight">Systems I Build</h3>
+                    <h3 className="bg-gradient-to-r from-white via-purple to-cyan bg-clip-text text-4xl font-bold tracking-tight text-transparent md:text-5xl">Systems I Build</h3>
                 </motion.div>
 
                 <motion.div
@@ -95,9 +48,10 @@ export default function Interests() {
                     viewport={{ once: true, margin: "-50px" }}
                     className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
                 >
-                    {systems.map((sys) => (
+                    {systemsData.map((sys) => (
                         <motion.div key={sys.id} variants={itemAnim} className="h-full">
-                            <SkeuomorphicCard className="h-full group flex flex-col justify-between">
+                            <SkeuomorphicCard className="group flex h-full flex-col justify-between overflow-hidden">
+                                <div className={`pointer-events-none absolute -right-16 -top-16 h-36 w-36 rounded-full blur-[56px] opacity-25 ${sys.bg.replace('/10', '/100')}`} />
                                 <div>
                                     <div className={`w-12 h-12 rounded-xl ${sys.bg} ${sys.color} flex items-center justify-center mb-6 border border-white/5 group-hover:scale-110 transition-transform duration-300`}>
                                         <sys.icon className="w-6 h-6" />

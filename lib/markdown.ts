@@ -8,10 +8,17 @@ export interface BlogPost {
     date: string;
     description: string;
     tags: string[];
+    readingTime: string;
     content: string;
 }
 
 const blogsDirectory = path.join(process.cwd(), 'content/blog');
+
+function estimateReadingTime(content: string) {
+    const words = content.trim().split(/\s+/).filter(Boolean).length;
+    const minutes = Math.max(1, Math.ceil(words / 220));
+    return `${minutes} min read`;
+}
 
 export function getBlogPosts(): BlogPost[] {
     try {
@@ -41,7 +48,7 @@ export function getBlogPosts(): BlogPost[] {
 
                 const title = getMatch(/title:\s*['"]?(.*?)['"]?\n/);
                 const date = getMatch(/date:\s*['"]?(.*?)['"]?\n/);
-                const description = getMatch(/description:\s*['"]?(.*?)['"]?\n/);
+                const description = getMatch(/description:\s*['"]?(.*?)['"]?\n/) || getMatch(/excerpt:\s*['"]?(.*?)['"]?\n/);
                 const tagsRaw = getMatch(/tags:\s*\[(.*?)\]/);
                 const tags = tagsRaw ? tagsRaw.split(',').map(t => t.replace(/['"]/g, '').trim()) : [];
 
@@ -51,6 +58,7 @@ export function getBlogPosts(): BlogPost[] {
                     date,
                     description,
                     tags,
+                    readingTime: estimateReadingTime(content),
                     content
                 };
             })
