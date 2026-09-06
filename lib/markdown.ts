@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
+import matter from 'gray-matter';
 
-// Note: simple frontmatter parser for zero-dependency blog
 export interface BlogPost {
     slug: string;
     title: string;
@@ -20,6 +20,10 @@ function estimateReadingTime(content: string) {
     return `${minutes} min read`;
 }
 
+function readText(value: unknown): string {
+    return typeof value === 'string' ? value.trim() : '';
+}
+
 export function getBlogPosts(): BlogPost[] {
     try {
         if (!fs.existsSync(blogsDirectory)) return [];
@@ -32,46 +36,36 @@ export function getBlogPosts(): BlogPost[] {
                 const fullPath = path.join(blogsDirectory, fileName);
                 const fileContents = fs.readFileSync(fullPath, 'utf8');
 
-                // Basic custom frontmatter parser
-                const parts = fileContents.split('---');
-                if (parts.length < 3) {
+                try {
+                    const { data, content: body } = matter(fileContents);
+                    if (Object.keys(data).length === 0) return null;
+
+                    const content = body.trim();
+                    const date = data.date instanceof Date
+                        ? data.date.toISOString().slice(0, 10)
+                        : readText(data.date);
+                    const tags = Array.isArray(data.tags)
+                        ? data.tags.map(readText).filter(Boolean)
+                        : [];
+
+                    return {
+                        slug,
+                        title: readText(data.title),
+                        date,
+                        description: readText(data.description) || readText(data.excerpt),
+                        tags,
+                        readingTime: estimateReadingTime(content),
+                        content,
+                    };
+                } catch (error) {
+                    console.error(`Error parsing blog post ${fileName}`, error);
                     return null;
                 }
-
-                const frontmatter = parts[1];
-                const content = parts.slice(2).join('---').trim();
-
-                const getMatch = (regex: RegExp) => {
-                    const match = frontmatter.match(regex);
-                    return match ? match[1].trim() : '';
-                };
-
-                const title = getMatch(/title:\s*['"]?(.*?)['"]?\n/);
-                const date = getMatch(/date:\s*['"]?(.*?)['"]?\n/);
-                const description = getMatch(/description:\s*['"]?(.*?)['"]?\n/) || getMatch(/excerpt:\s*['"]?(.*?)['"]?\n/);
-                const tagsRaw = getMatch(/tags:\s*\[(.*?)\]/);
-                const tags = tagsRaw ? tagsRaw.split(',').map(t => t.replace(/['"]/g, '').trim()) : [];
-
-                return {
-                    slug,
-                    title,
-                    date,
-                    description,
-                    tags,
-                    readingTime: estimateReadingTime(content),
-                    content
-                };
             })
-            .filter(Boolean) as BlogPost[];
+            .filter((post): post is BlogPost => post !== null);
 
         // Sort posts by date
-        return allBlogsData.sort((a, b) => {
-            if (a.date < b.date) {
-                return 1;
-            } else {
-                return -1;
-            }
-        });
+        return allBlogsData.sort((a, b) => b.date.localeCompare(a.date));
     } catch (e) {
         console.error("Error reading blog posts", e);
         return [];

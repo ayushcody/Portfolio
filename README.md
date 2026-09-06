@@ -1,25 +1,27 @@
-# Ayush Chougula - Premium AI Portfolio
+# Ayush Chougula — Portfolio
 
-This is a highly customized, skeuomorphic portfolio website designed specifically for an AI/ML Engineer. It focuses on presenting a premium "product landing page" feel, combining tactile UI elements with fluid animations.
+A playful neo-brutalist portfolio for an AI systems and full-stack engineer. The homepage introduces Ayush, selected work, working style, experience, achievements, skills, writing, and contact.
 
 ## Tech Stack
-- **Framework:** Next.js 14 (App Router)
+- **Framework:** Next.js 16 (App Router), React 19, TypeScript
 - **Styling:** Tailwind CSS v4
-- **Animations:** Framer Motion & GSAP
+- **Animations:** CSS and Framer Motion, with reduced-motion support
 - **Icons:** Lucide React
-- **Markdown:** React Markdown & Remark GFM
+- **Markdown:** gray-matter, React Markdown & Remark GFM
 
 ## Core Features
-- **Skeuomorphic Design System:** Tactile depth, frosted glass, subtle inner shadows, and dynamic gradient glows.
-- **Interactive Project Explorer:** A visual grid of projects with a fluid, scale-in "product modal" for case studies.
-- **Engineering Notes (Blog):** Zero-dependency markdown parser that allows technical publishing with code highlighting out of the box.
-- **Micro-interactions:** Magnetic hover buttons, scroll-driven nav morphing, and a dynamic HTML5 Canvas neural background.
+- **Clear visual structure:** Warm paper, bold typography, crisp borders, and restrained colorful accents.
+- **Project index:** All projects organized by focus, with dedicated case-study routes.
+- **Achievement gallery:** Four horizontal cards with native swipe, keyboard navigation, buttons, and optional photos. See [photo instructions](public/achievements/README.md).
+- **Original identity:** Portrait and signature footer preserved; floating navbar keeps its original structure.
+- **Light/dark themes:** Saved preference, visible focus states, responsive navigation, and no blocking boot sequence.
+- **Content:** Local data in `src/data`, Markdown in `content/blog`, and the existing Firebase CMS/fallback support.
 
 ## Running Locally
 
 1. Install dependencies:
 ```bash
-npm install
+npm ci
 ```
 
 2. Run the development server:
@@ -29,8 +31,15 @@ npm run dev
 
 3. Open [http://localhost:3000](http://localhost:3000)
 
-## Deployment (Vercel)
-This project is fully optimized for Vercel.
-1. Push to GitHub
-2. Import project in Vercel
-3. The default build command (`npm run build`) and output directory will work automatically since it uses Next.js.
+The development command works on Windows, macOS, and Linux. Next.js fetches Google Fonts during builds, so the initial build needs network access.
+
+## Validation
+
+```bash
+npm run lint
+npm run build
+```
+
+## Local redesign scope
+
+Keep changes local until the owner explicitly requests a PR. Any requested PR must use `godostroyer`. Product constraints are in [PRODUCT.md](PRODUCT.md), and the design decisions are in [DESIGN.md](DESIGN.md).

@@ -1,19 +1,18 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
-import Background from "@/components/Background";
+import "./portfolio.css";
 import Navbar from "@/components/Navbar";
-import BootLoader from "@/components/BootLoader";
 
-const bootStateScript = `
+const themeScript = `
   try {
-    var booted = sessionStorage.getItem('ayush-portfolio-booted-v2') === 'true';
-    document.documentElement.dataset.booting = booted ? 'false' : 'true';
-    document.documentElement.dataset.bootSkip = booted ? 'true' : 'false';
-  } catch (error) {
-    document.documentElement.dataset.booting = 'true';
-  }
+    var dark = localStorage.getItem('theme') === 'dark';
+    document.documentElement.classList.toggle('dark', dark);
+    document.documentElement.classList.toggle('light', !dark);
+  } catch (error) {}
 `;
+
+const display = Space_Grotesk({ variable: "--font-display", subsets: ["latin"], display: "swap" });
 
 const inter = Inter({
   variable: "--font-inter",
@@ -96,7 +95,7 @@ export default function RootLayout({
     name: "Ayush Chougula",
     url: "https://ayush.design",
     jobTitle: "AI, Data & Full-Stack Engineer",
-    email: "ayushchougula@gmail.com",
+    email: "ayushchougula1@gmail.com",
     address: {
       "@type": "PostalAddress",
       addressLocality: "Pune",
@@ -110,11 +109,11 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" className="scroll-smooth dark" suppressHydrationWarning>
+    <html lang="en" className="light" suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${jetbrainsMono.variable} antialiased selection:bg-purple/30 selection:text-white bg-background text-foreground relative min-h-screen flex flex-col`}
+        className={`${inter.variable} ${jetbrainsMono.variable} ${display.variable} antialiased bg-background text-foreground relative min-h-screen flex flex-col`}
       >
-        <script dangerouslySetInnerHTML={{ __html: bootStateScript }} />
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <a href="#main-content" className="skip-link">
           Skip to main content
         </a>
@@ -122,8 +121,6 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <BootLoader />
-        <Background />
         <Navbar />
         <div id="main-content" tabIndex={-1} className="flex flex-1 flex-col">
           {children}

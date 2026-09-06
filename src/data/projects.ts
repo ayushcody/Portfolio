@@ -144,7 +144,7 @@ export const projectsData: PortfolioProject[] = [
             "Chrome Extension with a Node.js backend. OAuth2 authorizes Gmail access, sent mail is analyzed for behavioral writing signals, and Gemini generates Formal, Concise, Casual, and Context-Adjusted variants.",
         architectureHighlights: [
             "OAuth2-backed Gmail integration",
-            "Behavioral writing signal extraction from sent-email history",
+            "Recursive MIME extraction and PII-safe writing-persona analysis",
             "Multiple draft variants for different reply contexts",
         ],
         features: [
@@ -199,10 +199,10 @@ export const projectsData: PortfolioProject[] = [
             "A RAG pipeline retrieves Indian-law context, passes it into an LLM reasoning flow, and asks follow-up questions when facts are missing.",
         myRole:
             "Designed the RAG flow, legal context framing, dual-perspective output structure, and missing-facts interaction model.",
-        techStack: ["RAG", "Pinecone", "Groq", "Llama 3", "Indian Law", "FastAPI"],
+        techStack: ["RAG", "Pinecone", "Groq", "Llama-3.3-70b", "Indian Law", "FastAPI"],
         tags: ["RAG", "Legal AI", "Pinecone", "Grounded generation"],
         architecture:
-            "Incident descriptions enter a RAG pipeline backed by Pinecone. Retrieved Indian-law context is passed to Groq/Llama 3 to produce prosecution and defense reasoning, followed by an interactive engine that asks for missing legal facts.",
+            "Incident descriptions enter a RAG pipeline backed by Pinecone. Retrieved Indian-law context is passed to Groq/Llama-3.3-70b to produce prosecution and defense reasoning, followed by an interactive engine that asks for missing legal facts.",
         architectureHighlights: [
             "Vector retrieval over Indian-law context",
             "Separate prosecution and defense reasoning paths",
@@ -229,11 +229,11 @@ export const projectsData: PortfolioProject[] = [
         links: { github: "https://github.com/ayushcody/andhakaanun" },
         description:
             "Generates dual-perspective prosecution and defense arguments from incident descriptions, grounded in Indian law and citation-aware retrieval.",
-        proofPoint: "Indian law RAG · IPC/CrPC grounding · Pinecone · Groq/Llama 3",
-        tech: ["RAG", "Pinecone", "Groq", "Llama 3", "Indian Law", "FastAPI"],
+        proofPoint: "Indian law RAG · IPC grounding · Pinecone · Groq/Llama-3.3-70b",
+        tech: ["RAG", "Pinecone", "Groq", "Llama-3.3-70b", "Indian Law", "FastAPI"],
         highlights: [
             "Produces both prosecution and defense argument structures",
-            "Grounds outputs in IPC/CrPC-oriented retrieval context",
+            "Grounds outputs in IPC-oriented retrieval context",
             "Follow-up engine identifies missing facts that affect legal reasoning",
         ],
         demo: "",
@@ -272,7 +272,7 @@ export const projectsData: PortfolioProject[] = [
         impact: [
             "Built a structured learning product for visualizing algorithms step by step.",
             "Used schema validation to make complex educational content easier to maintain.",
-            "Preserved existing reported proof points: 25+ topics, 300+ micro-steps, sub-100ms search, and Lighthouse 98+.",
+            "Authored 25+ DSA topics with 300+ micro-steps.",
         ],
         challenges: [
             "Keeping visual state, code state, and explanatory content synchronized.",
@@ -285,10 +285,10 @@ export const projectsData: PortfolioProject[] = [
         links: { github: "https://github.com/ayushcody/dsakarle" },
         description:
             "Step-by-step DSA walkthroughs where JSON state objects drive synchronized SVG animation, variable tracing, and code highlighting.",
-        proofPoint: "25+ topics · 300+ micro-steps · <100ms search · Lighthouse 98+",
+        proofPoint: "25+ topics · 300+ micro-steps · Build-time search index",
         tech: ["Next.js", "TypeScript", "Framer Motion", "Fuse.js", "Zod", "Shiki"],
         highlights: [
-            "Build-time search index keeps content lookup under 100ms",
+            "Build-time Fuse.js indexing moves search preparation out of the browser",
             "Zod schema validation keeps algorithm content consistent",
             "SVG animation and code highlighting stay in sync through each state",
         ],
@@ -737,6 +737,202 @@ export const projectsData: PortfolioProject[] = [
         icon: TerminalSquare,
         color: "text-white",
         bg: "bg-white/10",
+    }),
+    project({
+        "id": "documind",
+        "title": "DocuMind",
+        "category": "RAG Systems",
+        "summary": "Visual document retrieval with answers cited to the exact region of the source page.",
+        "techStack": [
+                "FastAPI",
+                "Celery",
+                "ColQwen2",
+                "Python"
+        ],
+        "architecture": "ColQwen2 handles layout-aware document retrieval. Celery ingests and indexes documents asynchronously, with FastAPI coordinating the pipeline.",
+        "features": [
+                "Visual and layout-aware document understanding",
+                "Bounding-box citations back to source regions",
+                "Asynchronous document ingestion and indexing"
+        ],
+        "year": "2025",
+        "status": "Case Study",
+        "featured": false,
+        "showOnHome": false,
+        "archived": false,
+        "priority": 12,
+        "oneLine": "Visual document retrieval with answers cited to the exact region of the source page.",
+        "description": "Visual document retrieval with answers cited to the exact region of the source page.",
+        "problem": "",
+        "solution": "ColQwen2 handles layout-aware document retrieval. Celery ingests and indexes documents asynchronously, with FastAPI coordinating the pipeline.",
+        "myRole": "Built the application and its core pipeline.",
+        "tags": [
+                "FastAPI",
+                "Celery",
+                "ColQwen2"
+        ],
+        "architectureHighlights": [
+                "Visual and layout-aware document understanding",
+                "Bounding-box citations back to source regions",
+                "Asynchronous document ingestion and indexing"
+        ],
+        "impact": [
+                "Visual and layout-aware document understanding",
+                "Bounding-box citations back to source regions",
+                "Asynchronous document ingestion and indexing"
+        ],
+        "challenges": [],
+        "learnings": [],
+        "links": {},
+        "proofPoint": "FastAPI · Celery · ColQwen2",
+        "tech": [
+                "FastAPI",
+                "Celery",
+                "ColQwen2",
+                "Python"
+        ],
+        "highlights": [
+                "Visual and layout-aware document understanding",
+                "Bounding-box citations back to source regions",
+                "Asynchronous document ingestion and indexing"
+        ],
+        "demo": "",
+        "color": "text-purple",
+        "bg": "bg-purple/10"
+,
+        icon: BookOpen
+    }),
+    project({
+        "id": "voice-cloning",
+        "title": "Voice Cloning Pipeline",
+        "category": "Voice AI",
+        "summary": "A Qwen3 voice-cloning and text-to-speech pipeline tuned for clear pronunciation of emails, numbers, and dates.",
+        "techStack": [
+                "Qwen3",
+                "PyTorch",
+                "TTS",
+                "Audio processing"
+        ],
+        "architecture": "A Qwen3-based speech pipeline uses structured prompt formatting to improve pronunciation of email addresses, numeric identifiers, and dates.",
+        "features": [
+                "Voice cloning and text-to-speech generation",
+                "Prompt formatting for structured data pronunciation",
+                "Inference tuning for low-latency use"
+        ],
+        "year": "2025",
+        "status": "Case Study",
+        "featured": false,
+        "showOnHome": false,
+        "archived": false,
+        "priority": 13,
+        "oneLine": "A Qwen3 voice-cloning and text-to-speech pipeline tuned for clear pronunciation of emails, numbers, and dates.",
+        "description": "A Qwen3 voice-cloning and text-to-speech pipeline tuned for clear pronunciation of emails, numbers, and dates.",
+        "problem": "",
+        "solution": "A Qwen3-based speech pipeline uses structured prompt formatting to improve pronunciation of email addresses, numeric identifiers, and dates.",
+        "myRole": "Built the application and its core pipeline.",
+        "tags": [
+                "Qwen3",
+                "PyTorch",
+                "TTS"
+        ],
+        "architectureHighlights": [
+                "Voice cloning and text-to-speech generation",
+                "Prompt formatting for structured data pronunciation",
+                "Inference tuning for low-latency use"
+        ],
+        "impact": [
+                "Voice cloning and text-to-speech generation",
+                "Prompt formatting for structured data pronunciation",
+                "Inference tuning for low-latency use"
+        ],
+        "challenges": [],
+        "learnings": [],
+        "links": {},
+        "proofPoint": "Qwen3 · PyTorch · TTS",
+        "tech": [
+                "Qwen3",
+                "PyTorch",
+                "TTS",
+                "Audio processing"
+        ],
+        "highlights": [
+                "Voice cloning and text-to-speech generation",
+                "Prompt formatting for structured data pronunciation",
+                "Inference tuning for low-latency use"
+        ],
+        "demo": "",
+        "color": "text-purple",
+        "bg": "bg-purple/10"
+,
+        icon: Microscope
+    }),
+    project({
+        "id": "hushh",
+        "title": "Hushh",
+        "category": "Full-Stack Product",
+        "summary": "A full-stack application built with a Vite-powered React frontend and a Node.js API backed by PostgreSQL.",
+        "techStack": [
+                "React",
+                "Vite",
+                "Node.js",
+                "Express",
+                "Prisma",
+                "Supabase"
+        ],
+        "architecture": "React and Vite provide the frontend. An Express backend uses Prisma to access Supabase-hosted PostgreSQL.",
+        "features": [
+                "React frontend with Vite",
+                "Node.js and Express service layer",
+                "Prisma ORM over Supabase PostgreSQL"
+        ],
+        "year": "2025",
+        "status": "Case Study",
+        "featured": false,
+        "showOnHome": false,
+        "archived": false,
+        "priority": 14,
+        "oneLine": "A full-stack application built with a Vite-powered React frontend and a Node.js API backed by PostgreSQL.",
+        "description": "A full-stack application built with a Vite-powered React frontend and a Node.js API backed by PostgreSQL.",
+        "problem": "",
+        "solution": "React and Vite provide the frontend. An Express backend uses Prisma to access Supabase-hosted PostgreSQL.",
+        "myRole": "Built the application and its core pipeline.",
+        "tags": [
+                "React",
+                "Vite",
+                "Node.js"
+        ],
+        "architectureHighlights": [
+                "React frontend with Vite",
+                "Node.js and Express service layer",
+                "Prisma ORM over Supabase PostgreSQL"
+        ],
+        "impact": [
+                "React frontend with Vite",
+                "Node.js and Express service layer",
+                "Prisma ORM over Supabase PostgreSQL"
+        ],
+        "challenges": [],
+        "learnings": [],
+        "links": {},
+        "proofPoint": "React · Vite · Node.js",
+        "tech": [
+                "React",
+                "Vite",
+                "Node.js",
+                "Express",
+                "Prisma",
+                "Supabase"
+        ],
+        "highlights": [
+                "React frontend with Vite",
+                "Node.js and Express service layer",
+                "Prisma ORM over Supabase PostgreSQL"
+        ],
+        "demo": "",
+        "color": "text-purple",
+        "bg": "bg-purple/10"
+,
+        icon: Code2
     }),
 ].sort((a, b) => a.priority - b.priority);
 

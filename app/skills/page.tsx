@@ -1,71 +1,74 @@
-import { BrainCircuit, Database, Mic2, PanelsTopLeft } from "lucide-react";
-import Skills from "@/components/Skills";
+import Link from "next/link";
+import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
+import { skillCategories } from "@/src/data/skills";
+import { SignatureFooter } from "@/components/SignatureFooter";
+import "@/components/secondary-pages.css";
 
 export const metadata = {
   title: "Skills",
-  description: "Tools and systems Ayush Chougula uses to build applied AI products.",
+  description: "Ayush Chougula's practical toolkit for AI systems, backend engineering, frontend development, retrieval, cloud, voice AI, and security.",
 };
 
 const workflows = [
-  {
-    title: "Building RAG pipelines",
-    icon: Database,
-    copy: "Ingestion, chunking, embeddings, retrieval, grounding, and evaluation loops for document-aware AI systems.",
-  },
-  {
-    title: "Building voice AI agents",
-    icon: Mic2,
-    copy: "Prompts, call flow, validation, latency constraints, fallback paths, and telephony-style integrations.",
-  },
-  {
-    title: "Building full-stack AI products",
-    icon: PanelsTopLeft,
-    copy: "UI, APIs, database, auth, AI provider integration, deployment, and operational product constraints.",
-  },
+  { title: "Ground an AI answer.", copy: "Ingest documents, build a retrieval path, pass useful context to the model, then evaluate the result.", project: "See AndhaKaanun", href: "/projects/andhakaanun" },
+  { title: "Connect the whole product.", copy: "Bring the interface, APIs, auth, data, and AI provider together in one usable flow.", project: "See Email Digital Twin", href: "/projects/email-digital-twin" },
+  { title: "Make the next version better.", copy: "Compare prompts, check structured outputs, and catch regressions before they become product behavior.", project: "See LLM Evaluation Framework", href: "/projects/llm-evaluation-framework" },
 ];
 
 export default function SkillsPage() {
   return (
-    <main className="min-h-screen selection:bg-cyan/30 selection:text-white">
-      <section className="relative z-10 px-6 pb-8 pt-32 md:px-12">
-        <div className="pointer-events-none absolute left-0 top-24 -z-10 h-72 w-72 rounded-full bg-cyan/10 blur-[110px]" />
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-4 flex w-fit items-center gap-2 rounded-full border border-cyan/20 bg-cyan/10 px-4 py-2 text-xs font-black uppercase tracking-[0.22em] text-cyan">
-            <BrainCircuit className="h-4 w-4" aria-hidden="true" />
-            Skills
+    <main className="secondary-page">
+      <div className="secondary-shell">
+        <header className="secondary-intro">
+          <Link href="/" className="secondary-back"><ArrowLeft size={16} aria-hidden="true" /> Back home</Link>
+          <h1>The tools.<br />The <span className="secondary-highlight secondary-highlight-coral">thinking.</span></h1>
+          <p className="secondary-lead">A practical toolkit for taking an AI idea from interface to infrastructure.</p>
+        </header>
+
+        <section className="secondary-skills-index" aria-label="Skills grouped by how I use them">
+          {skillCategories.map((category, index) => (
+            <article className="secondary-skill-row" key={category.name}>
+              <div className="secondary-skill-heading">
+                <span className="secondary-row-number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+                <h2>{category.name}</h2>
+                <p>{category.summary}</p>
+              </div>
+              <div className="secondary-skill-content">
+                <ul className="secondary-tool-list" aria-label={`${category.name} tools`}>
+                  {category.skills.map((skill) => <li key={skill}>{skill}</li>)}
+                </ul>
+                <p className="secondary-note-label">What I use them for</p>
+                <ul className="secondary-use-cases">
+                  {category.useCases.map((useCase) => <li key={useCase}><ArrowRight size={15} aria-hidden="true" />{useCase}</li>)}
+                </ul>
+              </div>
+            </article>
+          ))}
+        </section>
+
+        <section className="secondary-workflows" aria-labelledby="workflows-heading">
+          <div className="secondary-section-heading">
+            <h2 id="workflows-heading">Better together.</h2>
+            <p>Here&apos;s what those tools look like in practice.</p>
           </div>
-          <h1 className="max-w-4xl text-5xl font-black tracking-tight text-white md:text-7xl">Skills</h1>
-          <p className="mt-6 max-w-3xl text-xl font-semibold leading-relaxed text-white/85">
-            Tools and systems I use to build applied AI products.
-          </p>
-          <p className="mt-3 max-w-3xl text-base leading-relaxed text-muted md:text-lg">
-            Grouped by how I use them, not just by logo.
-          </p>
-        </div>
-      </section>
-
-      <Skills variant="full" showStackWall />
-
-      <section className="relative z-10 px-6 pb-24 md:px-12">
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-6">
-            <p className="mb-3 text-xs font-black uppercase tracking-[0.22em] text-orange">Applied workflows</p>
-            <h2 className="text-3xl font-black tracking-tight text-white md:text-4xl">How I use these skills</h2>
-          </div>
-
-          <div className="grid gap-6 md:grid-cols-3">
-            {workflows.map((workflow) => (
-              <article key={workflow.title} className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-6">
-                <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-orange/10 text-orange">
-                  <workflow.icon className="h-5 w-5" aria-hidden="true" />
-                </div>
-                <h3 className="text-xl font-black text-white">{workflow.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted">{workflow.copy}</p>
+          <div className="secondary-workflow-grid">
+            {workflows.map((workflow, index) => (
+              <article key={workflow.title}>
+                <span className="secondary-workflow-number" aria-hidden="true">0{index + 1}</span>
+                <h3>{workflow.title}</h3>
+                <p>{workflow.copy}</p>
+                <Link href={workflow.href} className="secondary-text-link">{workflow.project}<ArrowUpRight size={18} aria-hidden="true" /></Link>
               </article>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
+
+        <aside className="secondary-closing">
+          <h2>See the thinking in action.</h2>
+          <Link href="/projects" className="secondary-button">Explore my work <ArrowUpRight size={20} aria-hidden="true" /></Link>
+        </aside>
+      </div>
+      <SignatureFooter />
     </main>
   );
 }
