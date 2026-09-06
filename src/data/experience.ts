@@ -29,153 +29,241 @@ export type ExperienceEntry = ExperienceItem & {
     color: "cyan" | "purple" | "orange" | "white";
 };
 
+// Reconciled with the supplied master resume; downloadable PDF remains separate.
 export const experiencesData: ExperienceEntry[] = [
     {
-        id: "persistent",
-        company: "Persistent Systems Inc.",
-        role: "GenAI Engineer Intern",
-        period: "Sep 2025 - Apr 2026",
-        type: "Internship",
-        location: "Pune, India",
-        shortSummary:
-            "Building agentic LLM workflows, RAG pipelines, and evaluation patterns for enterprise AI product work.",
-        responsibilities: [
-            "Built agentic LLM workflows with structured outputs and evaluation loops",
-            "Developed Persona Mail, an email digital twin using OAuth2 and Gmail API integration",
-            "Implemented prompt versioning, regression testing, and optimization pipelines",
+        "id": "quensulting",
+        "company": "Quensulting AI LLP",
+        "role": "AI Voice Agents & Automation Engineer",
+        "period": "May 2026 – Present",
+        "type": "Current role",
+        "location": "Pune, India · Remote",
+        "progressionLabel": "Voice & automation",
+        "color": "cyan",
+        "shortSummary": "Connecting conversations to action: voice agents, backend services, and business workflows in one end-to-end system.",
+        "responsibilities": [
+            "Build and deploy Retell and Vapi voice agents, shaping call flows, intent recognition, and turn-taking; extend voice tooling with Dograh.",
+            "Connect calls to CRMs, backend services, and follow-up actions through n8n, including handoffs to WhatsApp Business.",
+            "Integrate ElevenLabs speech synthesis and build FastAPI services for call routing, session state, and persistence."
         ],
-        impact: [
-            "Improved AI workflow reliability through structured outputs, validation paths, and regression-style prompt checks.",
-            "Connected AI behavior to real product surfaces such as email analysis and draft generation.",
-            "Worked across backend APIs, LLM orchestration, retrieval patterns, and evaluation concerns.",
+        "techStack": [
+            "Retell",
+            "Vapi",
+            "Dograh",
+            "ElevenLabs",
+            "n8n",
+            "FastAPI",
+            "WhatsApp Business API"
         ],
-        techStack: ["Python", "LangChain", "FastAPI", "Pinecone", "Azure OpenAI", "PostgreSQL"],
-        featured: true,
-        description:
-            "Building agentic LLM workflows, RAG pipelines, and evaluation frameworks for enterprise AI products. Developed Persona Mail - an email digital twin powered by OAuth2 and Gmail API integration.",
-        bullets: [
-            "Built agentic LLM workflows with structured outputs and evaluation loops",
-            "Developed Persona Mail: an email digital twin parsing 50-100 emails via OAuth2/Gmail API",
-            "Implemented prompt versioning, regression testing, and optimization pipelines",
+        "featured": true,
+        "impact": [
+            "Build and deploy Retell and Vapi voice agents, shaping call flows, intent recognition, and turn-taking; extend voice tooling with Dograh.",
+            "Connect calls to CRMs, backend services, and follow-up actions through n8n, including handoffs to WhatsApp Business.",
+            "Integrate ElevenLabs speech synthesis and build FastAPI services for call routing, session state, and persistence."
         ],
-        contributions: [
-            "Built agentic LLM workflows with structured outputs and evaluation loops",
-            "Developed Persona Mail: an email digital twin parsing 50-100 emails via OAuth2/Gmail API",
-            "Implemented prompt versioning, regression testing, and optimization pipelines",
+        "contributions": [
+            "Build and deploy Retell and Vapi voice agents, shaping call flows, intent recognition, and turn-taking; extend voice tooling with Dograh.",
+            "Connect calls to CRMs, backend services, and follow-up actions through n8n, including handoffs to WhatsApp Business.",
+            "Integrate ElevenLabs speech synthesis and build FastAPI services for call routing, session state, and persistence."
         ],
-        tech: ["Python", "LangChain", "FastAPI", "Pinecone", "Azure OpenAI", "PostgreSQL"],
-        progressionLabel: "GenAI",
-        color: "white",
+        "bullets": [
+            "Build and deploy Retell and Vapi voice agents, shaping call flows, intent recognition, and turn-taking; extend voice tooling with Dograh.",
+            "Connect calls to CRMs, backend services, and follow-up actions through n8n, including handoffs to WhatsApp Business.",
+            "Integrate ElevenLabs speech synthesis and build FastAPI services for call routing, session state, and persistence."
+        ],
+        "tech": [
+            "Retell",
+            "Vapi",
+            "Dograh",
+            "ElevenLabs",
+            "n8n",
+            "FastAPI",
+            "WhatsApp Business API"
+        ],
+        "description": "Connecting conversations to action: voice agents, backend services, and business workflows in one end-to-end system."
     },
     {
-        id: "syniris",
-        company: "Syniris Technologies",
-        role: "Full-Stack Web Development Intern",
-        period: "Jun 2025 - Aug 2025",
-        type: "Internship",
-        location: "Remote",
-        shortSummary:
-            "Built a full-stack notes and deadline management platform with auth, APIs, validation, and testing.",
-        responsibilities: [
-            "Developed a notes/deadline platform with Firebase Auth and role-based access control",
-            "Designed and documented REST APIs with input validation and error handling",
-            "Performed end-to-end API testing with Postman and wrote integration test suites",
+        "id": "persistent",
+        "company": "Persistent Systems Inc.",
+        "role": "GenAI Intern",
+        "period": "Sep 2025 – Apr 2026",
+        "type": "Internship",
+        "location": "Pune, India",
+        "progressionLabel": "Applied GenAI",
+        "color": "purple",
+        "shortSummary": "Building AI workflows is one half of the job. Measuring whether their answers hold up is the other.",
+        "responsibilities": [
+            "Designed and deployed agentic LLM workflows using embedding-based RAG, structured prompts, and Gemini on Google Cloud.",
+            "Built evaluation pipelines combining self-reflection scoring, rule-based validators, hallucination detection, and model drift monitoring.",
+            "Developed Persona Mail to model writing style from email history; refined token usage, latency, and prompt versions using measured feedback."
         ],
-        impact: [
-            "Connected frontend workflows to authenticated backend behavior for a practical productivity product.",
-            "Improved API reliability through validation, documented endpoints, and testing workflows.",
-            "Worked across frontend, backend, authentication, and QA responsibilities.",
+        "techStack": [
+            "Python",
+            "RAG",
+            "Gemini",
+            "Google Cloud",
+            "LLM evaluation",
+            "Prompt engineering"
         ],
-        techStack: ["React", "Node.js", "Firebase", "REST APIs", "Postman", "Tailwind CSS"],
-        featured: true,
-        description:
-            "Built a full-stack notes and deadline management platform with role-based access control, REST API design, and end-to-end testing.",
-        bullets: [
-            "Developed a notes/deadline platform with Firebase Auth and role-based access control",
-            "Designed and documented REST APIs with input validation and error handling",
-            "Performed end-to-end API testing with Postman and wrote integration test suites",
+        "featured": true,
+        "impact": [
+            "Designed and deployed agentic LLM workflows using embedding-based RAG, structured prompts, and Gemini on Google Cloud.",
+            "Built evaluation pipelines combining self-reflection scoring, rule-based validators, hallucination detection, and model drift monitoring.",
+            "Developed Persona Mail to model writing style from email history; refined token usage, latency, and prompt versions using measured feedback."
         ],
-        contributions: [
-            "Developed a notes/deadline platform with Firebase Auth and role-based access control",
-            "Designed and documented REST APIs with input validation and error handling",
-            "Performed end-to-end API testing with Postman and wrote integration test suites",
+        "contributions": [
+            "Designed and deployed agentic LLM workflows using embedding-based RAG, structured prompts, and Gemini on Google Cloud.",
+            "Built evaluation pipelines combining self-reflection scoring, rule-based validators, hallucination detection, and model drift monitoring.",
+            "Developed Persona Mail to model writing style from email history; refined token usage, latency, and prompt versions using measured feedback."
         ],
-        tech: ["React", "Node.js", "Firebase", "REST APIs", "Postman", "Tailwind CSS"],
-        progressionLabel: "Full-Stack",
-        color: "orange",
+        "bullets": [
+            "Designed and deployed agentic LLM workflows using embedding-based RAG, structured prompts, and Gemini on Google Cloud.",
+            "Built evaluation pipelines combining self-reflection scoring, rule-based validators, hallucination detection, and model drift monitoring.",
+            "Developed Persona Mail to model writing style from email history; refined token usage, latency, and prompt versions using measured feedback."
+        ],
+        "tech": [
+            "Python",
+            "RAG",
+            "Gemini",
+            "Google Cloud",
+            "LLM evaluation",
+            "Prompt engineering"
+        ],
+        "description": "Building AI workflows is one half of the job. Measuring whether their answers hold up is the other."
     },
     {
-        id: "nexus",
-        company: "Nexus",
-        role: "Software Engineering Project Lead",
-        period: "Mar 2025 - May 2025",
-        type: "Project leadership",
-        location: "Remote",
-        shortSummary:
-            "Led a small engineering team across production application builds, sprint planning, review, and delivery.",
-        responsibilities: [
-            "Led a cross-functional team of 4-6 engineers across 3 production applications",
-            "Established sprint planning workflows, coding standards, and CI/CD pipelines",
-            "Drove architecture decisions and conducted thorough code reviews",
+        "id": "syniris",
+        "company": "Syniris Technologies",
+        "role": "Web Development Intern",
+        "period": "Jun 2025 – Aug 2025",
+        "type": "Internship",
+        "location": "Remote",
+        "progressionLabel": "Full-stack delivery",
+        "color": "orange",
+        "shortSummary": "Taking a notes and deadline platform from interface to deployment, with access control and reliability built in.",
+        "responsibilities": [
+            "Developed and deployed the full-stack platform, owning frontend and backend implementation.",
+            "Implemented Firebase authentication and role-based access control for appropriately scoped user access.",
+            "Established CI-based code review and production monitoring, and validated APIs with manual and functional Postman testing."
         ],
-        impact: [
-            "Created clearer delivery workflows through sprint planning, code review, and shared engineering standards.",
-            "Helped the team move from implementation tasks to shipped application outcomes.",
-            "Practiced technical leadership across architecture, review, and release concerns.",
+        "techStack": [
+            "Firebase Auth",
+            "Role-based access",
+            "Postman",
+            "CI workflows",
+            "API testing"
         ],
-        techStack: ["React", "Node.js", "TypeScript", "GitHub Actions", "Vercel"],
-        featured: true,
-        description:
-            "Led a team of 4-6 engineers to design, build, and ship 3 production applications. Owned sprint planning, code reviews, and architecture decisions.",
-        bullets: [
-            "Led a cross-functional team of 4-6 engineers across 3 production applications",
-            "Established sprint planning workflows, coding standards, and CI/CD pipelines",
-            "Drove architecture decisions and conducted thorough code reviews",
+        "featured": true,
+        "impact": [
+            "Developed and deployed the full-stack platform, owning frontend and backend implementation.",
+            "Implemented Firebase authentication and role-based access control for appropriately scoped user access.",
+            "Established CI-based code review and production monitoring, and validated APIs with manual and functional Postman testing."
         ],
-        contributions: [
-            "Led a cross-functional team of 4-6 engineers across 3 production applications",
-            "Established sprint planning workflows, coding standards, and CI/CD pipelines",
-            "Drove architecture decisions and conducted thorough code reviews",
+        "contributions": [
+            "Developed and deployed the full-stack platform, owning frontend and backend implementation.",
+            "Implemented Firebase authentication and role-based access control for appropriately scoped user access.",
+            "Established CI-based code review and production monitoring, and validated APIs with manual and functional Postman testing."
         ],
-        tech: ["React", "Node.js", "TypeScript", "GitHub Actions", "Vercel"],
-        progressionLabel: "Leadership",
-        color: "purple",
+        "bullets": [
+            "Developed and deployed the full-stack platform, owning frontend and backend implementation.",
+            "Implemented Firebase authentication and role-based access control for appropriately scoped user access.",
+            "Established CI-based code review and production monitoring, and validated APIs with manual and functional Postman testing."
+        ],
+        "tech": [
+            "Firebase Auth",
+            "Role-based access",
+            "Postman",
+            "CI workflows",
+            "API testing"
+        ],
+        "description": "Taking a notes and deadline platform from interface to deployment, with access control and reliability built in."
     },
     {
-        id: "acs",
-        company: "Association for Cyber Security",
-        role: "DevSec Intern",
-        period: "Sep 2024 - Feb 2025",
-        type: "Internship",
-        location: "Pune, India",
-        shortSummary:
-            "Built a security-first foundation through threat modeling, secure web practices, and blockchain security research.",
-        responsibilities: [
-            "Conducted threat modeling and vulnerability assessments for web applications",
-            "Researched smart contract security patterns and blockchain-based authentication",
-            "Implemented secure coding practices across internal tools and documentation",
+        "id": "nexus",
+        "company": "Nexus",
+        "role": "Project Lead — Internship",
+        "period": "Mar 2025 – May 2025",
+        "type": "Internship",
+        "location": "Remote",
+        "progressionLabel": "Team leadership",
+        "color": "purple",
+        "shortSummary": "Helping 4–6 engineers move three applications forward together: Nexus Connect, Nexus AI, and Nexus Campus.",
+        "responsibilities": [
+            "Led sprint planning, task breakdown, and backlog management across three concurrent production applications.",
+            "Maintained code review standards and responsible handling of API keys and secrets.",
+            "Coordinated QA, deployment cycles, and stakeholder updates on timelines, blockers, and scope."
         ],
-        impact: [
-            "Strengthened practical security judgment across web, API, and blockchain-oriented systems.",
-            "Applied secure coding and vulnerability assessment practices to development workflows.",
-            "Built early experience connecting security research with implementation decisions.",
+        "techStack": [
+            "Sprint planning",
+            "Code review",
+            "Release coordination",
+            "Quality assurance"
         ],
-        techStack: ["Solidity", "OWASP", "Python", "Git", "Linux"],
-        featured: false,
-        description:
-            "Built a security-first development foundation through hands-on threat modeling, blockchain security research, and secure web application development.",
-        bullets: [
-            "Conducted threat modeling and vulnerability assessments for web applications",
-            "Researched smart contract security patterns and blockchain-based authentication",
-            "Implemented secure coding practices across internal tools and documentation",
+        "featured": true,
+        "impact": [
+            "Led sprint planning, task breakdown, and backlog management across three concurrent production applications.",
+            "Maintained code review standards and responsible handling of API keys and secrets.",
+            "Coordinated QA, deployment cycles, and stakeholder updates on timelines, blockers, and scope."
         ],
-        contributions: [
-            "Conducted threat modeling and vulnerability assessments for web applications",
-            "Researched smart contract security patterns and blockchain-based authentication",
-            "Implemented secure coding practices across internal tools and documentation",
+        "contributions": [
+            "Led sprint planning, task breakdown, and backlog management across three concurrent production applications.",
+            "Maintained code review standards and responsible handling of API keys and secrets.",
+            "Coordinated QA, deployment cycles, and stakeholder updates on timelines, blockers, and scope."
         ],
-        tech: ["Solidity", "OWASP", "Python", "Git", "Linux"],
-        progressionLabel: "DevSec",
-        color: "cyan",
+        "bullets": [
+            "Led sprint planning, task breakdown, and backlog management across three concurrent production applications.",
+            "Maintained code review standards and responsible handling of API keys and secrets.",
+            "Coordinated QA, deployment cycles, and stakeholder updates on timelines, blockers, and scope."
+        ],
+        "tech": [
+            "Sprint planning",
+            "Code review",
+            "Release coordination",
+            "Quality assurance"
+        ],
+        "description": "Helping 4–6 engineers move three applications forward together: Nexus Connect, Nexus AI, and Nexus Campus."
     },
+    {
+        "id": "acs",
+        "company": "Association for Cyber Security",
+        "role": "DevSec Intern",
+        "period": "Sep 2024 – Feb 2025",
+        "type": "Internship",
+        "location": "Pune, India",
+        "progressionLabel": "Security foundations",
+        "color": "cyan",
+        "shortSummary": "An early foundation in asking where a system can fail, through hands-on exposure to web and blockchain security.",
+        "responsibilities": [
+            "Conducted web application threat modeling to identify attack surfaces and map mitigation strategies.",
+            "Performed introductory smart contract security assessments for applications with blockchain integration.",
+            "Carried out web application security testing, building practical exposure across both domains."
+        ],
+        "techStack": [
+            "Threat modeling",
+            "Web security testing",
+            "Smart contracts · introductory"
+        ],
+        "featured": false,
+        "impact": [
+            "Conducted web application threat modeling to identify attack surfaces and map mitigation strategies.",
+            "Performed introductory smart contract security assessments for applications with blockchain integration.",
+            "Carried out web application security testing, building practical exposure across both domains."
+        ],
+        "contributions": [
+            "Conducted web application threat modeling to identify attack surfaces and map mitigation strategies.",
+            "Performed introductory smart contract security assessments for applications with blockchain integration.",
+            "Carried out web application security testing, building practical exposure across both domains."
+        ],
+        "bullets": [
+            "Conducted web application threat modeling to identify attack surfaces and map mitigation strategies.",
+            "Performed introductory smart contract security assessments for applications with blockchain integration.",
+            "Carried out web application security testing, building practical exposure across both domains."
+        ],
+        "tech": [
+            "Threat modeling",
+            "Web security testing",
+            "Smart contracts · introductory"
+        ],
+        "description": "An early foundation in asking where a system can fail, through hands-on exposure to web and blockchain security."
+    }
 ];

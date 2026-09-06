@@ -26,6 +26,7 @@ export type Profile = {
         degree?: string;
         institution?: string;
         status?: string;
+        cgpa?: string;
         location?: string;
     };
     links: {
@@ -58,7 +59,7 @@ export type Profile = {
     resumePath: string;
 };
 
-const email = "ayushchougula@gmail.com";
+const email = "ayushchougula1@gmail.com";
 const github = "https://github.com/ayushcody";
 const linkedin = "https://linkedin.com/in/ayushchougula";
 const resumePath = "/resume";
@@ -69,25 +70,25 @@ export const profile: Profile = {
     headline: "AI Systems Engineer",
     role: "AI Systems Engineer",
     shortBio:
-        "Production-focused AI systems and full-stack engineer building practical GenAI products, RAG workflows, and backend-heavy applications.",
+        "Computer Science undergraduate building agentic AI, RAG, evaluation pipelines, and voice automation, backed by hands-on full-stack engineering.",
     longBio:
-        "I build production-grade AI systems across agentic workflows, RAG pipelines, voice AI, and AI infrastructure. My work sits at the intersection of product engineering and applied AI: real APIs, auth, data flows, validation paths, deployment constraints, and user-facing interfaces that make AI behavior easier to trust.",
+        "I study Computer Science at MIT ADT University and build AI products alongside internships and freelance work. At Quensulting, I connect voice agents to business workflows. Previously at Persistent Systems, I built agentic RAG workflows, LLM evaluation pipelines, and Persona Mail. I care about the whole product: APIs, interfaces, data, and the fallback paths that keep it useful.",
     location: "Pune, Maharashtra, India",
     timezone: "Asia/Kolkata",
     email,
     availability:
-        "Open to AI engineering internships, full-stack roles, and product engineering opportunities.",
+        "Open to freelance projects, AI engineering opportunities, and full-time AI / software engineering roles for 2027.",
     preferredRoles: [
-        "AI Engineering Intern",
-        "Full-Stack Engineer Intern",
+        "AI Engineer · 2027 graduate roles",
+        "Software Engineer · 2027 graduate roles",
         "AI Systems / Agentic AI Developer",
-        "Backend / Product Engineering roles",
+        "Freelance AI & full-stack projects",
     ],
     currentFocus: [
         "Agentic AI workflows",
         "RAG systems",
         "Voice AI agents",
-        "AI infrastructure",
+        "LLM evaluation & hallucination detection",
         "Full-stack AI products",
     ],
     engineeringStyle: [
@@ -100,6 +101,7 @@ export const profile: Profile = {
         degree: "B.Tech Computer Science & Engineering",
         institution: "MIT ADT University",
         status: "Aug 2023 - Jul 2027",
+        cgpa: "8.3 / 10",
         location: "Pune, India",
     },
     links: {
@@ -129,7 +131,7 @@ export const profile: Profile = {
     heroDescription:
         "I build production-grade AI systems across agentic workflows, RAG pipelines, voice AI, and AI infrastructure.",
     contactDescription:
-        "I'm looking for AI engineering, GenAI, full-stack, backend, cloud, and product engineering internship opportunities where I can contribute to useful, production-minded systems.",
+        "I’m open to freelance builds and AI or software engineering roles for 2027. Let’s talk about useful AI systems, voice automation, and full-stack products.",
     github,
     githubHandle: "ayushcody",
     linkedin,

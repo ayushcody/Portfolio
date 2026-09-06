@@ -1,83 +1,175 @@
-import { ExternalLink, Trophy } from 'lucide-react';
-import { SkeuomorphicCard } from './ui/SkeuomorphicCard';
-import { cn } from '@/lib/utils';
+"use client";
 
-import { achievementsData } from '@/config/portfolio';
+import { useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, Sparkles } from "lucide-react";
+import { achievementsData } from "@/config/portfolio";
+import type { AchievementEntry } from "@/src/data/achievements";
+import "./achievements.css";
 
-export default function Achievements() {
-    const featuredAchievements = achievementsData.filter((item) => item.featured).slice(0, 4);
-    const visibleAchievements = featuredAchievements.length > 0 ? featuredAchievements : achievementsData.slice(0, 4);
+const numberLabel = (value: number) => String(value).padStart(2, "0");
+
+function AchievementCard({ item, index }: { item: AchievementEntry; index: number }) {
+    const [imageFailed, setImageFailed] = useState(false);
+    const Icon = item.icon;
 
     return (
-        <section id="achievements" className="relative z-10 w-full overflow-hidden px-6 py-20 md:px-12 md:py-24">
-            <div className="pointer-events-none absolute left-0 top-24 -z-10 h-72 w-72 rounded-full bg-orange/12 blur-[120px]" />
-            <div className="pointer-events-none absolute right-0 bottom-20 -z-10 h-64 w-64 rounded-full bg-pink/8 blur-[110px]" />
-            <div className="mx-auto max-w-7xl">
-                <div className="mb-10">
-                    <div className="mb-4 flex items-center gap-3">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-orange/20 bg-orange/10">
-                            <Trophy className="h-5 w-5 text-orange" aria-hidden="true" />
-                        </div>
-                        <p className="text-sm font-bold uppercase tracking-widest text-orange">Awards & Recognition</p>
-                    </div>
-                    <h2 className="text-4xl font-black tracking-tight text-white md:text-5xl">Credible signals, kept concise.</h2>
-                    <p className="mt-4 max-w-3xl text-base leading-relaxed text-muted md:text-lg">
-                        Hackathon and recognition highlights that support the engineering story without overstating the work.
-                    </p>
-                </div>
-
-                <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-                    {visibleAchievements.map((item) => (
-                        <SkeuomorphicCard key={item.id} className="relative flex h-full flex-col overflow-hidden p-5">
-                            <div className={cn("pointer-events-none absolute -right-16 -top-16 h-36 w-36 rounded-full blur-[56px] opacity-25", item.bg.replace('/10', '/100'))} />
-                            <div className="pointer-events-none absolute inset-x-5 top-0 h-px bg-gradient-to-r from-transparent via-orange/45 to-pink/35" />
-                            <div className="mb-5 flex items-start justify-between gap-4">
-                                <div className={cn("flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-white/10", item.bg, item.color)}>
-                                    <item.icon className="h-5 w-5" aria-hidden="true" />
-                                </div>
-                                <div className="flex flex-wrap justify-end gap-2">
-                                    {item.type ? (
-                                        <span className={cn("rounded-full px-3 py-1 text-xs font-black uppercase tracking-[0.16em]", item.bg, item.color)}>
-                                            {item.type}
-                                        </span>
-                                    ) : null}
-                                    {item.date || item.year ? (
-                                        <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-bold text-muted">
-                                            {item.date || item.year}
-                                        </span>
-                                    ) : null}
-                                </div>
+        <li className={`achievement-card achievement-card-${index % 4}`}>
+            <article aria-labelledby={`achievement-title-${item.id}`}>
+                <div className="achievement-artwork">
+                    {item.image && !imageFailed ? (
+                        // A regular image also supports locally added photos without a remote-host allowlist.
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                            className="achievement-photo"
+                            src={item.image}
+                            alt={item.imageAlt}
+                            width={1600}
+                            height={1000}
+                            loading="lazy"
+                            onError={() => setImageFailed(true)}
+                        />
+                    ) : (
+                        <div className="achievement-poster" aria-hidden="true">
+                            <span className="achievement-poster-overline">A LITTLE MILESTONE</span>
+                            <div className="achievement-poster-award">
+                                <Icon strokeWidth={1.6} />
+                                <span>{item.title}</span>
                             </div>
-
-                            <p className={cn("mb-2 text-sm font-black uppercase tracking-[0.18em]", item.color)}>
-                                {item.title}
-                            </p>
-                            <h3 className="text-2xl font-black leading-tight text-white">{item.event}</h3>
-
-                            <p className="mt-4 text-sm leading-relaxed text-muted">{item.context}</p>
-
-                            {item.outcome ? (
-                                <div className="mt-5 rounded-2xl border border-cyan/15 bg-gradient-to-r from-cyan/[0.045] to-purple/[0.035] p-4">
-                                    <p className="mb-1 text-xs font-black uppercase tracking-[0.2em] text-cyan">Outcome</p>
-                                    <p className="text-sm font-semibold leading-relaxed text-white/85">{item.outcome}</p>
-                                </div>
-                            ) : null}
-
-                            {item.proofUrl ? (
-                                <a
-                                    href={item.proofUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="mt-5 inline-flex w-fit items-center gap-2 text-sm font-black text-cyan transition hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan"
-                                    aria-label={`Open proof for ${item.event}`}
-                                >
-                                    View proof
-                                    <ExternalLink className="h-4 w-4" aria-hidden="true" />
-                                </a>
-                            ) : null}
-                        </SkeuomorphicCard>
-                    ))}
+                            <span className="achievement-poster-footnote">{item.proofLabel}</span>
+                            <Sparkles className="achievement-poster-spark" strokeWidth={1.5} />
+                        </div>
+                    )}
+                    <span className="achievement-number" aria-hidden="true">{numberLabel(index + 1)}</span>
                 </div>
+                <div className="achievement-caption">
+                    <div className="achievement-meta">
+                        <span>{item.title}</span>
+                        <span>{item.date || item.year}</span>
+                    </div>
+                    <h3 id={`achievement-title-${item.id}`}>{item.event}</h3>
+                    <p>{item.context}</p>
+                    {item.outcome ? <p className="achievement-outcome">{item.outcome}</p> : null}
+                    {item.proofUrl ? (
+                        <a className="achievement-proof" href={item.proofUrl} target="_blank" rel="noopener noreferrer">
+                            View recognition
+                            <ArrowUpRight size={17} aria-hidden="true" />
+                            <span className="achievement-sr-only"> for {item.event} (opens in a new tab)</span>
+                        </a>
+                    ) : null}
+                </div>
+            </article>
+        </li>
+    );
+}
+
+export default function Achievements() {
+    const galleryRef = useRef<HTMLUListElement>(null);
+    const [viewport, setViewport] = useState({ first: 1, last: 1, atStart: true, atEnd: false });
+
+    useEffect(() => {
+        const gallery = galleryRef.current;
+        if (!gallery) return;
+
+        let animationFrame = 0;
+        const measure = () => {
+            const bounds = gallery.getBoundingClientRect();
+            const cards = Array.from(gallery.children);
+            const visible = cards.flatMap((card, index) => {
+                const cardBounds = card.getBoundingClientRect();
+                const overlap = Math.min(cardBounds.right, bounds.right) - Math.max(cardBounds.left, bounds.left);
+                return overlap > cardBounds.width / 2 ? [index + 1] : [];
+            });
+            const next = {
+                first: visible[0] ?? 1,
+                last: visible[visible.length - 1] ?? 1,
+                atStart: gallery.scrollLeft <= 2,
+                atEnd: gallery.scrollLeft + gallery.clientWidth >= gallery.scrollWidth - 2,
+            };
+            setViewport((previous) => (
+                previous.first === next.first && previous.last === next.last
+                && previous.atStart === next.atStart && previous.atEnd === next.atEnd
+                    ? previous : next
+            ));
+        };
+        const scheduleMeasure = () => {
+            cancelAnimationFrame(animationFrame);
+            animationFrame = requestAnimationFrame(measure);
+        };
+        gallery.addEventListener("scroll", scheduleMeasure, { passive: true });
+        const observer = new ResizeObserver(scheduleMeasure);
+        observer.observe(gallery);
+        scheduleMeasure();
+
+        return () => {
+            cancelAnimationFrame(animationFrame);
+            observer.disconnect();
+            gallery.removeEventListener("scroll", scheduleMeasure);
+        };
+    }, []);
+
+    const move = (direction: "previous" | "next" | "first" | "last") => {
+        const gallery = galleryRef.current;
+        if (!gallery) return;
+        const cards = Array.from(gallery.children);
+        const stride = cards.length > 1
+            ? cards[1].getBoundingClientRect().left - cards[0].getBoundingClientRect().left
+            : gallery.clientWidth;
+        const left = direction === "first" ? 0
+            : direction === "last" ? gallery.scrollWidth
+                : gallery.scrollLeft + (direction === "next" ? stride : -stride);
+
+        gallery.scrollTo({
+            left,
+            behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
+        });
+    };
+
+    const handleKeyDown = (event: KeyboardEvent<HTMLUListElement>) => {
+        if (event.target !== event.currentTarget) return;
+        const directions: Record<string, Parameters<typeof move>[0]> = {
+            ArrowLeft: "previous", ArrowRight: "next", Home: "first", End: "last",
+        };
+        const direction = directions[event.key];
+        if (direction) {
+            event.preventDefault();
+            move(direction);
+        }
+    };
+
+    return (
+        <section id="achievements" className="achievement-section" aria-labelledby="achievement-heading">
+            <div className="achievement-inner">
+                <div className="achievement-heading-row">
+                    <div>
+                        <h2 id="achievement-heading">A few proud moments.</h2>
+                        <p className="achievement-intro">Long builds, good teams, and a few wins along the way.</p>
+                    </div>
+                    <div className="achievement-controls">
+                        <span className="achievement-count" aria-live="polite" aria-atomic="true">
+                            <span className="achievement-sr-only">Showing achievements </span>
+                            {numberLabel(viewport.first)}
+                            {viewport.last !== viewport.first ? `–${numberLabel(viewport.last)}` : ""}
+                            <span className="achievement-count-total"> / {numberLabel(achievementsData.length)}</span>
+                        </span>
+                        <button type="button" onClick={() => move("previous")} disabled={viewport.atStart}
+                            aria-label="Previous achievements" aria-controls="achievement-gallery">
+                            <ArrowLeft size={21} aria-hidden="true" />
+                        </button>
+                        <button type="button" onClick={() => move("next")} disabled={viewport.atEnd}
+                            aria-label="Next achievements" aria-controls="achievement-gallery">
+                            <ArrowRight size={21} aria-hidden="true" />
+                        </button>
+                    </div>
+                </div>
+                <p id="achievement-instructions" className="achievement-sr-only">
+                    Swipe or use the previous and next buttons to browse. When this gallery is focused, use the left
+                    and right arrow keys, Home for the first achievement, or End for the last.
+                </p>
+                <ul id="achievement-gallery" className="achievement-gallery" ref={galleryRef} tabIndex={0}
+                    aria-label="Awards and recognition" aria-describedby="achievement-instructions" onKeyDown={handleKeyDown}>
+                    {achievementsData.map((item, index) => <AchievementCard key={item.id} item={item} index={index} />)}
+                </ul>
+                <p className="achievement-browse-hint">A little more to the right <ArrowRight size={16} aria-hidden="true" /></p>
             </div>
         </section>
     );

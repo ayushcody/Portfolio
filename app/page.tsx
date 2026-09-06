@@ -1,12 +1,7 @@
 import Hero from "@/components/Hero";
-import { CredibilityStrip } from "@/components/CredibilityStrip";
-import SelectedProjects from "@/components/SelectedProjects";
-import HowIBuild from "@/components/HowIBuild";
-import Experience from "@/components/Experience";
-import Interests from "@/components/Interests";
-import Skills from "@/components/Skills";
 import Achievements from "@/components/Achievements";
-import LatestPosts from "@/components/LatestPosts";
+import { ContactInvitation, SelectedWork, Toolkit, WorkingStyle, WritingNote } from "@/components/PortfolioSections";
+import Experience from "@/components/Experience";
 import { SignatureFooter } from "@/components/SignatureFooter";
 import { getPublicProfile } from "@/lib/cms/publicReads";
 import { getBlogPosts } from "@/lib/markdown";
@@ -16,16 +11,15 @@ export default async function Home() {
   const profileResult = await getPublicProfile();
 
   return (
-    <main className="min-h-screen selection:bg-accent-2 selection:text-white">
-      <Hero profile={profileResult.data} profileSource={profileResult.source} />
-      <CredibilityStrip />
-      <SelectedProjects />
-      <HowIBuild />
+    <main className="portfolio-home">
+      <Hero profile={profileResult.data} />
+      <SelectedWork />
+      <WorkingStyle />
       <Experience />
-      <Interests />
-      <Skills />
       <Achievements />
-      <LatestPosts posts={posts} />
+      <Toolkit profile={profileResult.data} />
+      <WritingNote posts={posts} />
+      <ContactInvitation profile={profileResult.data} />
       <SignatureFooter />
     </main>
   );

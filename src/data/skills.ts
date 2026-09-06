@@ -43,10 +43,23 @@ export type SkillCluster = SkillCategory & {
 
 export const skillCategories: SkillCategory[] = [
     {
+        name: "Languages",
+        summary: "Languages used across AI pipelines, web applications, and data-processing projects.",
+        skills: ["Python", "JavaScript", "TypeScript", "Go", "C", "C++", "SQL", "Java (beginner)"],
+        useCases: ["AI and automation pipelines", "Typed web applications", "Fintech data processing", "Data structures and algorithms"],
+    },
+    {
+        name: "Machine Learning",
+        summary: "Applied projects in visual document understanding, computer vision, and time-series forecasting.",
+        skills: ["PyTorch", "TensorFlow", "Scikit-Learn", "YOLOv8", "ColQwen2", "SARIMA"],
+        useCases: ["Model training and fine-tuning", "Dataset preprocessing and augmentation", "Precision-recall evaluation", "Crop price forecasting"],
+    },
+
+    {
         name: "AI/LLM Systems",
         summary:
             "Building LLM-backed workflows with structured outputs, prompt iteration, evaluation, and practical guardrails.",
-        skills: ["LangChain", "OpenAI", "Azure OpenAI", "Gemini", "Groq", "Hugging Face"],
+        skills: ["LangChain", "RAG", "Gemini", "OpenAI API", "Claude API", "Groq", "LLM evaluation"],
         useCases: [
             "Agentic workflows",
             "Prompt versioning and regression checks",
@@ -85,7 +98,7 @@ export const skillCategories: SkillCategory[] = [
         name: "Data/Vector Search",
         summary:
             "Working with retrieval, embeddings, vector storage, model evaluation, and practical data workflows.",
-        skills: ["Pinecone", "FAISS", "PostgreSQL", "Redis", "Pandas", "NumPy"],
+        skills: ["Pinecone", "Embeddings", "PostgreSQL", "MongoDB", "Firestore", "Prisma"],
         useCases: [
             "RAG pipelines",
             "Citation-aware retrieval",
@@ -98,7 +111,7 @@ export const skillCategories: SkillCategory[] = [
         name: "Cloud/DevOps",
         summary:
             "Deploying and maintaining projects with CI/CD, managed hosting, containers, and cloud-provider services.",
-        skills: ["AWS", "GCP", "Azure", "Docker", "GitHub Actions", "Vercel"],
+        skills: ["AWS", "GCP", "Azure", "Docker (fundamentals)", "GitHub Actions", "Vercel"],
         useCases: [
             "Production-minded deployments",
             "CI/CD workflows",
@@ -111,7 +124,7 @@ export const skillCategories: SkillCategory[] = [
         name: "Voice AI",
         summary:
             "Designing voice-agent flows with practical conversation paths, validation, and fallback behavior.",
-        skills: ["Voice agents", "Conversation design", "Prompt routing", "Validation flows"],
+        skills: ["Retell", "Vapi", "Dograh", "ElevenLabs", "n8n", "WhatsApp Business API", "Qwen3"],
         useCases: [
             "Structured data collection through calls",
             "Fallback handling for repeated or unclear answers",
@@ -122,8 +135,8 @@ export const skillCategories: SkillCategory[] = [
     {
         name: "Security",
         summary:
-            "Applying security fundamentals to web apps, auth, API handling, and AI-assisted security workflows.",
-        skills: ["OWASP", "Postman", "Firebase Auth", "JWT", "Solidity", "Git"],
+            "Practical exposure to web security testing and threat modeling, with introductory smart contract assessment experience.",
+        skills: ["Threat modeling", "Postman", "Firebase Auth", "JWT", "Smart contracts (introductory)", "Git"],
         useCases: [
             "Threat modeling",
             "Role-based access control",
