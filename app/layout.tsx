@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   icons: {
-    icon: "/icon.png",
+    icon: "/ac.png",
   },
   openGraph: {
     type: "website",

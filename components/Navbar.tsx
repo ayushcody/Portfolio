@@ -66,7 +66,7 @@ export default function Navbar() {
                     className="nav-brand"
                     onClick={() => setMobileMenuOpen(false)}
                 >
-                    {profile.initials}<span aria-hidden="true">.</span>
+                    <img src="/ac.png" alt="AC Logo" className="h-9 w-auto object-contain" />
                 </Link>
 
                 <ul className="nav-desktop-links">
