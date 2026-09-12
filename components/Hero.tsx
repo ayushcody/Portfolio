@@ -8,6 +8,9 @@ import { profile as fallbackProfile, type Profile } from '@/src/data/profile';
 
 export default function Hero({ profile = fallbackProfile }: { profile?: Profile }) {
     const [photoFailed, setPhotoFailed] = useState(false);
+    const photoSrc = photoFailed ? '/profile.png' : profile.profilePhoto || '/profile.png';
+    const isRemotePhoto = /^https?:\/\//.test(photoSrc);
+
     return (
         <section id="home" className="portfolio-hero" aria-labelledby="hero-heading">
             <div className="portfolio-wrap hero-layout">
@@ -23,7 +26,7 @@ export default function Hero({ profile = fallbackProfile }: { profile?: Profile 
                 </div>
                 <div className="hero-photo-area">
                     <figure className="hero-print">
-                        <div className="hero-photo"><Image src={photoFailed ? '/profile.png' : profile.profilePhoto || '/profile.png'} alt={`${profile.fullName}, in a suit and glasses, standing in a warmly lit library`} fill priority unoptimized={!photoFailed && /^https?:\/\//.test(profile.profilePhoto || '')} sizes="(max-width: 650px) 76vw, (max-width: 1000px) 40vw, 360px" onError={() => setPhotoFailed(true)} /></div>
+                        <div className="hero-photo"><Image src={photoSrc} alt={`${profile.fullName}, in a suit and glasses, standing in a warmly lit library`} fill priority loading="eager" fetchPriority="high" unoptimized={!isRemotePhoto} sizes="(max-width: 650px) 76vw, (max-width: 1000px) 40vw, 360px" onError={() => setPhotoFailed(true)} /></div>
                         <figcaption><span>Engineer. Curious human.</span><ArrowUpRight size={22} aria-hidden="true" /></figcaption>
                     </figure>
                     <a className="hero-availability" href="#contact" aria-label={profile.availability || 'Open to opportunities'}><span aria-hidden="true" /> Open to opportunities <ArrowUpRight size={15} aria-hidden="true" /></a>
