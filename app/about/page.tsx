@@ -18,6 +18,8 @@ const principles = [
 ];
 
 export default function AboutPage() {
+  const isRemotePhoto = /^https?:\/\//.test(profile.profilePhoto);
+
   return (
     <main className="secondary-page">
       <div className="secondary-shell">
@@ -36,7 +38,7 @@ export default function AboutPage() {
             </div>
             <figure className="secondary-portrait">
               <div className="secondary-portrait-image">
-                <Image src={profile.profilePhoto} alt="Ayush Chougula" fill sizes="(min-width: 900px) 400px, (min-width: 600px) 420px, 90vw" className="secondary-photo" priority unoptimized />
+                <Image src={profile.profilePhoto} alt="Ayush Chougula" fill sizes="(min-width: 900px) 400px, (min-width: 600px) 420px, 90vw" className="secondary-photo" priority loading="eager" fetchPriority="high" unoptimized={isRemotePhoto} />
               </div>
               <figcaption><strong>Ayush Chougula</strong><span>Pune, India ↗</span></figcaption>
             </figure>
