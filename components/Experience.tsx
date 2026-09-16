@@ -3,13 +3,12 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { ArrowDown, ArrowUpRight, Asterisk } from 'lucide-react';
-import { experiencesData } from '@/src/data/experience';
+import { experiencesData, type ExperienceItem } from '@/src/data/experience';
 import './experience.css';
 
-const journey = [...experiencesData].reverse();
-const chapterTitles = ['Learn the weak points.', 'Build with a team.', 'Own the whole product.', 'Make AI accountable.', 'Let the systems talk.'];
-
-export default function Experience() {
+export default function Experience({ experiences = experiencesData }: { experiences?: ExperienceItem[] }) {
+    // Data is newest-first; the journey reads oldest-first.
+    const journey = [...experiences].reverse().map((role, index) => ({ ...role, id: role.id || `role-${index}` }));
     const trackRef = useRef<HTMLOListElement>(null);
     const [active, setActive] = useState(0);
 
@@ -55,10 +54,10 @@ export default function Experience() {
                 </div>
                 <div className="career-layout">
                     <aside className="career-guide" aria-label="Experience chapters">
-                        <div className="career-counter" aria-hidden="true"><span>{String(active + 1).padStart(2, '0')}</span><small>/ 05</small><Asterisk size={36} /></div>
+                        <div className="career-counter" aria-hidden="true"><span>{String(active + 1).padStart(2, '0')}</span><small>/ {String(journey.length).padStart(2, '0')}</small><Asterisk size={36} /></div>
                         <p className="career-guide-title">A little more range.<br />With every chapter.</p>
                         <nav aria-label="Jump to a role">
-                            {journey.map((role, index) => <a key={role.id} href={`#career-${role.id}`} aria-current={index === active ? 'step' : undefined}><span className="career-guide-index">0{index + 1}</span><span>{role.progressionLabel}</span><ArrowUpRight size={16} aria-hidden="true" /></a>)}
+                            {journey.map((role, index) => <a key={role.id} href={`#career-${role.id}`} aria-current={index === active ? 'step' : undefined}><span className="career-guide-index">{String(index + 1).padStart(2, '0')}</span><span>{role.progressionLabel || role.company}</span><ArrowUpRight size={16} aria-hidden="true" /></a>)}
                         </nav>
                         <Link href="/resume" className="text-link">View résumé <ArrowUpRight size={16} aria-hidden="true" /></Link>
                     </aside>
@@ -68,7 +67,7 @@ export default function Experience() {
                             <span className="career-node" aria-hidden="true">0{index + 1}</span>
                             <article className="career-entry" aria-labelledby={`career-title-${role.id}`}>
                                 <div className="career-entry-top"><span>{role.period}</span><span>{role.type}</span></div>
-                                <h3 id={`career-title-${role.id}`}>{chapterTitles[index]}</h3>
+                                <h3 id={`career-title-${role.id}`}>{role.chapterTitle || role.role}</h3>
                                 <p className="career-company">{role.company}</p>
                                 <p className="career-role">{role.role}<span>{role.location}</span></p>
                                 <p className="career-summary">{role.shortSummary}</p>

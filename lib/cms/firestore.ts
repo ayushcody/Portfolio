@@ -1,9 +1,12 @@
 import {
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
+  query,
   setDoc,
+  where,
   type DocumentData,
 } from "firebase/firestore";
 import { db, isFirebaseConfigured } from "@/lib/firebase/client";
@@ -102,6 +105,73 @@ export async function readCmsCollection<T>(
     };
   } catch (error) {
     return fallbackReadResult(fallback, getErrorMessage(error));
+  }
+}
+
+/**
+ * Public read for item collections that have a static fallback (projects, experience).
+ *
+ * CMS documents are overrides keyed by id, so publishing one project never hides the rest:
+ * - "published" documents replace (or add to) the fallback item with the same id;
+ * - "archived" / hidden documents remove that id from the public site;
+ * - drafts are ignored, so the fallback (if any) stays live until the draft is published.
+ *
+ * The query only asks for published/archived documents so Firestore rules can deny drafts to the public.
+ */
+export async function readMergedCmsCollection<T extends { id?: string }>(
+  path: string,
+  fallback: T[],
+  normalizeItem: (data: JsonRecord, base: T | undefined) => T | null,
+  sort: (items: T[]) => T[],
+): Promise<CmsReadResult<T[]>> {
+  const database = assertCmsDb();
+  if (!database) return fallbackReadResult(fallback);
+
+  try {
+    const snapshot = await getDocs(query(collection(database, path), where("status", "in", ["published", "archived"])));
+    if (snapshot.empty) return fallbackReadResult(fallback);
+
+    const byId = new Map<string, T>();
+    fallback.forEach((item, index) => byId.set(item.id ?? `__fallback-${index}`, item));
+
+    for (const item of snapshot.docs) {
+      const record: JsonRecord = { ...item.data(), id: item.id };
+      if (record.status !== "published" || record.hidden === true) {
+        byId.delete(item.id);
+        continue;
+      }
+      const normalized = normalizeItem(record, fallback.find((entry) => entry.id === item.id));
+      if (normalized) byId.set(item.id, { ...normalized, id: item.id });
+    }
+
+    return {
+      data: sort([...byId.values()]),
+      source: "firestore",
+    };
+  } catch (error) {
+    return fallbackReadResult(fallback, getErrorMessage(error));
+  }
+}
+
+/** Admin-only: every document in a CMS item collection, including drafts and archived items. */
+export async function listCmsDocuments(path: string): Promise<JsonRecord[]> {
+  const database = assertCmsDb();
+  if (!database) throw new Error("Firebase is not configured.");
+
+  const snapshot = await getDocs(collection(database, path));
+  return sortCmsRecords(snapshot.docs.map((item): JsonRecord => ({ ...item.data(), id: item.id })));
+}
+
+/** Admin-only: removes a CMS document. For items with a static fallback this restores the fallback. */
+export async function deleteCmsDocument(path: string): Promise<CmsWriteResult> {
+  const database = assertCmsDb();
+  if (!database) return { ok: false, error: "Firebase is not configured." };
+
+  try {
+    await deleteDoc(doc(database, path));
+    return { ok: true, id: path.split("/").at(-1) };
+  } catch (error) {
+    return { ok: false, error: getErrorMessage(error) };
   }
 }
 

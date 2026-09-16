@@ -4,6 +4,7 @@ import type { Project, ProjectLinkSet, ProjectStatus, ProjectVisuals } from "@/s
 import type { Profile } from "@/src/data/profile";
 import type { SkillCategory } from "@/src/data/skills";
 import type { SystemEntry } from "@/src/data/interests";
+import { safeUrl } from "@/lib/urls";
 
 type UnknownRecord = Record<string, unknown>;
 
@@ -25,28 +26,39 @@ function normalizeStatus(value: unknown, fallback: ProjectStatus): ProjectStatus
 function normalizeLinks(value: unknown, fallback: ProjectLinkSet = {}): ProjectLinkSet {
   const source = isRecord(value) ? value : {};
 
+  // A key that is present in the CMS document wins, even when it is empty:
+  // that is how an admin removes a link that exists in the static fallback.
+  const pick = (key: keyof ProjectLinkSet) =>
+    key in source ? cleanOptionalUrl(source[key]) : cleanOptionalUrl(fallback[key]);
+
   return {
-    github: cleanOptionalUrl(source.github) ?? fallback.github,
-    live: cleanOptionalUrl(source.live) ?? fallback.live,
-    demo: cleanOptionalUrl(source.demo) ?? fallback.demo,
-    caseStudy: cleanOptionalUrl(source.caseStudy) ?? fallback.caseStudy,
-    video: cleanOptionalUrl(source.video) ?? fallback.video,
+    live: pick("live"),
+    github: pick("github"),
+    loom: pick("loom"),
+    documentation: pick("documentation"),
+    caseStudy: pick("caseStudy"),
+    demo: pick("demo"),
+    video: pick("video"),
   };
 }
 
 function normalizeVisuals(value: unknown, fallback?: ProjectVisuals): ProjectVisuals | undefined {
   if (!isRecord(value)) return fallback;
 
-  const thumbnail = cleanOptionalUrl(value.thumbnail) ?? fallback?.thumbnail;
-  const screenshots = asStringArray(value.screenshots)
-    .map((item) => cleanOptionalUrl(item))
-    .filter((item): item is string => Boolean(item));
+  const thumbnail = "thumbnail" in value ? cleanOptionalUrl(value.thumbnail) : fallback?.thumbnail;
+  const thumbnailAlt = asString(value.thumbnailAlt, fallback?.thumbnailAlt);
+  const screenshots = "screenshots" in value
+    ? asStringArray(value.screenshots)
+        .map((item) => cleanOptionalUrl(item))
+        .filter((item): item is string => Boolean(item))
+    : fallback?.screenshots ?? [];
 
-  if (!thumbnail && screenshots.length === 0 && !fallback) return undefined;
+  if (!thumbnail && screenshots.length === 0) return undefined;
 
   return {
     thumbnail,
-    screenshots: screenshots.length > 0 ? screenshots : fallback?.screenshots,
+    thumbnailAlt: thumbnailAlt || undefined,
+    screenshots: screenshots.length > 0 ? screenshots : undefined,
   };
 }
 
@@ -79,11 +91,9 @@ export function asNumber(value: unknown, fallback = 0): number {
   return fallback;
 }
 
+/** Returns an http(s) URL or root-relative path; anything else (e.g. `javascript:`) is dropped. */
 export function cleanOptionalUrl(value: unknown): string | undefined {
-  const url = asString(value);
-  if (!url) return undefined;
-
-  return url;
+  return safeUrl(value);
 }
 
 export function normalizeProfile(input: unknown, fallback: Profile): Profile {
@@ -209,33 +219,38 @@ export function normalizeProjects(input: unknown, fallback: Project[]): Project[
   return normalized.length > 0 ? normalized : fallback;
 }
 
+export function normalizeExperienceItem(item: unknown, base?: ExperienceItem): ExperienceItem | null {
+  if (!isRecord(item)) return base ?? null;
+  const company = asString(item.company, base?.company);
+  const role = asString(item.role, base?.role);
+  if (!company || !role) return base ?? null;
+
+  return {
+    ...base,
+    id: asString(item.id, base?.id) || undefined,
+    company,
+    companyLogo: "companyLogo" in item ? cleanOptionalUrl(item.companyLogo) : base?.companyLogo,
+    chapterTitle: asString(item.chapterTitle, base?.chapterTitle) || undefined,
+    progressionLabel: asString(item.progressionLabel, base?.progressionLabel) || undefined,
+    role,
+    period: asString(item.period, base?.period ?? ""),
+    type: asString(item.type, base?.type),
+    location: asString(item.location, base?.location),
+    shortSummary: asString(item.shortSummary, base?.shortSummary ?? base?.description ?? ""),
+    responsibilities: asStringArray(item.responsibilities).length ? asStringArray(item.responsibilities) : base?.responsibilities ?? [],
+    impact: asStringArray(item.impact).length ? asStringArray(item.impact) : base?.impact ?? [],
+    techStack: asStringArray(item.techStack).length ? asStringArray(item.techStack) : base?.techStack ?? [],
+    featured: asBoolean(item.featured, base?.featured ?? false),
+    description: asString(item.description, base?.description),
+    bullets: asStringArray(item.bullets).length ? asStringArray(item.bullets) : base?.bullets,
+  };
+}
+
 export function normalizeExperience(input: unknown, fallback: ExperienceItem[]): ExperienceItem[] {
   if (!Array.isArray(input)) return fallback;
 
   const normalized = input
-    .map((item, index): ExperienceItem | null => {
-      if (!isRecord(item)) return fallback[index] ?? null;
-      const base = fallback[index];
-      const company = asString(item.company, base?.company);
-      const role = asString(item.role, base?.role);
-      if (!company || !role) return base ?? null;
-
-      return {
-        ...base,
-        company,
-        role,
-        period: asString(item.period, base?.period ?? ""),
-        type: asString(item.type, base?.type),
-        location: asString(item.location, base?.location),
-        shortSummary: asString(item.shortSummary, base?.shortSummary ?? base?.description ?? ""),
-        responsibilities: asStringArray(item.responsibilities).length ? asStringArray(item.responsibilities) : base?.responsibilities ?? [],
-        impact: asStringArray(item.impact).length ? asStringArray(item.impact) : base?.impact ?? [],
-        techStack: asStringArray(item.techStack).length ? asStringArray(item.techStack) : base?.techStack ?? [],
-        featured: asBoolean(item.featured, base?.featured ?? false),
-        description: asString(item.description, base?.description),
-        bullets: asStringArray(item.bullets).length ? asStringArray(item.bullets) : base?.bullets,
-      };
-    })
+    .map((item, index) => normalizeExperienceItem(item, fallbackById(fallback, isRecord(item) ? asString(item.id) : undefined, index)))
     .filter((item): item is ExperienceItem => Boolean(item));
 
   return normalized.length > 0 ? normalized : fallback;

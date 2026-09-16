@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import "./tokens.css";
 import "./portfolio.css";
+import "./primitives.css";
 import Navbar from "@/components/Navbar";
 
 const themeScript = `

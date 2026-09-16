@@ -1,0 +1,49 @@
+import type { Metadata } from "next";
+
+// Single source for SEO identity. Change the production domain here (or set NEXT_PUBLIC_SITE_URL).
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://ayushchougula.in").replace(/\/$/, "");
+export const SITE_NAME = "Ayush Chougula";
+export const SITE_TITLE = "Ayush Chougula — AI Systems Engineer";
+export const SITE_DESCRIPTION =
+  "Ayush Chougula is an AI Systems Engineer in Pune building voice AI agents, agentic workflows, RAG systems, and full-stack AI products.";
+
+export function absoluteUrl(path = "/"): string {
+  return `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
+}
+
+/**
+ * Per-page metadata with a self-referencing canonical URL.
+ * Pages must set their own canonical; otherwise they would inherit the homepage's.
+ * og:image / twitter:image come from app/opengraph-image.tsx unless a route provides its own.
+ */
+export function pageMetadata({
+  title,
+  description,
+  path,
+  type = "website",
+}: {
+  title: string;
+  description: string;
+  path: string;
+  type?: "website" | "article";
+}): Metadata {
+  const fullTitle = `${title} | ${SITE_NAME}`;
+  return {
+    title,
+    description,
+    alternates: { canonical: path },
+    openGraph: {
+      type,
+      url: path,
+      siteName: SITE_NAME,
+      locale: "en_US",
+      title: fullTitle,
+      description,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: fullTitle,
+      description,
+    },
+  };
+}

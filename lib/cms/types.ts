@@ -49,6 +49,8 @@ export type CmsLinkSet = {
   demo?: string;
   caseStudy?: string;
   video?: string;
+  loom?: string;
+  documentation?: string;
 };
 
 export type CmsEducation = {
@@ -139,6 +141,9 @@ export type CmsExperience = CmsMeta &
   Pick<
     ExperienceItem,
     | "company"
+    | "companyLogo"
+    | "chapterTitle"
+    | "progressionLabel"
     | "role"
     | "period"
     | "type"

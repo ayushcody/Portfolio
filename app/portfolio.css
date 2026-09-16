@@ -1,41 +1,4 @@
-:root,
-html.light {
-  --paper: #f7f4eb;
-  --panel: #fffdf6;
-  --ink: #23231f;
-  --muted-ink: #62625b;
-  --rule: #d4d1c7;
-  --yellow: #f4d738;
-  --lilac: #c3b0e4;
-  --coral: #ee8d74;
-  --color-background: var(--paper);
-  --color-foreground: var(--ink);
-  --color-surface: var(--panel);
-  --color-surface-hover: #e9e5d9;
-  --color-muted: var(--muted-ink);
-  --color-cyan: #256557;
-  --color-purple: #655083;
-  --color-orange: #985022;
-  color-scheme: light;
-}
-
-html.dark {
-  --paper: #20211e;
-  --panel: #292b26;
-  --ink: #f7f4eb;
-  --muted-ink: #c2c4b9;
-  --rule: #505248;
-  --color-background: var(--paper);
-  --color-foreground: var(--ink);
-  --color-surface: var(--panel);
-  --color-surface-hover: #35382f;
-  --color-muted: var(--muted-ink);
-  --color-cyan: #a8d3ba;
-  --color-purple: #c3b0e4;
-  --color-orange: #eeac80;
-  color-scheme: dark;
-}
-
+/* Color, type, spacing and motion tokens live in app/tokens.css. */
 body, html.light body { background: var(--paper); background-image: none; }
 html { scrollbar-color: var(--ink) var(--paper); }
 body { caret-color: var(--ink); }

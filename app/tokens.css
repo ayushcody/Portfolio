@@ -1,0 +1,125 @@
+/*
+ * Design tokens. The homepage is the reference; every page, the admin console and the OG image use these values.
+ * Colors: warm paper + ink, with yellow / lilac / coral (and an occasional sage) used as deliberate blocks.
+ * Colored blocks keep dark text in both themes (--ink-fixed); neutral surfaces flip in dark mode.
+ */
+:root,
+html.light {
+  /* Surfaces & text */
+  --paper: #f7f4eb;
+  --panel: #fffdf6;
+  --paper-deep: #e9e5d9;
+  --ink: #23231f;
+  --ink-fixed: #23231f;
+  --muted-ink: #62625b;
+  --rule: #d4d1c7;
+
+  /* Accents (always paired with --ink-fixed text) */
+  --yellow: #f4d738;
+  --yellow-soft: #f1da69;
+  --lilac: #c3b0e4;
+  --coral: #ee8d74;
+  --coral-soft: #e8a082;
+  --sage: #c9d5b1;
+  --cream-note: #e9e2cd;
+
+  /* Accent text on paper (AA on --paper) */
+  --rust: #9c5032;
+  --danger: #a33a22;
+  --success: #3d6b3a;
+  --focus: #8c65bf;
+
+  /* Legacy Tailwind theme aliases, mapped onto the paper palette */
+  --color-background: var(--paper);
+  --color-foreground: var(--ink);
+  --color-surface: var(--panel);
+  --color-surface-hover: var(--paper-deep);
+  --color-muted: var(--muted-ink);
+  --color-cyan: #256557;
+  --color-purple: #655083;
+  --color-orange: #985022;
+
+  /* Type */
+  --font-display-stack: var(--font-display), var(--font-inter), sans-serif;
+  --text-2xs: 10px;
+  --text-xs: 11px;
+  --text-sm: 13px;
+  --text-base: 15px;
+  --text-md: 17px;
+  --text-lg: 21px;
+  --text-h3: 27px;
+  --text-h2: clamp(32px, 3.7vw, 46px);
+  --text-h1: clamp(54px, 6.8vw, 94px);
+  --leading-tight: 1.12;
+  --leading-body: 1.75;
+  --tracking-display: -0.04em;
+
+  /* Space */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 100px;
+  --wrap: 1160px;
+  --gutter: 48px;
+  --section-y: 100px;
+  --nav-offset: 112px;
+
+  /* Lines, shadows, corners */
+  --bw-hair: 1px;
+  --bw: 2px;
+  --border: var(--bw) solid var(--ink);
+  --border-hair: var(--bw-hair) solid var(--rule);
+  --shadow-xs: 2px 2px 0 var(--ink-fixed);
+  --shadow-sm: 3px 3px 0 var(--ink-fixed);
+  --shadow-md: 5px 5px 0 var(--ink);
+  --shadow-md-hover: 7px 8px 0 var(--ink);
+  --shadow-lg: 8px 8px 0 var(--ink-fixed);
+  --radius: 0;
+  --radius-pill: 999px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 150ms;
+  --dur: 200ms;
+  --dur-slow: 280ms;
+
+  color-scheme: light;
+}
+
+html.dark {
+  --paper: #20211e;
+  --panel: #292b26;
+  --paper-deep: #35382f;
+  --ink: #f7f4eb;
+  --muted-ink: #c2c4b9;
+  --rule: #505248;
+  --cream-note: #e9e2cd;
+  --rust: #ee8d74;
+  --danger: #f19c86;
+  --success: #a8d3ba;
+  --focus: #c3b0e4;
+
+  --color-background: var(--paper);
+  --color-foreground: var(--ink);
+  --color-surface: var(--panel);
+  --color-surface-hover: var(--paper-deep);
+  --color-muted: var(--muted-ink);
+  --color-cyan: #a8d3ba;
+  --color-purple: #c3b0e4;
+  --color-orange: #eeac80;
+
+  color-scheme: dark;
+}
+
+@media (max-width: 1000px) {
+  :root { --gutter: 32px; --section-y: 88px; }
+}
+
+@media (max-width: 700px) {
+  :root { --gutter: 20px; --section-y: 64px; --nav-offset: 96px; }
+}

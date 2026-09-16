@@ -29,16 +29,25 @@ export type ProjectCategory =
     | "Labs"
     | "Archive";
 
+// Every link is optional; empty links are never rendered. Editable in /admin.
 export type ProjectLinkSet = {
-    github?: string;
+    /** Deployed / production URL. Rendered as the primary action. */
     live?: string;
-    demo?: string;
+    github?: string;
+    /** Loom walkthrough (https://www.loom.com/share/...). */
+    loom?: string;
+    documentation?: string;
     caseStudy?: string;
+    /** Legacy fields kept for existing content. */
+    demo?: string;
     video?: string;
 };
 
 export type ProjectVisuals = {
+    /** Hero image for the case study (16:10). URL or /public path. */
     thumbnail?: string;
+    thumbnailAlt?: string;
+    /** Optional gallery (16:10). */
     screenshots?: string[];
 };
 

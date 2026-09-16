@@ -24,8 +24,8 @@ function ProjectVisual({ project, index }: { project: Project; index: number }) 
     );
 }
 
-export function SelectedWork() {
-    const projects = projectsData.filter(project => project.featured && project.showOnHome && !project.archived).slice(0, 4);
+export function SelectedWork({ projects: allProjects = projectsData }: { projects?: Project[] }) {
+    const projects = allProjects.filter(project => project.featured && project.showOnHome && !project.archived).slice(0, 4);
     return (
         <section id="projects" className="portfolio-section portfolio-wrap" aria-labelledby="work-heading">
             <div className="section-heading"><div><h2 id="work-heading">Ideas, made real<span className="accent-period">.</span></h2><p>A few things I’ve built. The thinking behind them, too.</p></div><Link className="text-link" href="/projects">All projects <ArrowUpRight size={18} aria-hidden="true" /></Link></div>
