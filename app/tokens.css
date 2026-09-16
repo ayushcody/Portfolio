@@ -39,8 +39,7 @@ html.light {
   --color-purple: #655083;
   --color-orange: #985022;
 
-  /* Type */
-  --font-display-stack: var(--font-display), var(--font-inter), sans-serif;
+  /* Type (the font stack itself is set on body, where next/font defines its variables) */
   --text-2xs: 10px;
   --text-xs: 11px;
   --text-sm: 13px;
@@ -116,10 +115,15 @@ html.dark {
   color-scheme: dark;
 }
 
+/* next/font sets --font-display / --font-inter on <body>, so stacks that reference them must be declared there too. */
+body {
+  --font-display-stack: var(--font-display), var(--font-inter), sans-serif;
+}
+
 @media (max-width: 1000px) {
-  :root { --gutter: 32px; --section-y: 88px; }
+  :root, html.light { --gutter: 32px; --section-y: 88px; }
 }
 
 @media (max-width: 700px) {
-  :root { --gutter: 20px; --section-y: 64px; --nav-offset: 96px; }
+  :root, html.light { --gutter: 20px; --section-y: 64px; --nav-offset: 96px; }
 }

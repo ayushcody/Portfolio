@@ -21,6 +21,10 @@
 .tone-note { background: var(--cream-note); }
 
 /* Buttons. .brutal-button (primary, yellow) is defined in portfolio.css with the homepage. */
+/* The primary button's ink shadow would vanish on the dark surface; use the light ink there. */
+html.dark .brutal-button:not(.brutal-button--secondary) { box-shadow: 4px 4px 0 var(--ink); }
+html.dark .brutal-button:not(.brutal-button--secondary):hover { box-shadow: 6px 6px 0 var(--ink); }
+html.dark .brutal-button:not(.brutal-button--secondary):active { box-shadow: 1px 1px 0 var(--ink); }
 .brutal-button--secondary { background: var(--panel); color: var(--ink); border-color: var(--ink); box-shadow: 3px 3px 0 var(--ink); }
 .brutal-button--secondary:hover { box-shadow: 5px 5px 0 var(--ink); }
 .brutal-button--secondary:active { box-shadow: 1px 1px 0 var(--ink); }
@@ -70,7 +74,8 @@ html.dark .logo-mark--placeholder:not(.logo-mark--paper) { border-color: var(--i
     .reveal {
       animation: reveal-in linear both;
       animation-timeline: view();
-      animation-range: entry 0% entry 35%;
+      /* Fixed distance, so tall blocks are fully opaque after ~160px instead of a share of their height. */
+      animation-range: entry 0px entry 160px;
     }
   }
 }

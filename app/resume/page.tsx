@@ -1,15 +1,27 @@
 import Link from "next/link";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
-import { ArrowRight, Briefcase, Download, FileText, MapPin, Sparkles } from "lucide-react";
-import { experiencesData, profile, projectsData, skillsData } from "@/config/portfolio";
-import { cn } from "@/lib/utils";
+import { ArrowLeft, ArrowRight, ArrowUpRight, Download, MapPin } from "lucide-react";
+import { SignatureFooter } from "@/components/SignatureFooter";
+import { ExperienceLogo } from "@/components/ui/ExperienceLogo";
+import { ProjectLinks } from "@/components/ui/ProjectLinks";
+import { TechTags } from "@/components/ui/TechTags";
+import { getPublicExperience, getPublicProfile, getPublicProjects, type PublicExperience } from "@/lib/cms/publicReads";
+import { pageMetadata } from "@/lib/seo";
+import type { Project } from "@/src/data/projects";
+import { skillCategories } from "@/src/data/skills";
+import "@/components/secondary-pages.css";
+import "@/components/editorial.css";
 
-export const metadata = {
+// Static at build time; admin CMS changes appear within five minutes (ISR).
+export const revalidate = 300;
+
+export const metadata = pageMetadata({
   title: "Resume",
   description:
     "Resume overview for Ayush Chougula, AI Systems Engineer focused on agentic AI, RAG systems, voice AI, and full-stack engineering.",
-};
+  path: "/resume",
+});
 
 const resumeCandidates = [
   { publicPath: "/resume.pdf", filePath: "resume.pdf" },
@@ -26,212 +38,229 @@ const coreStrengths = [
   "AI infrastructure",
 ];
 
+const logoTones = ["yellow", "lilac", "coral"] as const;
+
 function getResumeAsset() {
   return resumeCandidates.find((candidate) => existsSync(join(process.cwd(), "public", candidate.filePath)));
 }
 
-function getExperienceBullets(exp: (typeof experiencesData)[number]) {
+function getExperienceBullets(exp: PublicExperience) {
   const source = exp.impact?.length ? exp.impact : exp.responsibilities;
   return source.slice(0, 2);
 }
 
-function getProjectSummary(project: (typeof projectsData)[number]) {
+function getProjectSummary(project: Project) {
   return project.oneLine || project.summary || project.description;
 }
 
-export default function ResumePage() {
+/** "Aug 2023 - Jul 2027" -> "Aug 2023 – Jul 2027" (typographic dash only). */
+function formatRange(value?: string) {
+  return value?.replace(/\s+-\s+/g, " – ");
+}
+
+function RowHeading({ number, id, title, note }: { number: string; id: string; title: string; note?: string }) {
+  return (
+    <div className="resume-row-heading">
+      <span className="secondary-row-number" aria-hidden="true">{number}</span>
+      <h2 id={id}>{title}</h2>
+      {note ? <p>{note}</p> : null}
+    </div>
+  );
+}
+
+export default async function ResumePage() {
   const resumeAsset = getResumeAsset();
-  const featuredExperience = experiencesData.filter((item) => item.featured).slice(0, 3);
-  const featuredProjects = [...projectsData]
-    .filter((project) => project.featured && !project.archived)
-    .sort((a, b) => a.priority - b.priority)
-    .slice(0, 3);
+  const [profileResult, experienceResult, projectsResult] = await Promise.all([
+    getPublicProfile(),
+    getPublicExperience(),
+    getPublicProjects(),
+  ]);
+  const profile = profileResult.data;
+  // Same selection as before: featured roles (newest first), featured non-archived projects by priority.
+  const featuredExperience = experienceResult.data.filter((item) => item.featured).slice(0, 3);
+  const featuredProjects = projectsResult.data.filter((project) => project.featured && !project.archived).slice(0, 3);
+  const education = profile.education;
+  const location = [profile.location, profile.timezone].filter(Boolean).join(" · ");
 
   return (
-    <main className="min-h-screen selection:bg-cyan/30 selection:text-white">
-      <section className="relative z-10 px-6 pb-12 pt-32 md:px-12">
-        <div className="pointer-events-none absolute left-0 top-24 -z-10 h-72 w-72 rounded-full bg-cyan/10 blur-[110px]" />
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-4 flex w-fit items-center gap-2 rounded-full border border-cyan/20 bg-cyan/10 px-4 py-2 text-xs font-black uppercase tracking-[0.22em] text-cyan">
-            <FileText className="h-4 w-4" aria-hidden="true" />
-            Resume
-          </div>
-          <h1 className="text-5xl font-black tracking-tight text-white md:text-7xl">Resume</h1>
-          <p className="mt-6 max-w-3xl text-lg leading-relaxed text-muted md:text-xl">
-            A concise overview of my AI systems, full-stack engineering, and applied AI work.
-          </p>
-        </div>
-      </section>
-
-      <section className="mx-auto grid max-w-7xl gap-6 px-6 pb-24 md:px-12">
-        <div className="grid gap-6 lg:grid-cols-[1fr_0.9fr]">
-          <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-6 md:p-8">
-            <p className="mb-3 text-xs font-black uppercase tracking-[0.22em] text-orange">Hiring snapshot</p>
-            <h2 className="text-3xl font-black text-white">{profile.role}</h2>
-            <p className="mt-4 max-w-3xl text-base leading-relaxed text-muted">{profile.availability}</p>
-
-            <div className="mt-6 grid gap-4 md:grid-cols-2">
-              <div>
-                <p className="mb-3 text-sm font-black text-white">Preferred roles</p>
-                <div className="flex flex-wrap gap-2">
-                  {profile.preferredRoles.map((role) => (
-                    <span key={role} className="rounded-full border border-white/10 bg-surface px-3 py-1.5 text-xs font-bold text-muted">
-                      {role}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <p className="mb-3 text-sm font-black text-white">Location</p>
-                <p className="flex items-center gap-2 text-sm font-semibold text-muted">
-                  <MapPin className="h-4 w-4 text-orange" aria-hidden="true" />
-                  {[profile.location, profile.timezone].filter(Boolean).join(" · ")}
-                </p>
-              </div>
-            </div>
+    <main className="secondary-page editorial-page">
+      <div className="secondary-shell">
+        <header className="secondary-intro resume-intro">
+          <div>
+            <Link href="/" className="secondary-back"><ArrowLeft size={16} aria-hidden="true" /> Back home</Link>
+            <h1>Resume, <span className="secondary-highlight resume-title-nowrap">at a glance.</span></h1>
+            <p className="secondary-lead">A concise overview of my AI systems, full-stack engineering, and applied AI work.</p>
           </div>
 
-          <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-6 md:p-8">
-            <p className="mb-3 text-xs font-black uppercase tracking-[0.22em] text-cyan">Resume file</p>
+          <section className="ink-card resume-file" aria-labelledby="resume-file-heading">
+            <span className="eyebrow eyebrow--chip">Resume file</span>
             {resumeAsset ? (
               <>
-                <h2 className="text-2xl font-black text-white">PDF resume is available.</h2>
-                <p className="mt-3 text-sm leading-relaxed text-muted">
-                  Open it in the browser or download a copy directly.
-                </p>
-                <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                  <a
-                    href={resumeAsset.publicPath}
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-black text-background transition hover:translate-y-[-1px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan sm:w-auto"
-                  >
-                    <FileText className="h-4 w-4" aria-hidden="true" />
-                    Open Resume
+                <h2 id="resume-file-heading">PDF resume is available.</h2>
+                <p>Open it in the browser or download a copy directly.</p>
+                <div className="editorial-actions">
+                  <a href={resumeAsset.publicPath} className="brutal-button">
+                    Open resume <ArrowUpRight size={18} aria-hidden="true" />
                   </a>
-                  <a
-                    href={resumeAsset.publicPath}
-                    download
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-5 py-3 text-sm font-black text-white transition hover:bg-white/[0.08] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan sm:w-auto"
-                  >
-                    <Download className="h-4 w-4" aria-hidden="true" />
-                    Download Resume
+                  <a href={resumeAsset.publicPath} download className="brutal-button brutal-button--secondary">
+                    Download resume <Download size={17} aria-hidden="true" />
                   </a>
                 </div>
               </>
             ) : (
               <>
-                <h2 className="text-2xl font-black text-white">Resume PDF is not uploaded yet.</h2>
-                <p className="mt-3 text-sm leading-relaxed text-muted">
-                  Add it to <span className="font-mono text-white">/public</span> and update the resume path in profile data. Until then, this page provides a structured resume overview without broken download links.
+                <h2 id="resume-file-heading">Resume PDF is not uploaded yet.</h2>
+                <p className="state-note">
+                  <span>
+                    Add it to <code>/public</code> and update the resume path in profile data. Until then, this page provides a structured resume overview without broken download links.
+                  </span>
                 </p>
               </>
             )}
-          </div>
-        </div>
+          </section>
+        </header>
 
-        <section className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-6 md:p-8">
-          <p className="mb-3 text-xs font-black uppercase tracking-[0.22em] text-cyan">Key strengths</p>
-          <h2 className="text-3xl font-black text-white">Technical focus</h2>
-          <div className="mt-5 flex flex-wrap gap-2">
-            {coreStrengths.map((strength) => (
-              <span key={strength} className="rounded-full border border-white/10 bg-surface px-3 py-1.5 text-sm font-bold text-muted">
-                {strength}
-              </span>
-            ))}
-          </div>
-        </section>
+        <div className="resume-sheet">
+          <section className="resume-row" aria-labelledby="resume-snapshot">
+            <RowHeading number="01" id="resume-snapshot" title="Hiring snapshot" />
+            <div className="resume-row-content">
+              <h3 className="resume-role">{profile.role}</h3>
+              {profile.availability ? <p className="resume-body">{profile.availability}</p> : null}
+              <dl className="resume-facts">
+                {profile.preferredRoles.length ? (
+                  <div>
+                    <dt>Preferred roles</dt>
+                    <dd><TechTags items={profile.preferredRoles} label="Preferred roles" className="tag-list--strong" /></dd>
+                  </div>
+                ) : null}
+                {location ? (
+                  <div>
+                    <dt>Location</dt>
+                    <dd className="resume-location"><MapPin size={16} aria-hidden="true" />{location}</dd>
+                  </div>
+                ) : null}
+              </dl>
+            </div>
+          </section>
 
-        <section>
-          <div className="mb-6 flex items-center gap-3">
-            <Briefcase className="h-5 w-5 text-purple" aria-hidden="true" />
-            <h2 className="text-3xl font-black tracking-tight text-white">Experience highlights</h2>
-          </div>
-          <div className="grid gap-6 lg:grid-cols-3">
-            {featuredExperience.map((exp) => (
-              <article key={exp.id} className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
-                <p className="text-sm font-black text-white">{exp.role}</p>
-                <p className="mt-1 text-sm font-bold text-cyan">{exp.company}</p>
-                <p className="mt-2 text-xs font-semibold text-muted">{exp.period}</p>
-                <ul className="mt-4 space-y-2">
-                  {getExperienceBullets(exp).map((bullet) => (
-                    <li key={bullet} className="flex gap-2 text-sm leading-relaxed text-muted">
-                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-purple" aria-hidden="true" />
-                      {bullet}
+          <section className="resume-row" aria-labelledby="resume-strengths">
+            <RowHeading number="02" id="resume-strengths" title="Key strengths" note="Technical focus." />
+            <div className="resume-row-content">
+              <TechTags items={coreStrengths} label="Key strengths" className="tag-list--strong tag-list--large resume-strengths" />
+            </div>
+          </section>
+
+          {featuredExperience.length ? (
+            <section className="resume-row" aria-labelledby="resume-experience">
+              <RowHeading number="03" id="resume-experience" title="Experience highlights" note="Most recent roles first." />
+              <div className="resume-row-content">
+                <ol className="resume-jobs">
+                  {featuredExperience.map((exp, index) => (
+                    <li className="resume-job" key={exp.id ?? `${exp.company}-${exp.period}`}>
+                      <ExperienceLogo company={exp.company} logo={exp.companyLogo} size={52} tone={logoTones[index % logoTones.length]} />
+                      <div>
+                        <div className="resume-job-head">
+                          <div>
+                            <h3>{exp.company}</h3>
+                            <p className="resume-job-role">{exp.role}</p>
+                          </div>
+                          <p className="resume-job-period">{exp.period}</p>
+                        </div>
+                        <ul className="resume-bullets">
+                          {getExperienceBullets(exp).map((bullet) => <li key={bullet}>{bullet}</li>)}
+                        </ul>
+                        <TechTags items={exp.techStack} max={5} label={`${exp.company} technologies`} />
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+                <Link href="/#experience" className="secondary-text-link">
+                  See the full journey <ArrowRight size={17} aria-hidden="true" />
+                </Link>
+              </div>
+            </section>
+          ) : null}
+
+          {featuredProjects.length ? (
+            <section className="resume-row" aria-labelledby="resume-projects">
+              <RowHeading number="04" id="resume-projects" title="Project highlights" note="Featured builds, with case studies." />
+              <div className="resume-row-content">
+                <ul className="resume-projects">
+                  {featuredProjects.map((project) => (
+                    <li className="resume-project" key={project.id}>
+                      <div>
+                        <p className="secondary-meta">{project.category}</p>
+                        <h3><Link href={`/projects/${project.id}`}>{project.title}</Link></h3>
+                      </div>
+                      <div>
+                        <p className="resume-project-summary">{getProjectSummary(project)}</p>
+                        <div className="resume-project-actions">
+                          <Link href={`/projects/${project.id}`} className="secondary-text-link" aria-label={`Read the ${project.title} case study`}>
+                            Read case study <ArrowRight size={17} aria-hidden="true" />
+                          </Link>
+                          <ProjectLinks project={project} variant="compact" max={3} />
+                        </div>
+                      </div>
                     </li>
                   ))}
                 </ul>
-                <div className="mt-4 flex flex-wrap gap-2 border-t border-white/10 pt-4">
-                  {exp.techStack.slice(0, 5).map((tech) => (
-                    <span key={tech} className="rounded-full border border-white/10 bg-surface px-2.5 py-1 text-[11px] font-bold text-muted">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section>
-          <div className="mb-6 flex items-center gap-3">
-            <Sparkles className="h-5 w-5 text-orange" aria-hidden="true" />
-            <h2 className="text-3xl font-black tracking-tight text-white">Project highlights</h2>
-          </div>
-          <div className="grid gap-6 lg:grid-cols-3">
-            {featuredProjects.map((project) => (
-              <article key={project.id} className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-5">
-                <span className={cn("rounded-full px-3 py-1 text-xs font-black uppercase tracking-[0.16em]", project.bg, project.color)}>
-                  {project.category}
-                </span>
-                <h3 className="mt-4 text-xl font-black text-white">{project.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted">{getProjectSummary(project)}</p>
-                <Link
-                  href={`/projects/${project.id}`}
-                  className="mt-5 inline-flex items-center gap-2 text-sm font-black text-cyan transition hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan"
-                >
-                  Read case study
-                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                <Link href="/projects" className="secondary-text-link">
+                  All projects <ArrowRight size={17} aria-hidden="true" />
                 </Link>
-              </article>
-            ))}
-          </div>
-        </section>
+              </div>
+            </section>
+          ) : null}
 
-        <section className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-6 md:p-8">
-          <p className="mb-3 text-xs font-black uppercase tracking-[0.22em] text-purple">Skills summary</p>
-          <h2 className="text-3xl font-black text-white">Grouped capabilities</h2>
-          <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {skillsData.map((skill) => (
-              <div key={skill.name} className="rounded-2xl border border-white/10 bg-surface/70 p-4">
-                <p className="text-sm font-black text-white">{skill.name}</p>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {skill.skills.slice(0, 4).map((tool) => (
-                    <span key={tool} className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[11px] font-bold text-muted">
-                      {tool}
-                    </span>
-                  ))}
+          {education?.institution ? (
+            <section className="resume-row" aria-labelledby="resume-education">
+              <RowHeading number="05" id="resume-education" title="Education" />
+              <div className="resume-row-content">
+                <div className="ink-card tone-lilac resume-education">
+                  <h3>{education.institution}</h3>
+                  {education.degree ? <p>{education.degree}</p> : null}
+                  {education.cgpa ? <p>CGPA {education.cgpa}</p> : null}
+                  <p className="secondary-meta">
+                    {formatRange(education.status)}
+                    {education.status && education.location ? <span aria-hidden="true">/</span> : null}
+                    {education.location}
+                  </p>
                 </div>
               </div>
-            ))}
-          </div>
-        </section>
+            </section>
+          ) : null}
 
-        <section className="rounded-[1.5rem] border border-white/10 bg-gradient-to-br from-purple/15 via-cyan/10 to-orange/10 p-6 md:flex md:items-center md:justify-between md:gap-6 md:p-8">
+          <section className="resume-row" aria-labelledby="resume-skills">
+            <RowHeading number="06" id="resume-skills" title="Skills summary" note="Grouped capabilities." />
+            <div className="resume-row-content">
+              <ul className="resume-skills">
+                {skillCategories.map((skill) => (
+                  <li key={skill.name}>
+                    <h3>{skill.name}</h3>
+                    <TechTags items={skill.skills} max={4} label={`${skill.name} tools`} />
+                  </li>
+                ))}
+              </ul>
+              <Link href="/skills" className="secondary-text-link">
+                See the full toolkit <ArrowRight size={17} aria-hidden="true" />
+              </Link>
+            </div>
+          </section>
+        </div>
+
+        <aside className="secondary-closing editorial-closing" aria-labelledby="resume-closing">
           <div>
-            <h2 className="text-2xl font-black text-white">Want to go deeper?</h2>
-            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">
+            <h2 id="resume-closing">Want to go deeper?</h2>
+            <p className="editorial-closing-copy">
               Review the case studies or reach out directly for internship, full-stack, backend, or applied AI opportunities.
             </p>
           </div>
-          <div className="mt-5 flex flex-col gap-3 sm:flex-row md:mt-0">
-            <Link href="/#contact" className="inline-flex w-full items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-black text-background transition hover:translate-y-[-1px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan sm:w-auto">
-              Contact Me
-            </Link>
-            <Link href="/projects" className="inline-flex w-full items-center justify-center rounded-full border border-white/10 bg-white/[0.04] px-5 py-3 text-sm font-black text-white transition hover:bg-white/[0.08] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan sm:w-auto">
-              View Projects
-            </Link>
+          <div className="editorial-actions">
+            <Link href="/#contact" className="brutal-button">Contact me <ArrowUpRight size={18} aria-hidden="true" /></Link>
+            <Link href="/projects" className="brutal-button brutal-button--secondary">View projects <ArrowRight size={17} aria-hidden="true" /></Link>
           </div>
-        </section>
-      </section>
+        </aside>
+      </div>
+      <SignatureFooter />
     </main>
   );
 }

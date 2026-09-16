@@ -6,11 +6,10 @@ body { caret-color: var(--ink); }
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: var(--paper); }
 ::-webkit-scrollbar-thumb { background: var(--ink); border: 3px solid var(--paper); border-radius: 0; }
-:where(a, button, input, textarea, select, summary):focus-visible { outline: 3px solid #8c65bf; outline-offset: 5px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted-ink); }
+:where(a, button, input, textarea, select, summary):focus-visible { outline: 3px solid var(--focus, #8c65bf); outline-offset: 5px; }
 button, summary { cursor: pointer; }
-.skip-link { background: var(--yellow); color: #23231f; border: 2px solid #23231f; border-radius: 0; box-shadow: 3px 3px 0 #23231f; }
-section[id] { scroll-margin-top: 112px; }
-#main-content main > section:not(#home) { content-visibility: visible; }
+/* Anchor offsets: html { scroll-padding-top: var(--nav-offset) } in globals.css. */
 
 /* Existing detail routes inherit the paper palette; the original footer keeps its own identity. */
 html.light :where(main > section, main > div) :is(.text-white\/70, .text-white\/80, .text-white\/85, .text-white\/90) { color: var(--ink); }
@@ -117,7 +116,6 @@ html.dark .accent-period { color: var(--coral); }
 .work-technologies { display: flex; flex-wrap: wrap; list-style: none; padding: 0; gap: 7px; margin: 20px 0 22px; }
 .work-technologies li { padding: 4px 7px; border: 1px solid var(--rule); font-size: 11px; }
 .work-card-links { margin-top: auto; border-top: 1px solid var(--rule); display: flex; justify-content: space-between; align-items: center; padding-top: 10px; }
-.work-card-links > a:last-child { min-height: 40px; min-width: 40px; display: inline-flex; align-items: center; justify-content: center; }
 
 .approach-section { border-block: 2px solid var(--ink); background: var(--panel); padding-block: 90px; }
 .approach-layout { display: grid; grid-template-columns: 1fr 1.1fr; align-items: start; gap: 90px; }

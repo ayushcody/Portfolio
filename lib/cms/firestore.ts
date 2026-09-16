@@ -92,7 +92,8 @@ export async function readCmsCollection<T>(
   if (!database) return fallbackReadResult(fallback);
 
   try {
-    const snapshot = await getDocs(collection(database, path));
+    // Filtered in the query so Firestore rules can keep drafts private (list queries must match the rule).
+    const snapshot = await getDocs(query(collection(database, path), where("status", "==", "published")));
     const published = snapshot.docs
       .map((item): JsonRecord => ({ id: item.id, ...item.data() }))
       .filter((item) => item.status === "published" && item.hidden !== true);

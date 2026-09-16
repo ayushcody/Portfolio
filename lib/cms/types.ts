@@ -57,6 +57,7 @@ export type CmsEducation = {
   degree?: string;
   institution?: string;
   status?: string;
+  cgpa?: string;
   location?: string;
 };
 

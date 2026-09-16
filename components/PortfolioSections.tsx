@@ -1,6 +1,8 @@
 import Link from 'next/link';
-import { ArrowRight, ArrowUpRight, Asterisk, BookOpen, Braces, Check, FileText, GitBranch, Github, Mail, Scale, Search, Send, Sparkles } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Asterisk, BookOpen, Send, Sparkles } from 'lucide-react';
 import { projectsData, type Project } from '@/src/data/projects';
+import { ProjectLinks } from '@/components/ui/ProjectLinks';
+import { ProjectDiagram } from '@/components/projects/ProjectDiagram';
 import { skillCategories } from '@/src/data/skills';
 import type { Profile } from '@/src/data/profile';
 import type { BlogPost } from '@/lib/markdown';
@@ -16,10 +18,8 @@ function ProjectVisual({ project, index }: { project: Project; index: number }) 
     return (
         <div className={`project-visual project-visual-${index % 4}`} aria-label={`${project.title} workflow illustration`} role="img">
             <div className="visual-caption"><span>{project.category}</span><span>{project.status}</span></div>
-            {index % 4 === 0 ? <div className="email-diagram"><div className="diagram-sheet"><Mail size={25} /><span>Your writing style</span><div className="diagram-lines"><i /><i /><i /></div></div><ArrowRight className="diagram-arrow" /><div className="diagram-sheet draft-sheet"><Sparkles size={25} /><span>A draft that fits.</span><div className="diagram-lines"><i /><i /><i /></div><span className="diagram-check"><Check size={12} /> Ready to review</span></div></div> : null}
-            {index % 4 === 1 ? <div className="law-diagram"><Scale size={52} strokeWidth={1.5} /><div className="law-branches"><span>Prosecution</span><span>Defense</span></div><div className="law-source"><BookOpen size={15} /> Shared context. Cited sources.</div></div> : null}
-            {index % 4 === 2 ? <div className="algorithm-diagram"><div className="algorithm-bars">{[36, 60, 46, 82, 100, 118].map((height, i) => <span key={i} style={{ height }} className={i > 3 ? 'is-sorted' : ''}>{[2, 4, 3, 6, 8, 9][i]}</span>)}</div><div className="algorithm-caption"><Braces size={17} /><span>Understand the why.</span><span className="diagram-play"><ArrowRight size={15} /></span></div></div> : null}
-            {index % 4 === 3 ? <div className="research-diagram"><div className="research-input"><Search size={17} /> One good question</div><div className="research-agents"><span><FileText size={21} /> Retrieve</span><span><GitBranch size={21} /> Reason</span><span><Check size={21} /> Verify</span></div><div className="research-output">A connected answer <ArrowUpRight size={17} /></div></div> : null}
+            {/* Diagram is matched by project id (shared with the case study hero); the panel color stays positional. */}
+            <ProjectDiagram project={project} />
         </div>
     );
 }
@@ -31,7 +31,7 @@ export function SelectedWork({ projects: allProjects = projectsData }: { project
             <div className="section-heading"><div><h2 id="work-heading">Ideas, made real<span className="accent-period">.</span></h2><p>A few things I’ve built. The thinking behind them, too.</p></div><Link className="text-link" href="/projects">All projects <ArrowUpRight size={18} aria-hidden="true" /></Link></div>
             <div className="selected-work-grid">{projects.map((project, index) => <article className="work-card" key={project.id}>
                 <Link href={`/projects/${project.id}`} tabIndex={-1} aria-hidden="true" className="project-art-link"><ProjectVisual project={project} index={index} /></Link>
-                <div className="work-card-content"><div className="work-title"><h3><Link href={`/projects/${project.id}`}>{project.title}</Link></h3><ArrowUpRight size={26} aria-hidden="true" /></div><p>{projectNotes[project.id] || project.oneLine || project.summary}</p><p className="work-contribution">{project.myRole}</p><ul className="work-technologies" aria-label="Technologies">{project.techStack.slice(0, 4).map(tech => <li key={tech}>{tech}</li>)}</ul><div className="work-card-links"><Link href={`/projects/${project.id}`} className="text-link" aria-label={`Explore ${project.title}`}>Explore the build <ArrowRight size={17} aria-hidden="true" /></Link>{project.links.github ? <a href={project.links.github} target="_blank" rel="noopener noreferrer" aria-label={`${project.title} source on GitHub`}><Github size={19} aria-hidden="true" /></a> : null}</div></div>
+                <div className="work-card-content"><div className="work-title"><h3><Link href={`/projects/${project.id}`}>{project.title}</Link></h3><ArrowUpRight size={26} aria-hidden="true" /></div><p>{projectNotes[project.id] || project.oneLine || project.summary}</p><p className="work-contribution">{project.myRole}</p><ul className="work-technologies" aria-label="Technologies">{project.techStack.slice(0, 4).map(tech => <li key={tech}>{tech}</li>)}</ul><div className="work-card-links"><Link href={`/projects/${project.id}`} className="text-link" aria-label={`Explore ${project.title}`}>Explore the build <ArrowRight size={17} aria-hidden="true" /></Link><ProjectLinks project={project} variant="compact" max={3} /></div></div>
             </article>)}</div>
         </section>
     );

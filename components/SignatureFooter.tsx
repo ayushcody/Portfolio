@@ -5,11 +5,13 @@ import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 import { Instrument_Serif } from "next/font/google";
 import "./signature-footer.css";
 
+// The footer sits far below the fold, so its display face must not be preloaded ahead of the hero.
 const footerSerif = Instrument_Serif({
   variable: "--font-footer-serif",
   subsets: ["latin"],
   weight: "400",
   display: "swap",
+  preload: false,
 });
 
 const footerLinks = [
@@ -49,13 +51,13 @@ export function SignatureFooter() {
           <div className="grid grid-cols-2 gap-8 text-sm md:col-span-2 md:grid-cols-3">
             <div>
               <p className="mb-4 text-xs font-black uppercase tracking-widest">Navigation</p>
-              <div className="footer-muted space-y-3">
+              <nav aria-label="Footer" className="footer-muted space-y-3">
                 {footerLinks.map((link) => (
                   <Link key={link.href} href={link.href} className="footer-nav-link block">
                     {link.label}
                   </Link>
                 ))}
-              </div>
+              </nav>
             </div>
             <div>
               <p className="mb-4 text-xs font-black uppercase tracking-widest">Focus</p>
@@ -69,14 +71,14 @@ export function SignatureFooter() {
             <div>
               <p className="mb-4 text-xs font-black uppercase tracking-widest">Connect</p>
               <div className="flex gap-3">
-                <a href={profile.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="footer-social-link">
-                  <Github className="h-5 w-5" />
+                <a href={profile.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub (opens in a new tab)" className="footer-social-link">
+                  <Github className="h-5 w-5" aria-hidden="true" />
                 </a>
-                <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="footer-social-link">
-                  <Linkedin className="h-5 w-5" />
+                <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)" className="footer-social-link">
+                  <Linkedin className="h-5 w-5" aria-hidden="true" />
                 </a>
-                <a href={`mailto:${profile.email}`} aria-label="Email" className="footer-social-link">
-                  <Mail className="h-5 w-5" />
+                <a href={`mailto:${profile.email}`} aria-label={`Email ${profile.email}`} className="footer-social-link">
+                  <Mail className="h-5 w-5" aria-hidden="true" />
                 </a>
               </div>
             </div>

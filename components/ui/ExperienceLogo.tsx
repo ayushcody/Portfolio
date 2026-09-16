@@ -7,7 +7,10 @@ import { cn } from "@/lib/utils";
 type ExperienceLogoProps = {
   company: string;
   logo?: string;
-  /** Rendered square size in px (the box never changes size, logo or not). */
+  /**
+   * Square size in px. Omit it to size the box from CSS (`--logo-size`, default 56px),
+   * e.g. to change it per breakpoint. The box never changes size, logo or not.
+   */
   size?: number;
   /** Accent for the initials placeholder. */
   tone?: "yellow" | "lilac" | "coral" | "sage" | "paper";
@@ -19,7 +22,7 @@ type ExperienceLogoProps = {
  * otherwise a styled initials block, so a missing or broken logo never leaves a broken image.
  * The initials block is decorative: the company name is always rendered next to it.
  */
-export function ExperienceLogo({ company, logo, size = 56, tone = "paper", className }: ExperienceLogoProps) {
+export function ExperienceLogo({ company, logo, size, tone = "paper", className }: ExperienceLogoProps) {
   const src = safeUrl(logo);
   const [failedSrc, setFailedSrc] = useState<string | null>(null);
   const showImage = Boolean(src) && failedSrc !== src;
@@ -27,7 +30,7 @@ export function ExperienceLogo({ company, logo, size = 56, tone = "paper", class
   return (
     <span
       className={cn("logo-mark", !showImage && `logo-mark--placeholder logo-mark--${tone}`, className)}
-      style={{ "--logo-size": `${size}px` } as React.CSSProperties}
+      style={size ? ({ "--logo-size": `${size}px` } as React.CSSProperties) : undefined}
       aria-hidden={showImage ? undefined : true}
     >
       {showImage ? (
@@ -36,8 +39,8 @@ export function ExperienceLogo({ company, logo, size = 56, tone = "paper", class
         <img
           src={src}
           alt={`${company} logo`}
-          width={size}
-          height={size}
+          width={size ?? 56}
+          height={size ?? 56}
           loading="lazy"
           decoding="async"
           onError={() => setFailedSrc(src ?? null)}

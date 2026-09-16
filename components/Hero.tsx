@@ -6,10 +6,23 @@ import { useState } from 'react';
 import { ArrowDown, ArrowDownRight, ArrowUpRight, Asterisk, MapPin } from 'lucide-react';
 import { profile as fallbackProfile, type Profile } from '@/src/data/profile';
 
+// Hosts allowed by images.remotePatterns in next.config.ts; anything else is served as-is.
+const OPTIMIZABLE_HOSTS = new Set(['firebasestorage.googleapis.com', 'storage.googleapis.com']);
+
+/** Local files and allow-listed CMS uploads go through the image optimizer (the local portrait is 1.8 MB). */
+function canOptimize(src: string) {
+    if (src.startsWith('/')) return true;
+    try {
+        const url = new URL(src);
+        return url.protocol === 'https:' && OPTIMIZABLE_HOSTS.has(url.hostname);
+    } catch {
+        return false;
+    }
+}
+
 export default function Hero({ profile = fallbackProfile }: { profile?: Profile }) {
     const [photoFailed, setPhotoFailed] = useState(false);
     const photoSrc = photoFailed ? '/profile.png' : profile.profilePhoto || '/profile.png';
-    const isRemotePhoto = /^https?:\/\//.test(photoSrc);
 
     return (
         <section id="home" className="portfolio-hero" aria-labelledby="hero-heading">
@@ -26,7 +39,7 @@ export default function Hero({ profile = fallbackProfile }: { profile?: Profile 
                 </div>
                 <div className="hero-photo-area">
                     <figure className="hero-print">
-                        <div className="hero-photo"><Image src={photoSrc} alt={`${profile.fullName}, in a suit and glasses, standing in a warmly lit library`} fill priority loading="eager" fetchPriority="high" unoptimized={!isRemotePhoto} sizes="(max-width: 650px) 76vw, (max-width: 1000px) 40vw, 360px" onError={() => setPhotoFailed(true)} /></div>
+                        <div className="hero-photo"><Image src={photoSrc} alt={`${profile.fullName}, in a suit and glasses, standing in a warmly lit library`} fill preload loading="eager" fetchPriority="high" unoptimized={!canOptimize(photoSrc)} sizes="(max-width: 650px) 76vw, (max-width: 1000px) 40vw, 360px" onError={() => setPhotoFailed(true)} /></div>
                         <figcaption><span>Engineer. Curious human.</span><ArrowUpRight size={22} aria-hidden="true" /></figcaption>
                     </figure>
                     <a className="hero-availability" href="#contact" aria-label={profile.availability || 'Open to opportunities'}><span aria-hidden="true" /> Open to opportunities <ArrowUpRight size={15} aria-hidden="true" /></a>

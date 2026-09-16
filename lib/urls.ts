@@ -90,12 +90,15 @@ export function checkExternalUrl(input: string | undefined, kind: UrlKind = "any
   return { ok: true, value: url.toString() };
 }
 
-/** Initials for logo placeholders: "Quensulting AI LLP" -> "QA". */
+const NAME_NOISE = /^(llp|llc|ltd|inc|pvt|private|limited|co|corp|ai|for|of|and|the|at|in)$/i;
+
+/**
+ * Monogram for logo placeholders: "Association for Cyber Security" -> "AC",
+ * "Persistent Systems Inc." -> "PS", "Quensulting AI LLP" -> "Q" (legal suffixes and "AI" are skipped).
+ */
 export function initialsFrom(name: string, max = 2): string {
-  const words = name
-    .replace(/\b(llp|llc|ltd|inc|pvt|private|limited|co)\b\.?/gi, "")
-    .split(/[\s\-_/&.]+/)
-    .filter(Boolean);
-  const letters = words.map((word) => word[0]).join("");
-  return (letters || name.slice(0, max)).slice(0, max).toUpperCase();
+  const words = name.split(/[\s\-_/&.,]+/).filter(Boolean);
+  const meaningful = words.filter((word) => !NAME_NOISE.test(word));
+  const letters = (meaningful.length ? meaningful : words).map((word) => word[0]).join("");
+  return (letters || name.slice(0, 1)).slice(0, max).toUpperCase();
 }

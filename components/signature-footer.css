@@ -20,7 +20,9 @@
 .footer-button-secondary { background: #090909; color: #f7f4eb; box-shadow: 4px 4px 0 #5e6055; }
 .footer-button:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 #f7f4eb; }
 .footer-button:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 #f7f4eb; }
-.footer-social-link { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; border: 1px solid #66675e; color: #f7f4eb; transition: color 160ms ease, border-color 160ms ease; }
+.footer-social-link { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; border: 1px solid #66675e; color: #f7f4eb; transition: color 160ms ease, border-color 160ms ease; }
+/* Invisible 3px extension: a 46px touch target without changing the drawn square. */
+.footer-social-link::after { content: ""; position: absolute; inset: -3px; }
 .footer-social-link:hover { color: #f4d738; border-color: #f4d738; }
 .signature-footer a:focus-visible { outline: 3px solid #f4d738; outline-offset: 6px; }
 

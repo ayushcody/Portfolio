@@ -123,6 +123,7 @@ export function normalizeProfile(input: unknown, fallback: Profile): Profile {
           degree: asString(education.degree, fallback.education?.degree),
           institution: asString(education.institution, fallback.education?.institution),
           status: asString(education.status, fallback.education?.status),
+          cgpa: asString(education.cgpa, fallback.education?.cgpa),
           location: asString(education.location, fallback.education?.location),
         }
       : fallback.education,

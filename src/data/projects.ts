@@ -502,7 +502,7 @@ export const projectsData: PortfolioProject[] = [
         features: ["Alert triage", "Severity classification", "Remediation suggestions"],
         impact: [
             "Built a working security-tool prototype under 24-hour hackathon constraints.",
-            "Won 1st place at the Black Pearl Cybersecurity Hackathon, as represented in existing portfolio data.",
+            "Won 1st place at the Black Pearl Cybersecurity Hackathon.",
         ],
         challenges: [
             "Designing useful AI assistance while keeping analysts in control.",

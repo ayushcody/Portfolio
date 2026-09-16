@@ -42,7 +42,8 @@ function subscribeToTheme(onChange: () => void) {
 
 export function ThemeToggle() {
     const theme = useSyncExternalStore(subscribeToTheme, getTheme, getServerTheme);
-    const nextTheme = theme === 'dark' ? 'light' : 'dark';
+    const isDark = theme === 'dark';
+    const nextTheme = isDark ? 'light' : 'dark';
 
     const toggleTheme = () => {
         applyTheme(nextTheme);
@@ -58,11 +59,13 @@ export function ThemeToggle() {
         <button
             type="button"
             onClick={toggleTheme}
-            aria-label={`Switch to ${nextTheme} mode`}
+            // A toggle keeps a fixed name; its state is announced through aria-pressed.
+            aria-label="Dark mode"
+            aria-pressed={isDark}
             title={`Switch to ${nextTheme} mode`}
             className="nav-icon-button nav-theme-toggle"
         >
-            {theme === 'dark' ? <Sun size={18} aria-hidden="true" /> : <Moon size={18} aria-hidden="true" />}
+            {isDark ? <Sun size={18} aria-hidden="true" /> : <Moon size={18} aria-hidden="true" />}
         </button>
     );
 }

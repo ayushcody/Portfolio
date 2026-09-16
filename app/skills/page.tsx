@@ -2,12 +2,14 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import { skillCategories } from "@/src/data/skills";
 import { SignatureFooter } from "@/components/SignatureFooter";
+import { pageMetadata } from "@/lib/seo";
 import "@/components/secondary-pages.css";
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: "Skills",
   description: "Ayush Chougula's practical toolkit for AI systems, backend engineering, frontend development, retrieval, cloud, voice AI, and security.",
-};
+  path: "/skills",
+});
 
 const workflows = [
   { title: "Ground an AI answer.", copy: "Ingest documents, build a retrieval path, pass useful context to the model, then evaluate the result.", project: "See AndhaKaanun", href: "/projects/andhakaanun" },
