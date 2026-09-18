@@ -1,0 +1,113 @@
+/*
+ * Contact section. Native to the design system (tokens.css + primitives.css); no utility overrides needed.
+ * Layout width comes from .portfolio-wrap; the primary action is .brutal-button.
+ */
+
+.contact-section { --font-display-stack: var(--font-display), var(--font-inter), sans-serif; position: relative; z-index: 1; padding-block: var(--section-y); border-top: var(--border); background: var(--panel); color: var(--ink); }
+.contact-section :is(h2, h3) { font-family: var(--font-display-stack); font-weight: 700; letter-spacing: var(--tracking-display); line-height: var(--leading-tight); overflow-wrap: break-word; text-wrap: balance; }
+
+.contact-header { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); align-items: end; gap: var(--space-5) var(--space-8); margin-bottom: 44px; }
+.contact-eyebrow { display: inline-flex; align-items: center; gap: var(--space-2); margin-bottom: 18px; padding: 5px 10px; border: 1.5px solid var(--ink-fixed); background: var(--lilac); color: var(--ink-fixed); box-shadow: var(--shadow-xs); font-size: 12px; font-weight: 700; line-height: 1.3; }
+html.dark .contact-eyebrow { box-shadow: 2px 2px 0 var(--ink); }
+.contact-header h2 { max-width: 16ch; font-size: clamp(36px, 4.2vw, 53px); }
+.contact-intro { max-width: 46ch; padding-bottom: 6px; color: var(--muted-ink); font-size: var(--text-base); line-height: 1.75; text-wrap: pretty; }
+
+.contact-grid { display: grid; grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr); align-items: start; gap: 32px; }
+.contact-aside { display: grid; gap: 28px; }
+.contact-card { padding: 28px; }
+.contact-card h3 { font-size: var(--text-h3); }
+.contact-card__copy { margin-top: 10px; color: var(--muted-ink); font-size: var(--text-sm); line-height: 1.7; }
+
+/* Best fit (sage = current interests) */
+.contact-fit__list { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 0; padding: 0; list-style: none; }
+.contact-fit__list li { padding: 6px 10px; border: 1.5px solid var(--ink-fixed); background: #fffdf6; color: var(--ink-fixed); font-size: 12px; font-weight: 650; line-height: 1.4; }
+
+/* Direct contact rows */
+.contact-channels { margin: 18px -28px -28px; padding: 0; list-style: none; border-top: var(--border); }
+.contact-channels > li + li { border-top: var(--bw-hair) solid var(--rule); }
+.contact-channel { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; align-items: center; column-gap: 14px; min-height: 72px; padding: 14px 28px; color: var(--ink); }
+.contact-channel__icon { display: grid; place-items: center; width: 40px; height: 40px; border: 1.5px solid var(--ink); background: var(--paper); color: var(--ink); }
+.contact-channel__text { display: grid; gap: 2px; min-width: 0; }
+.contact-channel__label { font-size: var(--text-sm); font-weight: 700; line-height: 1.35; }
+.contact-channel__value { color: var(--muted-ink); font-size: var(--text-sm); line-height: 1.45; overflow-wrap: anywhere; }
+.contact-channel__arrow { flex: none; transition: transform var(--dur-fast) ease; }
+.contact-channel--note { display: block; min-height: 0; color: var(--muted-ink); font-size: var(--text-sm); line-height: 1.7; }
+
+a.contact-channel--link { transition: background-color var(--dur-fast) ease, color var(--dur-fast) ease; }
+a.contact-channel--link:hover { background: var(--yellow); color: var(--ink-fixed); }
+a.contact-channel--link:hover :is(.contact-channel__value, .contact-channel__icon) { color: var(--ink-fixed); }
+a.contact-channel--link:hover .contact-channel__icon { border-color: var(--ink-fixed); background: #fffdf6; }
+a.contact-channel--link:hover .contact-channel__arrow { transform: translate(2px, -2px); }
+a.contact-channel--link:focus-visible { outline-offset: -4px; }
+
+.contact-channel__mail { position: relative; width: fit-content; max-width: 100%; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+/* Extend the hit area to 44px without changing the row height. */
+.contact-channel__mail::after { content: ""; position: absolute; inset: -13px -4px; }
+.contact-channel__mail:hover { color: var(--ink); text-decoration-thickness: 2px; }
+
+.contact-copy { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); min-width: 92px; min-height: 44px; padding: 8px 14px; border: var(--border); background: var(--panel); color: var(--ink); box-shadow: 2px 2px 0 var(--ink); font-size: 12px; font-weight: 750; transition: transform var(--dur-fast) ease, box-shadow var(--dur-fast) ease, background-color var(--dur-fast) ease; }
+.contact-copy:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 var(--ink); }
+.contact-copy:active { transform: translate(1px, 1px); box-shadow: 0 0 0 var(--ink); }
+.contact-copy[data-state='copied'] { border-color: var(--ink-fixed); background: var(--sage); color: var(--ink-fixed); }
+.contact-copy-status { grid-column: 1 / -1; display: flex; align-items: flex-start; gap: var(--space-2); color: var(--danger); font-size: var(--text-sm); font-weight: 600; line-height: 1.5; }
+.contact-copy-status:not(:empty) { margin-top: 10px; }
+.contact-copy-status svg { flex: none; margin-top: 2px; }
+
+/* Email draft form */
+.contact-form-card { padding: 32px; box-shadow: var(--shadow-lg); }
+html.dark .contact-form-card { box-shadow: 8px 8px 0 var(--ink); }
+.contact-form { display: grid; gap: 22px; margin-top: 26px; }
+.contact-field { display: grid; gap: 8px; }
+.contact-field__label { font-size: var(--text-sm); font-weight: 700; line-height: 1.35; }
+.contact-field__control { width: 100%; min-height: 50px; padding: 12px 14px; border: var(--border); border-radius: 0; background: var(--paper); color: var(--ink); font: inherit; font-size: 16px; line-height: 1.5; transition: box-shadow var(--dur-fast) ease, border-color var(--dur-fast) ease; }
+textarea.contact-field__control { min-height: 152px; resize: vertical; }
+.contact-field__control::placeholder { color: var(--muted-ink); opacity: 1; }
+.contact-field__control:hover { box-shadow: 2px 2px 0 var(--ink); }
+.contact-field__control:focus { outline: none; }
+.contact-field__control:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; box-shadow: 3px 3px 0 var(--ink); }
+.contact-field--invalid .contact-field__control { border-color: var(--danger); box-shadow: 3px 3px 0 var(--danger); }
+.contact-field__error { display: flex; align-items: flex-start; gap: 6px; color: var(--danger); font-size: var(--text-sm); font-weight: 600; line-height: 1.45; }
+.contact-field__error svg { flex: none; margin-top: 2px; }
+.contact-form__actions { padding-top: 4px; }
+.contact-submit { gap: 14px; }
+.contact-form-empty { margin-top: 22px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-section :is(.contact-copy, .contact-channel__arrow, a.contact-channel--link, .contact-field__control) { transition: none; }
+  .contact-copy:hover, .contact-copy:active { transform: none; }
+}
+
+@media (max-width: 1000px) {
+  .contact-header { gap: var(--space-4) var(--space-6); }
+  .contact-grid { gap: 24px; }
+  .contact-card { padding: 24px; }
+  .contact-channels { margin: 16px -24px -24px; }
+  .contact-channel { padding-inline: 24px; }
+  .contact-form-card { padding: 28px; }
+}
+
+@media (max-width: 860px) {
+  .contact-header { grid-template-columns: 1fr; }
+  .contact-grid { grid-template-columns: 1fr; gap: 32px; }
+}
+
+@media (max-width: 700px) {
+  .contact-header { margin-bottom: 32px; }
+  .contact-header h2 { font-size: clamp(32px, 9vw, 40px); }
+  .contact-intro { padding-bottom: 0; font-size: 14px; }
+  .contact-grid { gap: 28px; }
+  .contact-aside { gap: 24px; }
+  .contact-card { padding: 22px 20px; }
+  .contact-card h3 { font-size: 24px; }
+  .contact-channels { margin: 16px -20px -22px; }
+  .contact-channel { column-gap: 12px; padding: 12px 20px; }
+  .contact-form-card { padding: 24px 20px; box-shadow: var(--shadow-md); }
+  html.dark .contact-form-card { box-shadow: var(--shadow-md); }
+  .contact-form { gap: 20px; margin-top: 22px; }
+  .contact-submit { width: 100%; }
+}
+
+@media (max-width: 400px) {
+  .contact-channel--email { grid-template-columns: 40px minmax(0, 1fr); row-gap: 12px; }
+  .contact-channel--email .contact-copy { grid-column: 2; justify-self: start; }
+}

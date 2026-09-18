@@ -1,9 +1,18 @@
-import { getBlogPostBySlug, getBlogPosts } from '@/lib/markdown';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown, { type Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { ArrowLeft, Calendar, Clock, Tag } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
+import { SignatureFooter } from '@/components/SignatureFooter';
+import { TechTags } from '@/components/ui/TechTags';
+import { profile } from '@/config/portfolio';
+import { formatPostDate, getBlogPostBySlug, getBlogPosts } from '@/lib/markdown';
+import { pageMetadata } from '@/lib/seo';
+import '@/components/secondary-pages.css';
+import '@/components/editorial.css';
+
+type PageProps = { params: Promise<{ slug: string }> };
 
 export async function generateStaticParams() {
     return getBlogPosts().map((post) => ({
@@ -11,119 +20,137 @@ export async function generateStaticParams() {
     }));
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
     const { slug } = await params;
     const post = getBlogPostBySlug(slug);
 
     if (!post) {
-        return { title: 'Post Not Found' };
+        return { title: 'Post not found', robots: { index: false, follow: false } };
     }
 
-    return {
+    return pageMetadata({
         title: post.title,
         description: post.description,
-        openGraph: {
-            title: `${post.title} | Ayush Chougula`,
-            description: post.description,
-            type: 'article',
-        },
-    };
+        path: `/blog/${slug}`,
+        type: 'article',
+    });
 }
 
-export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+/** react-markdown passes the hast `node` to custom components; keep it off the DOM. */
+function domProps<T extends { node?: unknown }>(props: T): Omit<T, 'node'> {
+    const rest = { ...props };
+    delete rest.node;
+    return rest;
+}
+
+/*
+ * Markdown safety: no rehype-raw and `skipHtml` is set, so raw HTML in a post is dropped rather than
+ * injected; react-markdown's default urlTransform strips non-http(s)/mailto URLs from links and images.
+ */
+const markdownComponents: Components = {
+    // The page title is the only h1; a markdown h1 becomes a section heading.
+    h1: (props) => <h2 {...domProps(props)} />,
+    a: (props) => {
+        const { href = '', ...rest } = domProps(props);
+        const isExternal = /^https?:\/\//i.test(href);
+        return <a href={href} target={isExternal ? '_blank' : undefined} rel={isExternal ? 'noopener noreferrer' : undefined} {...rest} />;
+    },
+    // Wide code and tables scroll inside their own frame; tabIndex keeps that scroll reachable by keyboard.
+    pre: (props) => <pre tabIndex={0} {...domProps(props)} />,
+    table: (props) => (
+        <div className="prose-table" tabIndex={0}>
+            <table {...domProps(props)} />
+        </div>
+    ),
+};
+
+export default async function BlogPostPage({ params }: PageProps) {
     const { slug } = await params;
-    const post = getBlogPostBySlug(slug);
+    const posts = getBlogPosts();
+    const index = posts.findIndex((item) => item.slug === slug);
+    const post = index >= 0 ? posts[index] : getBlogPostBySlug(slug);
 
     if (!post) notFound();
 
+    // Posts are sorted newest first.
+    const newer = index > 0 ? posts[index - 1] : undefined;
+    const older = index >= 0 ? posts[index + 1] : undefined;
+
     return (
-        <main className="min-h-screen selection:bg-purple/30 selection:text-white">
-            <article className="relative z-10 mx-auto max-w-4xl px-6 pb-24 pt-32 md:px-12">
-                <Link
-                    href="/blog"
-                    className="mb-10 inline-flex items-center gap-2 text-sm font-bold text-muted transition hover:text-cyan focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan"
-                >
-                    <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-                    Back to Writing
-                </Link>
+        <main className="secondary-page editorial-page">
+            <div className="secondary-shell">
+                <article aria-labelledby="article-title">
+                    <header className="secondary-intro">
+                        <Link href="/blog" className="secondary-back"><ArrowLeft size={16} aria-hidden="true" /> Back to writing</Link>
+                        <p className="post-meta article-meta">
+                            {post.date ? (
+                                <>
+                                    <time dateTime={post.date}>{formatPostDate(post.date)}</time>
+                                    <span aria-hidden="true">·</span>
+                                </>
+                            ) : null}
+                            <span>{post.readingTime}</span>
+                        </p>
+                        <h1 id="article-title" className="article-title">{post.title}</h1>
+                        {post.description ? <p className="secondary-lead">{post.description}</p> : null}
+                    </header>
 
-                <header className="mb-10">
-                    <h1 className="text-4xl font-black leading-tight tracking-tight text-white md:text-6xl">
-                        {post.title}
-                    </h1>
-
-                    <div className="mt-6 flex flex-wrap items-center gap-3 text-sm font-semibold text-muted">
-                        {post.date ? (
-                            <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5">
-                                <Calendar className="h-4 w-4 text-cyan" aria-hidden="true" />
-                                {post.date}
-                            </span>
-                        ) : null}
-                        <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5">
-                            <Clock className="h-4 w-4 text-orange" aria-hidden="true" />
-                            {post.readingTime}
-                        </span>
-                    </div>
-
-                    {post.tags.length > 0 ? (
-                        <div className="mt-4 flex flex-wrap gap-2" aria-label="Post tags">
-                            {post.tags.map((tag) => (
-                                <span key={tag} className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-surface px-3 py-1 text-xs font-bold text-muted">
-                                    <Tag className="h-3.5 w-3.5 text-purple" aria-hidden="true" />
-                                    {tag}
+                    <div className="article-layout">
+                        <aside className="article-aside" aria-label="About this post">
+                            <div className="article-author">
+                                <span className="logo-mark logo-mark--placeholder logo-mark--yellow" style={{ '--logo-size': '44px' } as React.CSSProperties} aria-hidden="true">
+                                    {profile.initials}
                                 </span>
-                            ))}
-                        </div>
-                    ) : null}
-                </header>
+                                <div>
+                                    <strong>{profile.fullName}</strong>
+                                    <span>{profile.headline}</span>
+                                </div>
+                            </div>
+                            {post.tags.length > 0 ? (
+                                <div>
+                                    <span className="editorial-label">Filed under</span>
+                                    <TechTags items={post.tags} label="Post tags" />
+                                </div>
+                            ) : null}
+                        </aside>
 
-                <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-6 md:p-10">
-                    <ReactMarkdown
-                        remarkPlugins={[remarkGfm]}
-                        components={{
-                            h1: ({ ...props }) => <h2 className="mb-5 mt-10 text-3xl font-black text-white" {...props} />,
-                            h2: ({ ...props }) => <h2 className="mb-4 mt-10 border-b border-white/10 pb-3 text-2xl font-black text-white" {...props} />,
-                            h3: ({ ...props }) => <h3 className="mb-3 mt-8 text-xl font-black text-white" {...props} />,
-                            p: ({ ...props }) => <p className="mb-6 text-base leading-8 text-muted" {...props} />,
-                            a: ({ href = '', ...props }) => {
-                                const isExternal = href.startsWith('http://') || href.startsWith('https://');
-                                return (
-                                    <a
-                                        href={href}
-                                        target={isExternal ? '_blank' : undefined}
-                                        rel={isExternal ? 'noopener noreferrer' : undefined}
-                                        className="text-cyan underline underline-offset-4 transition hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan"
-                                        {...props}
-                                    />
-                                );
-                            },
-                            ul: ({ ...props }) => <ul className="mb-6 list-disc space-y-2 pl-6 text-muted" {...props} />,
-                            ol: ({ ...props }) => <ol className="mb-6 list-decimal space-y-2 pl-6 text-muted" {...props} />,
-                            li: ({ ...props }) => <li className="leading-7 marker:text-purple" {...props} />,
-                            blockquote: ({ ...props }) => (
-                                <blockquote className="my-8 rounded-r-xl border-l-4 border-purple bg-white/[0.04] py-2 pl-6 text-white/80" {...props} />
-                            ),
-                            code: ({ className, children, ...props }) => {
-                                const match = /language-(\w+)/.exec(className || '');
-                                const isInline = !match;
-                                return isInline ? (
-                                    <code className="rounded-md border border-white/10 bg-surface px-1.5 py-0.5 font-mono text-[0.9em] text-orange" {...props}>
-                                        {children}
-                                    </code>
-                                ) : (
-                                    <pre className="my-8 overflow-x-auto rounded-xl border border-white/10 bg-black/70 p-5 font-mono text-sm leading-relaxed text-white">
-                                        <code className={className} {...props}>
-                                            {children}
-                                        </code>
-                                    </pre>
-                                );
-                            },
-                        }}
-                    >
-                        {post.content}
-                    </ReactMarkdown>
-                </div>
-            </article>
+                        <div className="article-body prose">
+                            <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents} skipHtml>
+                                {post.content}
+                            </ReactMarkdown>
+                        </div>
+                    </div>
+                </article>
+
+                {newer || older ? (
+                    <nav className="article-pager" aria-label="More writing">
+                        {newer ? (
+                            <Link href={`/blog/${newer.slug}`} className="ink-card ink-card--interactive article-pager-link">
+                                <span className="editorial-label"><ArrowLeft size={14} aria-hidden="true" /> Newer post</span>
+                                <strong>{newer.title}</strong>
+                            </Link>
+                        ) : null}
+                        {older ? (
+                            <Link href={`/blog/${older.slug}`} className="ink-card ink-card--interactive article-pager-link article-pager-link--next">
+                                <span className="editorial-label">Older post <ArrowRight size={14} aria-hidden="true" /></span>
+                                <strong>{older.title}</strong>
+                            </Link>
+                        ) : null}
+                    </nav>
+                ) : null}
+
+                <aside className="secondary-closing editorial-closing" aria-labelledby="article-closing">
+                    <div>
+                        <h2 id="article-closing">Thanks for reading.</h2>
+                        <p className="editorial-closing-copy">The project case studies show the same thinking in practice.</p>
+                    </div>
+                    <div className="editorial-actions">
+                        <Link href="/projects" className="brutal-button">Explore my work <ArrowUpRight size={18} aria-hidden="true" /></Link>
+                        <Link href="/blog" className="brutal-button brutal-button--secondary">All writing <ArrowRight size={17} aria-hidden="true" /></Link>
+                    </div>
+                </aside>
+            </div>
+            <SignatureFooter />
         </main>
     );
 }

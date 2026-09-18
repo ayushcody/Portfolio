@@ -1,3 +1,4 @@
+import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, SITE_URL } from "../lib/seo";
 import { profile, type ProfileLink } from "../src/data/profile";
 
 export type SiteConfig = {
@@ -15,11 +16,11 @@ export type SiteConfig = {
 };
 
 export const siteConfig: SiteConfig = {
-    name: `${profile.fullName} Portfolio`,
-    url: "https://ayushchougula.in",
-    defaultTitle: `${profile.fullName} | ${profile.headline}`,
-    defaultDescription:
-        "Hiring-focused portfolio for Ayush Chougula, an AI systems engineer building agentic workflows, RAG pipelines, voice AI, AI infrastructure, and full-stack AI products.",
+    // SEO identity lives in lib/seo.ts (single source; override the domain with NEXT_PUBLIC_SITE_URL).
+    name: SITE_NAME,
+    url: SITE_URL,
+    defaultTitle: SITE_TITLE,
+    defaultDescription: SITE_DESCRIPTION,
     socialLinks: {
         github: profile.links.github,
         linkedin: profile.links.linkedin,

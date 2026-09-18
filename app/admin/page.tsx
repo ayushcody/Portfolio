@@ -1,17 +1,23 @@
+import type { Metadata } from "next";
 import { AdminDashboard } from "@/components/admin/AdminDashboard";
 
-export const metadata = {
-  title: "Admin | Ayush Chougula",
-  description: "Private portfolio control console.",
+export const metadata: Metadata = {
+  title: "Admin",
+  description: "Private portfolio content console.",
   robots: {
     index: false,
     follow: false,
+    nocache: true,
+    googleBot: {
+      index: false,
+      follow: false,
+    },
   },
 };
 
 export default function AdminPage() {
   return (
-    <main className="min-h-screen relative selection:bg-cyan/30 selection:text-white">
+    <main className="adm-main">
       <AdminDashboard />
     </main>
   );

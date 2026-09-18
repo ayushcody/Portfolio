@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useId, useRef, useState } from 'react';
@@ -21,52 +22,66 @@ function isResumeActive(pathname: string) {
     return pathname.startsWith('/resume');
 }
 
+const mobileItems = [...navItems, { name: 'Resume', href: '/resume', match: isResumeActive }];
+
 export default function Navbar() {
     const pathname = usePathname();
     const menuId = useId();
     const navigationRef = useRef<HTMLElement>(null);
     const menuButtonRef = useRef<HTMLButtonElement>(null);
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    // The menu belongs to the page it was opened on, so any navigation (links, back/forward) closes it.
+    const [menuOpenedOn, setMenuOpenedOn] = useState<string | null>(null);
+    const mobileMenuOpen = menuOpenedOn === pathname;
+    const closeMenu = () => setMenuOpenedOn(null);
 
     useEffect(() => {
         if (!mobileMenuOpen) return;
 
         const onKeyDown = (event: KeyboardEvent) => {
             if (event.key === 'Escape') {
-                setMobileMenuOpen(false);
+                setMenuOpenedOn(null);
                 menuButtonRef.current?.focus();
             }
         };
+        const isOutside = (target: EventTarget | null) =>
+            target instanceof Node && !navigationRef.current?.contains(target);
         const onPointerDown = (event: PointerEvent) => {
-            if (event.target instanceof Node && !navigationRef.current?.contains(event.target)) {
-                setMobileMenuOpen(false);
-            }
+            if (isOutside(event.target)) setMenuOpenedOn(null);
+        };
+        // Tabbing past the last menu item closes the disclosure instead of leaving it over the page.
+        const onFocusIn = (event: FocusEvent) => {
+            if (isOutside(event.target)) setMenuOpenedOn(null);
         };
         const desktopQuery = window.matchMedia('(min-width: 1024px)');
         const onBreakpointChange = (event: MediaQueryListEvent) => {
-            if (event.matches) setMobileMenuOpen(false);
+            if (event.matches) setMenuOpenedOn(null);
         };
 
         window.addEventListener('keydown', onKeyDown);
         window.addEventListener('pointerdown', onPointerDown);
+        document.addEventListener('focusin', onFocusIn);
         desktopQuery.addEventListener('change', onBreakpointChange);
         return () => {
             window.removeEventListener('keydown', onKeyDown);
             window.removeEventListener('pointerdown', onPointerDown);
+            document.removeEventListener('focusin', onFocusIn);
             desktopQuery.removeEventListener('change', onBreakpointChange);
         };
     }, [mobileMenuOpen]);
 
     return (
-        <nav ref={navigationRef} aria-label="Primary navigation" className="portfolio-nav">
+        <nav ref={navigationRef} aria-label="Primary" className="portfolio-nav">
             <div className="nav-pill">
-                <Link
-                    href="/#home"
-                    aria-label="Go to homepage"
-                    className="nav-brand"
-                    onClick={() => setMobileMenuOpen(false)}
-                >
-                    <img src="/ac.png" alt="AC Logo" className="h-9 w-auto object-contain" />
+                <Link href="/#home" className="nav-brand" onClick={closeMenu}>
+                    <Image
+                        src="/ac.png"
+                        alt="Ayush Chougula, home"
+                        width={36}
+                        height={36}
+                        className="nav-brand-mark"
+                        loading="eager"
+                        fetchPriority="low"
+                    />
                 </Link>
 
                 <ul className="nav-desktop-links">
@@ -84,24 +99,24 @@ export default function Navbar() {
                 </ul>
 
                 <div className="nav-actions">
-                    <Link
+                    <a
                         href={profile.github}
                         target="_blank"
                         rel="noopener noreferrer"
-                        aria-label="Open GitHub profile"
+                        aria-label="GitHub profile (opens in a new tab)"
                         className="nav-icon-button nav-social"
                     >
                         <Github size={18} aria-hidden="true" />
-                    </Link>
-                    <Link
+                    </a>
+                    <a
                         href={profile.linkedin}
                         target="_blank"
                         rel="noopener noreferrer"
-                        aria-label="Open LinkedIn profile"
+                        aria-label="LinkedIn profile (opens in a new tab)"
                         className="nav-icon-button nav-social"
                     >
                         <Linkedin size={18} aria-hidden="true" />
-                    </Link>
+                    </a>
 
                     <span className="nav-divider" aria-hidden="true" />
                     <ThemeToggle />
@@ -110,7 +125,7 @@ export default function Navbar() {
                         href="/resume"
                         aria-current={isResumeActive(pathname) ? 'page' : undefined}
                         className="nav-resume"
-                        onClick={() => setMobileMenuOpen(false)}
+                        onClick={closeMenu}
                     >
                         Resume <ArrowUpRight size={15} aria-hidden="true" />
                     </Link>
@@ -118,8 +133,8 @@ export default function Navbar() {
                     <button
                         ref={menuButtonRef}
                         className="nav-icon-button nav-menu-trigger"
-                        onClick={() => setMobileMenuOpen((open) => !open)}
-                        aria-label={mobileMenuOpen ? 'Close mobile menu' : 'Open mobile menu'}
+                        onClick={() => setMenuOpenedOn(mobileMenuOpen ? null : pathname)}
+                        aria-label="Menu"
                         aria-expanded={mobileMenuOpen}
                         aria-controls={menuId}
                         type="button"
@@ -129,33 +144,33 @@ export default function Navbar() {
                 </div>
             </div>
 
-            {mobileMenuOpen ? (
-                <div id={menuId} className="nav-mobile-panel">
-                    <ul className="nav-mobile-links">
-                        {[...navItems, { name: 'Resume', href: '/resume', match: isResumeActive }].map((item, index) => (
-                            <li key={item.name}>
-                                <Link
-                                    href={item.href}
-                                    aria-current={item.match(pathname) ? 'page' : undefined}
-                                    onClick={() => setMobileMenuOpen(false)}
-                                    className={`nav-mobile-link${item.name === 'Resume' ? ' nav-mobile-resume' : ''}`}
-                                >
-                                    <span><span className="nav-mobile-index" aria-hidden="true">0{index + 1}</span>{item.name}</span>
-                                    <ArrowUpRight size={18} aria-hidden="true" />
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
-                    <div className="nav-mobile-socials">
-                        <Link href={profile.github} target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)}>
-                            <Github size={17} aria-hidden="true" /> GitHub <ArrowUpRight size={13} aria-hidden="true" />
-                        </Link>
-                        <Link href={profile.linkedin} target="_blank" rel="noopener noreferrer" onClick={() => setMobileMenuOpen(false)}>
-                            <Linkedin size={17} aria-hidden="true" /> LinkedIn <ArrowUpRight size={13} aria-hidden="true" />
-                        </Link>
-                    </div>
+            <div id={menuId} className="nav-mobile-panel" hidden={!mobileMenuOpen}>
+                <ul className="nav-mobile-links">
+                    {mobileItems.map((item, index) => (
+                        <li key={item.name}>
+                            <Link
+                                href={item.href}
+                                aria-current={item.match(pathname) ? 'page' : undefined}
+                                onClick={closeMenu}
+                                className={`nav-mobile-link${item.name === 'Resume' ? ' nav-mobile-resume' : ''}`}
+                            >
+                                <span><span className="nav-mobile-index" aria-hidden="true">0{index + 1}</span>{item.name}</span>
+                                <ArrowUpRight size={18} aria-hidden="true" />
+                            </Link>
+                        </li>
+                    ))}
+                </ul>
+                <div className="nav-mobile-socials">
+                    <a href={profile.github} target="_blank" rel="noopener noreferrer" onClick={closeMenu}>
+                        <Github size={17} aria-hidden="true" /> GitHub <ArrowUpRight size={13} aria-hidden="true" />
+                        <span className="visually-hidden"> (opens in a new tab)</span>
+                    </a>
+                    <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" onClick={closeMenu}>
+                        <Linkedin size={17} aria-hidden="true" /> LinkedIn <ArrowUpRight size={13} aria-hidden="true" />
+                        <span className="visually-hidden"> (opens in a new tab)</span>
+                    </a>
                 </div>
-            ) : null}
+            </div>
         </nav>
     );
 }

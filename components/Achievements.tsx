@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { ArrowLeft, ArrowRight, ArrowUpRight, Sparkles } from "lucide-react";
 import { achievementsData } from "@/config/portfolio";
@@ -17,15 +18,14 @@ function AchievementCard({ item, index }: { item: AchievementEntry; index: numbe
             <article aria-labelledby={`achievement-title-${item.id}`}>
                 <div className="achievement-artwork">
                     {item.image && !imageFailed ? (
-                        // A regular image also supports locally added photos without a remote-host allowlist.
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
+                        // Local photos (public/achievements) are resized per card; other URLs are served as-is.
+                        <Image
                             className="achievement-photo"
                             src={item.image}
                             alt={item.imageAlt}
-                            width={1600}
-                            height={1000}
-                            loading="lazy"
+                            fill
+                            sizes="(max-width: 480px) calc(100vw - 56px), (max-width: 1439px) 380px, 390px"
+                            unoptimized={!item.image.startsWith("/")}
                             onError={() => setImageFailed(true)}
                         />
                     ) : (

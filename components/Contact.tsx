@@ -1,9 +1,9 @@
 'use client';
 
-import { FormEvent, useState } from 'react';
-import { ArrowRight, Check, Copy, Github, Linkedin, Mail, MapPin, MessageSquare } from 'lucide-react';
-import { SkeuomorphicCard } from './ui/SkeuomorphicCard';
-import { profile } from '@/config/portfolio';
+import { type ChangeEvent, type FormEvent, type ReactNode, useEffect, useRef, useState } from 'react';
+import { ArrowUpRight, Check, CircleAlert, Copy, Github, Linkedin, Mail, MapPin, MessageSquare } from 'lucide-react';
+import { profile as fallbackProfile, type Profile } from '@/src/data/profile';
+import './contact.css';
 
 type FormState = {
     name: string;
@@ -12,6 +12,8 @@ type FormState = {
 };
 
 type FormErrors = Partial<Record<keyof FormState, string>>;
+
+type CopyState = 'idle' | 'copied' | 'failed';
 
 const bestFit = [
     'AI systems / agentic workflows',
@@ -26,6 +28,8 @@ const initialForm: FormState = {
     email: '',
     message: '',
 };
+
+const fieldOrder: (keyof FormState)[] = ['name', 'email', 'message'];
 
 function isValidEmail(value: string) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
@@ -45,24 +49,71 @@ function validate(form: FormState) {
     return errors;
 }
 
-export default function Contact() {
+type FieldProps = {
+    name: keyof FormState;
+    label: string;
+    error?: string;
+    children: (props: { id: string; name: string; 'aria-invalid': boolean; 'aria-describedby'?: string; className: string; required: true }) => ReactNode;
+};
+
+function Field({ name, label, error, children }: FieldProps) {
+    const id = `contact-${name}`;
+    const errorId = `${id}-error`;
+
+    return (
+        <div className={`contact-field${error ? ' contact-field--invalid' : ''}`}>
+            <label htmlFor={id} className="contact-field__label">{label}</label>
+            {children({
+                id,
+                name,
+                'aria-invalid': Boolean(error),
+                'aria-describedby': error ? errorId : undefined,
+                className: 'contact-field__control',
+                required: true,
+            })}
+            {error ? (
+                <p id={errorId} className="contact-field__error">
+                    <CircleAlert size={15} aria-hidden="true" />
+                    {error}
+                </p>
+            ) : null}
+        </div>
+    );
+}
+
+function ExternalHint() {
+    return <span className="visually-hidden"> (opens in a new tab)</span>;
+}
+
+export default function Contact({ profile = fallbackProfile }: { profile?: Profile }) {
     const [form, setForm] = useState<FormState>(initialForm);
     const [errors, setErrors] = useState<FormErrors>({});
-    const [copied, setCopied] = useState(false);
-    const [copyFailed, setCopyFailed] = useState(false);
+    const [copyState, setCopyState] = useState<CopyState>('idle');
+    const resetTimer = useRef<number | undefined>(undefined);
     const email = profile.email;
+    const location = [profile.location, profile.timezone].filter(Boolean).join(' · ');
+
+    useEffect(() => () => window.clearTimeout(resetTimer.current), []);
 
     const copyEmail = async () => {
-        if (!email || typeof navigator === 'undefined' || !navigator.clipboard) return;
+        if (!email) return;
+        window.clearTimeout(resetTimer.current);
 
         try {
+            if (typeof navigator === 'undefined' || !navigator.clipboard) throw new Error('Clipboard unavailable');
             await navigator.clipboard.writeText(email);
-            setCopied(true);
-            setCopyFailed(false);
-            window.setTimeout(() => setCopied(false), 1800);
+            setCopyState('copied');
+            resetTimer.current = window.setTimeout(() => setCopyState('idle'), 1800);
         } catch {
-            setCopyFailed(true);
+            setCopyState('failed');
         }
+    };
+
+    const updateField = (field: keyof FormState) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const nextForm = { ...form, [field]: event.target.value };
+        setForm(nextForm);
+        // Once a field has been flagged, clear or update its message as the visitor corrects it.
+        if (errors[field]) setErrors((current) => ({ ...current, [field]: validate(nextForm)[field] }));
     };
 
     const submitForm = (event: FormEvent<HTMLFormElement>) => {
@@ -71,7 +122,11 @@ export default function Contact() {
 
         const nextErrors = validate(form);
         setErrors(nextErrors);
-        if (Object.keys(nextErrors).length > 0) return;
+        const firstInvalid = fieldOrder.find((field) => nextErrors[field]);
+        if (firstInvalid) {
+            document.getElementById(`contact-${firstInvalid}`)?.focus();
+            return;
+        }
 
         const subject = `Portfolio inquiry from ${form.name.trim()}`;
         const body = [
@@ -85,214 +140,136 @@ export default function Contact() {
     };
 
     return (
-        <section id="contact" className="relative z-10 w-full scroll-mt-28 overflow-hidden px-6 py-20 md:px-12 md:py-24">
-            <div className="pointer-events-none absolute inset-x-6 top-16 mx-auto h-64 max-w-5xl rounded-full bg-gradient-to-r from-purple/10 via-cyan/10 to-orange/10 blur-[90px]" />
-            <div className="mx-auto max-w-7xl">
-                <div className="mb-10">
-                    <div className="mb-4 flex items-center gap-3">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-cyan/20 bg-cyan/10">
-                            <MessageSquare className="h-5 w-5 text-cyan" aria-hidden="true" />
-                        </div>
-                        <p className="text-sm font-bold uppercase tracking-widest text-cyan">Contact</p>
+        <section id="contact" className="contact-section" aria-labelledby="contact-heading">
+            <div className="portfolio-wrap">
+                <header className="contact-header">
+                    <div>
+                        <p className="contact-eyebrow"><MessageSquare size={15} aria-hidden="true" /> Contact</p>
+                        <h2 id="contact-heading">Let’s build something useful<span className="accent-period">.</span></h2>
                     </div>
-                    <h2 className="max-w-3xl text-4xl font-black tracking-tight text-white md:text-5xl">
-                        Let&apos;s build something useful.
-                    </h2>
-                    <p className="mt-5 max-w-3xl text-base leading-relaxed text-muted md:text-lg">
-                        I&apos;m open to AI engineering internships, full-stack roles, freelance builds, and collaboration around practical AI systems.
+                    <p className="contact-intro">
+                        I’m open to AI engineering internships, full-stack roles, freelance builds, and collaboration around practical AI systems.
                     </p>
-                </div>
+                </header>
 
-                <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-                    <div className="space-y-6">
-                        <SkeuomorphicCard className="p-6">
-                            <h3 className="text-2xl font-black text-white">Best fit</h3>
-                            <p className="mt-3 text-sm leading-relaxed text-muted">
-                                {profile.availability}
-                            </p>
-                            <div className="mt-5 flex flex-wrap gap-2">
-                                {bestFit.map((item) => (
-                                    <span key={item} className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs font-bold text-white/80">
-                                        {item}
-                                    </span>
-                                ))}
-                            </div>
-                        </SkeuomorphicCard>
+                <div className="contact-grid">
+                    <div className="contact-aside">
+                        <article className="ink-card tone-sage contact-card contact-fit" aria-labelledby="contact-fit-heading">
+                            <h3 id="contact-fit-heading">Best fit</h3>
+                            {profile.availability ? <p className="contact-card__copy">{profile.availability}</p> : null}
+                            <ul className="contact-fit__list">
+                                {bestFit.map((item) => <li key={item}>{item}</li>)}
+                            </ul>
+                        </article>
 
-                        <SkeuomorphicCard className="p-6">
-                            <h3 className="text-2xl font-black text-white">Direct contact</h3>
-                            <div className="mt-5 grid gap-3">
+                        <article className="ink-card contact-card contact-direct" aria-labelledby="contact-direct-heading">
+                            <h3 id="contact-direct-heading">Direct contact</h3>
+                            <ul className="contact-channels">
                                 {email ? (
-                                    <div className="rounded-2xl border border-white/10 bg-white/[0.035] p-4">
-                                        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                                            <div className="min-w-0">
-                                                <p className="mb-1 flex items-center gap-2 text-sm font-black text-white">
-                                                    <Mail className="h-4 w-4 text-cyan" aria-hidden="true" />
-                                                    Email
-                                                </p>
-                                                <a href={`mailto:${email}`} className="break-all text-sm font-semibold text-muted transition hover:text-white">
-                                                    {email}
-                                                </a>
-                                            </div>
-                                            <button
-                                                type="button"
-                                                onClick={copyEmail}
-                                                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm font-bold text-white transition hover:bg-white/[0.08] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan"
-                                                aria-label="Copy email address"
-                                            >
-                                                {copied ? <Check className="h-4 w-4 text-cyan" aria-hidden="true" /> : <Copy className="h-4 w-4" aria-hidden="true" />}
-                                                {copied ? 'Copied' : 'Copy'}
-                                            </button>
-                                        </div>
-                                        {copyFailed ? (
-                                            <p className="mt-3 text-sm font-semibold text-orange">Copy failed. You can select the email address manually.</p>
-                                        ) : null}
-                                    </div>
+                                    <li className="contact-channel contact-channel--email">
+                                        <span className="contact-channel__icon" aria-hidden="true"><Mail size={18} /></span>
+                                        <span className="contact-channel__text">
+                                            <span className="contact-channel__label">Email</span>
+                                            <a href={`mailto:${email}`} className="contact-channel__value contact-channel__mail">{email}</a>
+                                        </span>
+                                        <button type="button" onClick={copyEmail} className="contact-copy" data-state={copyState}>
+                                            {copyState === 'copied' ? <Check size={16} aria-hidden="true" /> : <Copy size={16} aria-hidden="true" />}
+                                            {copyState === 'copied' ? 'Copied' : 'Copy'}
+                                            <span className="visually-hidden"> email address</span>
+                                        </button>
+                                        <p className="contact-copy-status" role="status" aria-live="polite">
+                                            {copyState === 'copied' ? <span className="visually-hidden">Email address copied to your clipboard.</span> : null}
+                                            {copyState === 'failed' ? (
+                                                <>
+                                                    <CircleAlert size={15} aria-hidden="true" />
+                                                    Copy failed. You can select the email address manually.
+                                                </>
+                                            ) : null}
+                                        </p>
+                                    </li>
                                 ) : (
-                                    <div className="rounded-2xl border border-white/10 bg-white/[0.035] p-4 text-sm leading-relaxed text-muted">
+                                    <li className="contact-channel contact-channel--note">
                                         Email will be added soon. Use LinkedIn or GitHub for now.
-                                    </div>
+                                    </li>
                                 )}
 
-                                <a
-                                    href={profile.linkedin}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/[0.035] p-4 transition hover:border-cyan/30 hover:bg-white/[0.06] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan"
-                                >
-                                    <span className="flex min-w-0 items-center gap-3">
-                                        <Linkedin className="h-5 w-5 shrink-0 text-cyan" aria-hidden="true" />
-                                        <span>
-                                            <span className="block text-sm font-black text-white">LinkedIn</span>
-                                            <span className="block text-sm text-muted">{profile.linkedinHandle}</span>
-                                        </span>
-                                    </span>
-                                    <ArrowRight className="h-4 w-4 shrink-0 text-muted" aria-hidden="true" />
-                                </a>
-
-                                <a
-                                    href={profile.github}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/[0.035] p-4 transition hover:border-purple/30 hover:bg-white/[0.06] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan"
-                                >
-                                    <span className="flex min-w-0 items-center gap-3">
-                                        <Github className="h-5 w-5 shrink-0 text-purple" aria-hidden="true" />
-                                        <span>
-                                            <span className="block text-sm font-black text-white">GitHub</span>
-                                            <span className="block text-sm text-muted">{profile.githubHandle}</span>
-                                        </span>
-                                    </span>
-                                    <ArrowRight className="h-4 w-4 shrink-0 text-muted" aria-hidden="true" />
-                                </a>
-
-                                {(profile.location || profile.timezone) ? (
-                                    <div className="rounded-2xl border border-white/10 bg-white/[0.035] p-4">
-                                        <p className="mb-1 flex items-center gap-2 text-sm font-black text-white">
-                                            <MapPin className="h-4 w-4 text-orange" aria-hidden="true" />
-                                            Location
-                                        </p>
-                                        <p className="text-sm leading-relaxed text-muted">
-                                            {[profile.location, profile.timezone].filter(Boolean).join(' · ')}
-                                        </p>
-                                    </div>
+                                {profile.linkedin ? (
+                                    <li>
+                                        <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className="contact-channel contact-channel--link">
+                                            <span className="contact-channel__icon" aria-hidden="true"><Linkedin size={18} /></span>
+                                            <span className="contact-channel__text">
+                                                <span className="contact-channel__label">LinkedIn</span>
+                                                <span className="contact-channel__value">{profile.linkedinHandle}</span>
+                                            </span>
+                                            <ArrowUpRight className="contact-channel__arrow" size={20} aria-hidden="true" />
+                                            <ExternalHint />
+                                        </a>
+                                    </li>
                                 ) : null}
-                            </div>
 
-                            <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                                {email ? (
-                                    <a href={`mailto:${email}`} className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-black text-background transition hover:translate-y-[-1px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan sm:w-auto">
-                                        <Mail className="h-4 w-4" aria-hidden="true" />
-                                        Email Me
-                                    </a>
+                                {profile.github ? (
+                                    <li>
+                                        <a href={profile.github} target="_blank" rel="noopener noreferrer" className="contact-channel contact-channel--link">
+                                            <span className="contact-channel__icon" aria-hidden="true"><Github size={18} /></span>
+                                            <span className="contact-channel__text">
+                                                <span className="contact-channel__label">GitHub</span>
+                                                <span className="contact-channel__value">{profile.githubHandle}</span>
+                                            </span>
+                                            <ArrowUpRight className="contact-channel__arrow" size={20} aria-hidden="true" />
+                                            <ExternalHint />
+                                        </a>
+                                    </li>
                                 ) : null}
-                                <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-5 py-3 text-sm font-black text-white transition hover:bg-white/[0.08] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan sm:w-auto">
-                                    <Linkedin className="h-4 w-4 text-cyan" aria-hidden="true" />
-                                    Connect on LinkedIn
-                                </a>
-                                <a href={profile.github} target="_blank" rel="noopener noreferrer" className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-5 py-3 text-sm font-black text-white transition hover:bg-white/[0.08] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan sm:w-auto">
-                                    <Github className="h-4 w-4 text-purple" aria-hidden="true" />
-                                    View GitHub
-                                </a>
-                            </div>
-                        </SkeuomorphicCard>
+
+                                {location ? (
+                                    <li className="contact-channel">
+                                        <span className="contact-channel__icon" aria-hidden="true"><MapPin size={18} /></span>
+                                        <span className="contact-channel__text">
+                                            <span className="contact-channel__label">Location</span>
+                                            <span className="contact-channel__value">{location}</span>
+                                        </span>
+                                    </li>
+                                ) : null}
+                            </ul>
+                        </article>
                     </div>
 
-                    <SkeuomorphicCard className="p-6 md:p-8">
-                        <h3 className="text-2xl font-black text-white">Open an email draft</h3>
-                        <p className="mt-3 text-sm leading-relaxed text-muted">
-                            This opens your email client so the message is sent directly to me.
+                    <article className="ink-card contact-card contact-form-card" aria-labelledby="contact-form-heading">
+                        <h3 id="contact-form-heading">Open an email draft</h3>
+                        <p id="contact-form-note" className="contact-card__copy">
+                            This opens your email client so the message is sent directly to me. All fields are required.
                         </p>
 
                         {email ? (
-                            <form onSubmit={submitForm} className="mt-6 grid gap-5" noValidate>
-                                <div>
-                                    <label htmlFor="contact-name" className="mb-2 block text-sm font-black text-white">
-                                        Name
-                                    </label>
-                                    <input
-                                        id="contact-name"
-                                        name="name"
-                                        value={form.name}
-                                        onChange={(event) => setForm((current) => ({ ...current, name: event.target.value }))}
-                                        className="w-full rounded-2xl border border-white/10 bg-surface px-4 py-3 text-base text-white outline-none transition placeholder:text-muted/60 focus:border-cyan/50"
-                                        placeholder="Your name"
-                                        aria-invalid={Boolean(errors.name)}
-                                        aria-describedby={errors.name ? 'contact-name-error' : undefined}
-                                    />
-                                    {errors.name ? <p id="contact-name-error" className="mt-2 text-sm font-semibold text-orange">{errors.name}</p> : null}
+                            <form onSubmit={submitForm} className="contact-form" aria-describedby="contact-form-note" noValidate>
+                                <Field name="name" label="Name" error={errors.name}>
+                                    {(props) => (
+                                        <input {...props} type="text" autoComplete="name" value={form.name} onChange={updateField('name')} placeholder="Your name" />
+                                    )}
+                                </Field>
+                                <Field name="email" label="Email" error={errors.email}>
+                                    {(props) => (
+                                        <input {...props} type="email" autoComplete="email" inputMode="email" spellCheck={false} value={form.email} onChange={updateField('email')} placeholder="you@example.com" />
+                                    )}
+                                </Field>
+                                <Field name="message" label="Message" error={errors.message}>
+                                    {(props) => (
+                                        <textarea {...props} rows={6} value={form.message} onChange={updateField('message')} placeholder="Tell me what you are building or hiring for." />
+                                    )}
+                                </Field>
+                                <div className="contact-form__actions">
+                                    <button type="submit" className="brutal-button contact-submit">
+                                        Open email draft
+                                        <ArrowUpRight size={18} aria-hidden="true" />
+                                    </button>
                                 </div>
-
-                                <div>
-                                    <label htmlFor="contact-email" className="mb-2 block text-sm font-black text-white">
-                                        Email
-                                    </label>
-                                    <input
-                                        id="contact-email"
-                                        name="email"
-                                        type="email"
-                                        value={form.email}
-                                        onChange={(event) => setForm((current) => ({ ...current, email: event.target.value }))}
-                                        className="w-full rounded-2xl border border-white/10 bg-surface px-4 py-3 text-base text-white outline-none transition placeholder:text-muted/60 focus:border-cyan/50"
-                                        placeholder="you@example.com"
-                                        aria-invalid={Boolean(errors.email)}
-                                        aria-describedby={errors.email ? 'contact-email-error' : undefined}
-                                    />
-                                    {errors.email ? <p id="contact-email-error" className="mt-2 text-sm font-semibold text-orange">{errors.email}</p> : null}
-                                </div>
-
-                                <div>
-                                    <label htmlFor="contact-message" className="mb-2 block text-sm font-black text-white">
-                                        Message
-                                    </label>
-                                    <textarea
-                                        id="contact-message"
-                                        name="message"
-                                        value={form.message}
-                                        onChange={(event) => setForm((current) => ({ ...current, message: event.target.value }))}
-                                        rows={6}
-                                        className="w-full resize-y rounded-2xl border border-white/10 bg-surface px-4 py-3 text-base text-white outline-none transition placeholder:text-muted/60 focus:border-cyan/50"
-                                        placeholder="Tell me what you are building or hiring for."
-                                        aria-invalid={Boolean(errors.message)}
-                                        aria-describedby={errors.message ? 'contact-message-error' : undefined}
-                                    />
-                                    {errors.message ? <p id="contact-message-error" className="mt-2 text-sm font-semibold text-orange">{errors.message}</p> : null}
-                                </div>
-
-                                <button
-                                    type="submit"
-                                    className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-black text-background transition hover:translate-y-[-1px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan sm:w-auto"
-                                >
-                                    Open email draft
-                                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                                </button>
                             </form>
                         ) : (
-                            <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.035] p-4 text-sm leading-relaxed text-muted">
+                            <p className="state-note contact-form-empty">
                                 Email is not configured yet, so the message form is disabled. Use LinkedIn or GitHub for now.
-                            </div>
+                            </p>
                         )}
-                    </SkeuomorphicCard>
+                    </article>
                 </div>
             </div>
         </section>

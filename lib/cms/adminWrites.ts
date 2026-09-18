@@ -1,6 +1,8 @@
-import { cmsItemPath, cmsSingletonPath } from "./paths";
+import { CMS_PATHS, cmsItemPath, cmsSingletonPath } from "./paths";
 import {
   cmsWriteTimestamps,
+  deleteCmsDocument,
+  listCmsDocuments,
   readExistingCmsDocument,
   writeCmsDocument,
   writeVersionSnapshot,
@@ -8,7 +10,16 @@ import {
 import type { CmsCollectionName, CmsWriteResult } from "./types";
 
 type SingletonType = "profile" | "siteSettings";
-type ItemCollection = Exclude<CmsCollectionName, "profile" | "siteSettings">;
+export type ItemCollection = Exclude<CmsCollectionName, "profile" | "siteSettings">;
+
+const CMS_ITEM_PATHS: Record<ItemCollection, string> = {
+  projects: CMS_PATHS.projects,
+  experience: CMS_PATHS.experience,
+  skills: CMS_PATHS.skills,
+  achievements: CMS_PATHS.achievements,
+  interests: CMS_PATHS.interests,
+  blogPosts: CMS_PATHS.blogPosts,
+};
 
 function asId(id: string) {
   return id.trim();
@@ -28,8 +39,9 @@ async function writeCmsData(
       ...(typeof data === "object" && data !== null ? data : { value: data }),
       id: id ?? path.split("/").at(-1),
       status: mode,
-      hidden: mode === "archived" ? true : undefined,
-      archived: mode === "archived" ? true : undefined,
+      // Explicit boolean so re-publishing an archived item makes it visible again (writes merge).
+      // "archived" is left alone: for projects it is a content flag (the "From the archive" section).
+      hidden: mode === "archived",
       ...timestamps,
     });
   } catch (error) {
@@ -105,4 +117,17 @@ export async function archiveItem(
   if (!itemId) return { ok: false, error: "CMS item id is required." };
 
   return writeCmsData(cmsItemPath(collection, itemId), "archived", {}, itemId);
+}
+
+/** Admin list of every CMS document in a collection (drafts, published and archived). */
+export async function listItems(collection: ItemCollection) {
+  return listCmsDocuments(CMS_ITEM_PATHS[collection]);
+}
+
+/** Permanently removes the CMS document. Items that also exist in src/data fall back to that version. */
+export async function deleteItem(collection: ItemCollection, id: string): Promise<CmsWriteResult> {
+  const itemId = asId(id);
+  if (!itemId) return { ok: false, error: "CMS item id is required." };
+
+  return deleteCmsDocument(cmsItemPath(collection, itemId));
 }

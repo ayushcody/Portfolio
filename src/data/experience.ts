@@ -3,7 +3,14 @@
 // ============================================================================
 
 export type ExperienceItem = {
+    id?: string;
     company: string;
+    /** Company logo: https URL or /public path. A styled initials mark renders when empty or broken. */
+    companyLogo?: string;
+    /** Editorial headline for the timeline chapter. */
+    chapterTitle?: string;
+    /** Short label for the chapter guide. */
+    progressionLabel?: string;
     role: string;
     period: string;
     type?: string;
@@ -33,6 +40,7 @@ export type ExperienceEntry = ExperienceItem & {
 export const experiencesData: ExperienceEntry[] = [
     {
         "id": "quensulting",
+        "chapterTitle": "Let the systems talk.",
         "company": "Quensulting AI LLP",
         "role": "AI Voice Agents & Automation Engineer",
         "period": "May 2026 – Present",
@@ -84,6 +92,7 @@ export const experiencesData: ExperienceEntry[] = [
     },
     {
         "id": "persistent",
+        "chapterTitle": "Make AI accountable.",
         "company": "Persistent Systems Inc.",
         "role": "GenAI Intern",
         "period": "Sep 2025 – Apr 2026",
@@ -133,6 +142,7 @@ export const experiencesData: ExperienceEntry[] = [
     },
     {
         "id": "syniris",
+        "chapterTitle": "Own the whole product.",
         "company": "Syniris Technologies",
         "role": "Web Development Intern",
         "period": "Jun 2025 – Aug 2025",
@@ -180,6 +190,7 @@ export const experiencesData: ExperienceEntry[] = [
     },
     {
         "id": "nexus",
+        "chapterTitle": "Build with a team.",
         "company": "Nexus",
         "role": "Project Lead — Internship",
         "period": "Mar 2025 – May 2025",
@@ -225,6 +236,7 @@ export const experiencesData: ExperienceEntry[] = [
     },
     {
         "id": "acs",
+        "chapterTitle": "Learn the weak points.",
         "company": "Association for Cyber Security",
         "role": "DevSec Intern",
         "period": "Sep 2024 – Feb 2025",
