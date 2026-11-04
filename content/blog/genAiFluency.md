@@ -3,7 +3,6 @@ title: "GenAI Writes Fluently. That Is the Whole Problem."
 date: "2025-03-11"
 description: "A field guide to the ways language models go wrong (hallucination, stale context, drift, flattery) and the habits that keep AI-assisted writing accurate."
 tags: ["genai", "writing", "prompting"]
-featured: false
 ---
 
 Last month I asked a model how to configure a library I was using. It answered instantly, with a clean code sample and a confident explanation of a flag called `--strict-sync`.

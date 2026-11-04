@@ -3,7 +3,6 @@ title: "RAG Has Died Twice Since 2025. It's Doing Fine."
 date: "2026-08-12"
 description: "Long context was supposed to kill retrieval. Then agentic search was. Why RAG keeps coming back, what IBM's 'Is RAG Still Needed?' gets right, and how to write docs retrieval can find."
 tags: ["rag", "genai", "writing"]
-featured: true
 ---
 
 Retrieval-augmented generation has the most dramatic career in AI. It's been declared dead at least twice since I started building with it, and both times it got up, dusted itself off, and went back to answering questions about your company's leave policy.

@@ -3,7 +3,6 @@ title: "GenAI for Working Developers: LLMs, RAG, MCP and Agents, Explained With 
 date: "2025-05-06"
 description: "A practical guide to how generative AI apps actually work: what happens in one LLM call, how RAG grounds answers, what MCP plugs in, when you need an agent, and how to use each one in an ordinary workday."
 tags: ["genai", "rag", "mcp", "agents"]
-featured: true
 ---
 
 Every week someone asks me some version of "So how does this AI stuff actually work?" Usually they've already heard five acronyms, tried a chatbot, and come away with the feeling that everyone else got a manual they didn't.

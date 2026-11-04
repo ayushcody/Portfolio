@@ -32,7 +32,6 @@ PUBLIC_DIR = ROOT / "public"
 TERMS_FILE = ROOT / "content" / "style" / "terminology.json"
 
 REQUIRED_FIELDS = ("title", "date", "description", "tags")
-MAX_FEATURED = 3
 MAX_SENTENCE_WORDS = 38
 DESCRIPTION_RANGE = (60, 230)
 MEME_FORMATS = {"stonks", "nah-yeah", "versus", "dialogue"}
@@ -250,14 +249,8 @@ def main() -> int:
     targets = [path.resolve() for path in args.files] or all_posts
 
     findings: list[Finding] = []
-    featured = []
     for path in targets:
         findings.extend(lint_post(path, terms, slugs, args.external))
-        if re.search(r"^featured:\s*true\s*$", path.read_text(encoding="utf-8"), re.MULTILINE):
-            featured.append(path)
-    if not args.files and len(featured) > MAX_FEATURED:
-        for path in featured:
-            findings.append(Finding(path, 1, "error", "featured", f"{len(featured)} posts are featured; the blog index shows {MAX_FEATURED}"))
 
     for finding in sorted(findings, key=lambda f: (str(f.path), f.line)):
         print(finding)

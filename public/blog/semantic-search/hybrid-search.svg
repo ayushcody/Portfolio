@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="1200" height="600" role="img" aria-labelledby="t d">
+<title id="t">Hybrid search pipeline</title><desc id="d">A question is sent to a keyword index and a vector index in parallel. Their ranked lists are merged with reciprocal rank fusion, a reranker reorders the top candidates, and the best few passages are returned with their sources.</desc>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#23231f"/></marker></defs>
+<rect width="100%" height="100%" fill="#f7f4eb"/>
+<text x="60" y="58" text-anchor="start" font-family="'JetBrains Mono',ui-monospace,Menlo,monospace" font-size="15" font-weight="700" fill="#62625b">HYBRID SEARCH</text>
+<text x="60" y="84" text-anchor="start" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="17" font-weight="400" fill="#23231f">Keywords catch exact names. Vectors catch meaning. Fusion keeps both.</text>
+<rect x="66" y="256" width="200" height="100" fill="#23231f"/>
+<rect x="60" y="250" width="200" height="100" fill="#fffdf6" stroke="#23231f" stroke-width="3"/>
+<text x="160.0" y="284.3" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="21" font-weight="700" fill="#23231f">Question</text>
+<text x="160.0" y="313.3" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#23231f" opacity="0.82">“What does error</text>
+<text x="160.0" y="332.3" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#23231f" opacity="0.82">E1042 mean?”</text>
+<path d="M 270 280 C 320 280, 320 180, 370 180" fill="none" stroke="#23231f" stroke-width="3" marker-end="url(#ah)"/>
+<path d="M 270 320 C 320 320, 320 420, 370 420" fill="none" stroke="#23231f" stroke-width="3" marker-end="url(#ah)"/>
+<rect x="386" y="136" width="250" height="100" fill="#23231f"/>
+<rect x="380" y="130" width="250" height="100" fill="#f4d738" stroke="#23231f" stroke-width="3"/>
+<text x="505.0" y="163.0" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="20" font-weight="700" fill="#23231f">Keyword index</text>
+<text x="505.0" y="193.0" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#23231f" opacity="0.82">BM25: exact terms,</text>
+<text x="505.0" y="213.0" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#23231f" opacity="0.82">IDs, error codes</text>
+<rect x="386" y="376" width="250" height="100" fill="#23231f"/>
+<rect x="380" y="370" width="250" height="100" fill="#c3b0e4" stroke="#23231f" stroke-width="3"/>
+<text x="505.0" y="403.0" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="20" font-weight="700" fill="#23231f">Vector index</text>
+<text x="505.0" y="433.0" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#23231f" opacity="0.82">embeddings: meaning,</text>
+<text x="505.0" y="453.0" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#23231f" opacity="0.82">synonyms, paraphrase</text>
+<path d="M 640 180 C 690 180, 690 280, 735 290" fill="none" stroke="#23231f" stroke-width="3" marker-end="url(#ah)"/>
+<path d="M 640 420 C 690 420, 690 320, 735 310" fill="none" stroke="#23231f" stroke-width="3" marker-end="url(#ah)"/>
+<rect x="751" y="256" width="170" height="100" fill="#23231f"/>
+<rect x="745" y="250" width="170" height="100" fill="#b9d3b0" stroke="#23231f" stroke-width="3"/>
+<text x="830.0" y="282.7" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="19" font-weight="700" fill="#23231f">Fuse (RRF)</text>
+<text x="830.0" y="312.7" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#23231f" opacity="0.82">merge the two</text>
+<text x="830.0" y="332.7" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#23231f" opacity="0.82">ranked lists</text>
+<line x1="925" y1="300" x2="975" y2="300" stroke="#23231f" stroke-width="3" marker-end="url(#ah)"/>
+<rect x="991" y="256" width="170" height="100" fill="#23231f"/>
+<rect x="985" y="250" width="170" height="100" fill="#ee8d74" stroke="#23231f" stroke-width="3"/>
+<text x="1070.0" y="283.7" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="19" font-weight="700" fill="#23231f">Rerank</text>
+<text x="1070.0" y="312.7" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#23231f" opacity="0.82">score each pair</text>
+<text x="1070.0" y="331.7" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#23231f" opacity="0.82">question + passage</text>
+<rect x="745" y="450" width="261.2" height="28" fill="#f4d738" stroke="#23231f" stroke-width="2"/>
+<text x="756" y="470" font-family="'JetBrains Mono',ui-monospace,Menlo,monospace" font-size="14" font-weight="700" fill="#23231f">top 3-5 passages + sources</text>
+<path d="M 1070 360 L 1070 440 L 1010 440" fill="none" stroke="#23231f" stroke-width="3" marker-end="url(#ah)" stroke-dasharray="7 6"/>
+</svg>
