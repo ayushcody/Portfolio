@@ -27,6 +27,12 @@ The core loop:
 
 ![Six feature cards: AI-Powered Learning, Interactive Coding, Gamified Progress, Lightning Fast, Career-Focused and Community Driven.](/blog/synergylearn/features.jpg "The feature overview on the landing page.")
 
+## Watch the walkthrough
+
+The screenshots stop at the sign-up page. The walkthrough is recorded while signed in, so it shows the parts of the app they can't.
+
+[SynergyLearn: product walkthrough](https://www.loom.com/share/f8bde39155014a3e8241c6cbc84ec5cb)
+
 ## The architecture, briefly
 
 A React and Vite single-page app talks to an Express API. Firebase Auth issues ID tokens; the API verifies them with the Firebase Admin SDK before touching anyone's data in Firestore. Gemini handles content, assessments, and hints. Judge0 handles code execution.
