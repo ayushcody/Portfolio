@@ -2,7 +2,7 @@
 
 import { useRef, type CSSProperties } from 'react';
 import Link from 'next/link';
-import { ArrowDown, ArrowRight, ArrowUpRight, Asterisk } from 'lucide-react';
+import { ArrowDown, ArrowRight, ArrowUpRight, Asterisk, Award } from 'lucide-react';
 import { ExperienceLogo } from '@/components/ui/ExperienceLogo';
 import { TechTags } from '@/components/ui/TechTags';
 import { experiencesData, type ExperienceItem } from '@/src/data/experience';
@@ -125,9 +125,17 @@ export default function Experience({ experiences = experiencesData }: { experien
                                                     </>
                                                 )}
                                                 <TechTags items={role.techStack} label={`${role.company} tools and practices`} className="career-tools" />
-                                                {role.id === 'persistent' && (
+                                                {(role.certificate || role.id === 'persistent') && (
                                                     <p className="career-entry-foot">
-                                                        <Link className="text-link" href="/projects/email-digital-twin">Explore Persona Mail <ArrowUpRight size={16} aria-hidden="true" /></Link>
+                                                        {role.certificate && (
+                                                            <a className="text-link" href={role.certificate} target="_blank" rel="noopener noreferrer">
+                                                                <Award size={16} aria-hidden="true" /> View certificate <ArrowUpRight size={16} aria-hidden="true" />
+                                                                <span className="sr-only"> for {role.company} (opens in a new tab)</span>
+                                                            </a>
+                                                        )}
+                                                        {role.id === 'persistent' && (
+                                                            <Link className="text-link" href="/projects/email-digital-twin">Explore Persona Mail <ArrowUpRight size={16} aria-hidden="true" /></Link>
+                                                        )}
                                                     </p>
                                                 )}
                                             </div>

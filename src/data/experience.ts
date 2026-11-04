@@ -7,6 +7,8 @@ export type ExperienceItem = {
     company: string;
     /** Company logo: https URL or /public path. A styled initials mark renders when empty or broken. */
     companyLogo?: string;
+    /** Completion certificate: https URL or /public path (PDF or image). Shown as a "View certificate" link. */
+    certificate?: string;
     /** Editorial headline for the timeline chapter. */
     chapterTitle?: string;
     /** Short label for the chapter guide. */
@@ -42,6 +44,7 @@ export const experiencesData: ExperienceEntry[] = [
         "id": "quensulting",
         "chapterTitle": "Let the systems talk.",
         "company": "Quensulting AI LLP",
+        "companyLogo": "/experience/logos/quensulting.png",
         "role": "AI Voice Agents & Automation Engineer",
         "period": "May 2026 – Present",
         "type": "Current role",
@@ -94,6 +97,8 @@ export const experiencesData: ExperienceEntry[] = [
         "id": "persistent",
         "chapterTitle": "Make AI accountable.",
         "company": "Persistent Systems Inc.",
+        "companyLogo": "/experience/logos/persistent.png",
+        "certificate": "/experience/certificates/persistent-mentorship-certificate.pdf",
         "role": "GenAI Intern",
         "period": "Sep 2025 – Apr 2026",
         "type": "Internship",
@@ -144,6 +149,8 @@ export const experiencesData: ExperienceEntry[] = [
         "id": "syniris",
         "chapterTitle": "Own the whole product.",
         "company": "Syniris Technologies",
+        "companyLogo": "/experience/logos/syniris.png",
+        "certificate": "/experience/certificates/syniris-internship-certificate.jpg",
         "role": "Web Development Intern",
         "period": "Jun 2025 – Aug 2025",
         "type": "Internship",
@@ -238,6 +245,8 @@ export const experiencesData: ExperienceEntry[] = [
         "id": "acs",
         "chapterTitle": "Learn the weak points.",
         "company": "Association for Cyber Security",
+        "companyLogo": "/experience/logos/acs.png",
+        "certificate": "/experience/certificates/acs-devsec-internship-certificate.pdf",
         "role": "DevSec Intern",
         "period": "Sep 2024 – Feb 2025",
         "type": "Internship",

@@ -69,6 +69,17 @@ function ExperienceFields({ form, update, isNew, errors, persisted, idPrefix, di
         />
       </FormSection>
 
+      <FormSection title="Certificate" columns={1} description="Completion certificate for this role, shown as a View certificate link on the timeline.">
+        <TextField
+          {...bind("certificate")}
+          label="Certificate link"
+          value={form.certificate}
+          onChange={(value) => update({ certificate: value })}
+          placeholder="/experience/certificates/company.pdf or https://…"
+          hint="A PDF or image. Use a /public path or a full https:// URL. Leave empty to hide the link."
+        />
+      </FormSection>
+
       <FormSection title="Role">
         <TextField {...bind("role")} label="Role" required value={form.role} onChange={(value) => update({ role: value })} />
         <TextField {...bind("period")} label="Period" required value={form.period} onChange={(value) => update({ period: value })} placeholder="May 2026 – Present" />

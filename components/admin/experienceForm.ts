@@ -13,6 +13,7 @@ export type ExperienceForm = {
   id: string;
   company: string;
   companyLogo: string;
+  certificate: string;
   chapterTitle: string;
   progressionLabel: string;
   role: string;
@@ -30,6 +31,8 @@ export type ExperienceForm = {
 export type ExperiencePayload = Omit<CmsExperience, "status" | "hidden" | "createdAt" | "updatedAt" | "publishedAt" | "version"> & {
   /** Always written; "" removes a static logo. */
   companyLogo: string;
+  /** Always written; "" removes a static certificate link. */
+  certificate: string;
 };
 
 export function blankExperienceForm(order: number): ExperienceForm {
@@ -37,6 +40,7 @@ export function blankExperienceForm(order: number): ExperienceForm {
     id: "",
     company: "",
     companyLogo: "",
+    certificate: "",
     chapterTitle: "",
     progressionLabel: "",
     role: "",
@@ -57,6 +61,7 @@ export function experienceToForm(item: AdminExperience): ExperienceForm {
     id: item.id,
     company: item.company ?? "",
     companyLogo: item.companyLogo ?? "",
+    certificate: item.certificate ?? "",
     chapterTitle: item.chapterTitle ?? "",
     progressionLabel: item.progressionLabel ?? "",
     role: item.role ?? "",
@@ -95,17 +100,22 @@ export function validateExperienceForm(form: ExperienceForm, context: { isNew: b
   const logo = checkExternalUrl(form.companyLogo, "image");
   if (!logo.ok) errors.companyLogo = logo.error;
 
+  const certificate = checkExternalUrl(form.certificate, "document");
+  if (!certificate.ok) errors.certificate = certificate.error;
+
   return errors;
 }
 
 export function experienceFormToPayload(form: ExperienceForm): ExperiencePayload {
   const logo = checkExternalUrl(form.companyLogo, "image");
+  const certificate = checkExternalUrl(form.certificate, "document");
   return {
     id: form.id.trim(),
     order: Math.max(0, Math.round(asNumber(form.order, 0))),
     featured: form.featured,
     company: form.company.trim(),
     companyLogo: logo.ok ? (logo.value ?? "") : "",
+    certificate: certificate.ok ? (certificate.value ?? "") : "",
     chapterTitle: form.chapterTitle.trim(),
     progressionLabel: form.progressionLabel.trim(),
     role: form.role.trim(),
@@ -145,6 +155,7 @@ function partialExperience(doc: Record<string, unknown>, fallback: AdminExperien
     ...fallback,
     company: text("company", fallback.company) ?? "",
     companyLogo: text("companyLogo", fallback.companyLogo),
+    certificate: text("certificate", fallback.certificate),
     chapterTitle: text("chapterTitle", fallback.chapterTitle),
     progressionLabel: text("progressionLabel", fallback.progressionLabel),
     role: text("role", fallback.role) ?? "",

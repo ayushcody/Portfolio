@@ -70,8 +70,9 @@
 .career-subhead { margin-top: 18px; }
 .career-subhead + .career-points { margin-top: 8px; }
 .career-tools { margin-top: 22px; }
-.career-entry-foot { margin-top: 18px; border-top: var(--border-hair); }
+.career-entry-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 0 28px; margin-top: 18px; border-top: var(--border-hair); }
 .career-entry-foot .text-link { min-height: 44px; padding-block: 0; }
+.career-entry-foot .text-link:hover .lucide-award { transform: none; }
 
 /* Narrow cards: the type chip becomes a sticker on the top edge, and date / location stack. */
 @container career-entry (max-width: 520px) {

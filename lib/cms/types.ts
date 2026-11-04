@@ -143,6 +143,7 @@ export type CmsExperience = CmsMeta &
     ExperienceItem,
     | "company"
     | "companyLogo"
+    | "certificate"
     | "chapterTitle"
     | "progressionLabel"
     | "role"
