@@ -5,8 +5,10 @@ import ReactMarkdown, { type Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
 import { SignatureFooter } from '@/components/SignatureFooter';
+import { MemeCard } from '@/components/blog/MemeCard';
 import { TechTags } from '@/components/ui/TechTags';
 import { profile } from '@/config/portfolio';
+import { videoEmbed } from '@/lib/embeds';
 import { formatPostDate, getBlogPostBySlug, getBlogPosts } from '@/lib/markdown';
 import { pageMetadata } from '@/lib/seo';
 import '@/components/secondary-pages.css';
@@ -43,20 +45,87 @@ function domProps<T extends { node?: unknown }>(props: T): Omit<T, 'node'> {
     return rest;
 }
 
+type HastNode = { type: string; tagName?: string; value?: string; properties?: Record<string, unknown>; children?: HastNode[] };
+
+/** The single element child of a paragraph, ignoring whitespace; undefined when there is other content. */
+function soleElement(node: unknown): HastNode | undefined {
+    const children = ((node as HastNode | undefined)?.children ?? []).filter((child) => !(child.type === 'text' && !child.value?.trim()));
+    return children.length === 1 && children[0].type === 'element' ? children[0] : undefined;
+}
+
+function textOf(node: HastNode | undefined): string {
+    if (!node) return '';
+    if (node.type === 'text') return node.value ?? '';
+    return (node.children ?? []).map(textOf).join('');
+}
+
 /*
  * Markdown safety: no rehype-raw and `skipHtml` is set, so raw HTML in a post is dropped rather than
  * injected; react-markdown's default urlTransform strips non-http(s)/mailto URLs from links and images.
+ *
+ * Authoring conventions on top of plain Markdown:
+ * - an image alone in its paragraph becomes a figure; its title (`![alt](src "Caption")`) is the caption;
+ * - a Loom or YouTube link alone in its paragraph becomes an embedded player, with the link kept below it;
+ * - a ```meme fenced block becomes a MemeCard.
  */
 const markdownComponents: Components = {
     // The page title is the only h1; a markdown h1 becomes a section heading.
     h1: (props) => <h2 {...domProps(props)} />,
+    p: (props) => {
+        const { children, ...rest } = domProps(props);
+        const only = soleElement(props.node);
+
+        if (only?.tagName === 'img') {
+            const caption = typeof only.properties?.title === 'string' ? only.properties.title : '';
+            return (
+                <figure className="prose-figure">
+                    {children}
+                    {caption ? <figcaption>{caption}</figcaption> : null}
+                </figure>
+            );
+        }
+
+        const href = only?.tagName === 'a' && typeof only.properties?.href === 'string' ? only.properties.href : '';
+        const embed = href ? videoEmbed(href) : null;
+        if (embed) {
+            const label = textOf(only) || `Watch on ${embed.provider}`;
+            return (
+                <figure className="prose-embed">
+                    <div className="prose-embed-frame">
+                        <iframe
+                            src={embed.src}
+                            title={label}
+                            loading="lazy"
+                            allow="fullscreen; picture-in-picture; encrypted-media"
+                            allowFullScreen
+                            referrerPolicy="strict-origin-when-cross-origin"
+                        />
+                    </div>
+                    <figcaption>
+                        <a href={href} target="_blank" rel="noopener noreferrer">{label}</a> <span>· {embed.provider}</span>
+                    </figcaption>
+                </figure>
+            );
+        }
+
+        return <p {...rest}>{children}</p>;
+    },
+    // eslint-disable-next-line @next/next/no-img-element -- post images are plain Markdown; sizes are unknown at build time.
+    img: (props) => <img {...domProps(props)} alt={props.alt ?? ''} loading="lazy" decoding="async" />,
     a: (props) => {
         const { href = '', ...rest } = domProps(props);
         const isExternal = /^https?:\/\//i.test(href);
         return <a href={href} target={isExternal ? '_blank' : undefined} rel={isExternal ? 'noopener noreferrer' : undefined} {...rest} />;
     },
     // Wide code and tables scroll inside their own frame; tabIndex keeps that scroll reachable by keyboard.
-    pre: (props) => <pre tabIndex={0} {...domProps(props)} />,
+    pre: (props) => {
+        const code = soleElement(props.node);
+        const className = code?.properties?.className;
+        if (code?.tagName === 'code' && Array.isArray(className) && className.includes('language-meme')) {
+            return <MemeCard source={textOf(code)} />;
+        }
+        return <pre tabIndex={0} {...domProps(props)} />;
+    },
     table: (props) => (
         <div className="prose-table" tabIndex={0}>
             <table {...domProps(props)} />
