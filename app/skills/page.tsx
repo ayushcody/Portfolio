@@ -14,7 +14,7 @@ export const metadata = pageMetadata({
 const workflows = [
   { title: "Ground an AI answer.", copy: "Ingest documents, build a retrieval path, pass useful context to the model, then evaluate the result.", project: "See AndhaKaanun", href: "/projects/andhakaanun" },
   { title: "Connect the whole product.", copy: "Bring the interface, APIs, auth, data, and AI provider together in one usable flow.", project: "See Email Digital Twin", href: "/projects/email-digital-twin" },
-  { title: "Make the next version better.", copy: "Compare prompts, check structured outputs, and catch regressions before they become product behavior.", project: "See LLM Evaluation Framework", href: "/projects/llm-evaluation-framework" },
+  { title: "Make the next version better.", copy: "Compare prompts, check structured outputs, and catch regressions before they become product behavior.", project: "See how I measure search quality", href: "/blog/semanticSearch" },
 ];
 
 export default function SkillsPage() {

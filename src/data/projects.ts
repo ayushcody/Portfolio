@@ -4,7 +4,6 @@ import {
     BookOpen,
     Code2,
     GraduationCap,
-    ClipboardCheck,
     ShieldCheck,
     BadgeDollarSign,
     Microscope,
@@ -415,62 +414,6 @@ export const projectsData: PortfolioProject[] = [
         icon: GraduationCap,
         color: "text-purple",
         bg: "bg-purple/10",
-    }),
-    project({
-        id: "llm-evaluation-framework",
-        title: "LLM Evaluation Framework",
-        shortTitle: "LLM Eval Framework",
-        category: "AI Infrastructure",
-        status: "Case Study",
-        featured: true,
-        showOnHome: false,
-        archived: false,
-        priority: 6,
-        summary:
-            "Evaluation system for benchmarking LLM response quality across prompt versions using self-reflection scoring and rule-based validators.",
-        oneLine: "Prompt and response quality evaluation workflow for LLM iteration.",
-        problem:
-            "Prompt improvements are hard to trust when changes are judged manually and regressions are not measured across a consistent test set.",
-        solution:
-            "A prompt-versioned pipeline runs outputs through model-graded scoring, deterministic validators, and structured report generation.",
-        myRole:
-            "Designed the evaluation loop, validator structure, prompt comparison flow, and report format.",
-        techStack: ["LLM Eval", "Python", "Prompt Testing", "Validators", "Reports"],
-        tags: ["Evaluation", "Prompt testing", "Reliability", "AI infrastructure"],
-        architecture:
-            "A prompt-versioned evaluation pipeline runs model outputs through self-reflection scoring, deterministic validators, and report generation so changes can be compared like an MLOps monitoring workflow.",
-        architectureHighlights: [
-            "Prompt-versioned test runs",
-            "Model-graded and rule-based evaluation checks",
-            "Structured report output for comparison",
-        ],
-        features: ["Prompt A/B tests", "Hallucination checks", "Report generation"],
-        impact: [
-            "Made prompt iteration more systematic by comparing changes across repeatable checks.",
-            "Reduced reliance on manual review alone by combining validators with model-graded scoring.",
-        ],
-        challenges: [
-            "Avoiding false confidence from model-graded evaluation.",
-            "Choosing deterministic checks that match real product risk.",
-        ],
-        learnings: [
-            "LLM quality work needs regression testing, not just better prompts.",
-            "Evaluation reports are more useful when tied to prompt versions.",
-        ],
-        links: {},
-        description:
-            "Evaluation system for benchmarking LLM response quality across prompt versions using self-reflection scoring and rule-based validators.",
-        proofPoint: "Prompt A/B tests · Hallucination checks · Structured eval reports",
-        tech: ["LLM Eval", "Python", "Prompt Testing", "Validators", "Reports"],
-        highlights: [
-            "Benchmarks hallucination risk across prompt versions",
-            "Combines model-graded and rule-based checks",
-            "Generates structured reports for prompt iteration",
-        ],
-        demo: "",
-        icon: ClipboardCheck,
-        color: "text-cyan",
-        bg: "bg-cyan/10",
     }),
     project({
         id: "agentic-soc",
