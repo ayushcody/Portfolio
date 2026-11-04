@@ -30,8 +30,8 @@ export default async function Home() {
       <WorkingStyle />
       <Experience experiences={experienceResult.data} />
       <Achievements />
-      <Toolkit profile={profileResult.data} />
       <WritingNote posts={posts} />
+      <Toolkit profile={profileResult.data} />
       <ContactInvitation profile={profileResult.data} />
       <SignatureFooter />
     </main>

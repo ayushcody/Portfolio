@@ -13,10 +13,13 @@ const navItems = [
     { name: 'Home', href: '/#home', match: (pathname: string) => pathname === '/' },
     { name: 'Work', href: '/projects', match: (pathname: string) => pathname.startsWith('/projects') },
     { name: 'Experience', href: '/#experience', match: () => false },
+    { name: 'Blog', href: '/blog', match: (pathname: string) => pathname.startsWith('/blog') },
     { name: 'Skills', href: '/skills', match: (pathname: string) => pathname.startsWith('/skills') },
     { name: 'About', href: '/about', match: (pathname: string) => pathname.startsWith('/about') },
-    { name: 'Blog', href: '/blog', match: (pathname: string) => pathname.startsWith('/blog') },
 ];
+
+/** About is drawn as a lilac pill so the personal page stands apart from the work links. */
+const ACCENT_ITEM = 'About';
 
 function isResumeActive(pathname: string) {
     return pathname.startsWith('/resume');
@@ -90,7 +93,7 @@ export default function Navbar() {
                             <Link
                                 href={item.href}
                                 aria-current={item.match(pathname) ? 'page' : undefined}
-                                className="nav-link"
+                                className={`nav-link${item.name === ACCENT_ITEM ? ' nav-link--accent' : ''}`}
                             >
                                 {item.name}
                             </Link>
@@ -152,7 +155,7 @@ export default function Navbar() {
                                 href={item.href}
                                 aria-current={item.match(pathname) ? 'page' : undefined}
                                 onClick={closeMenu}
-                                className={`nav-mobile-link${item.name === 'Resume' ? ' nav-mobile-resume' : ''}`}
+                                className={`nav-mobile-link${item.name === 'Resume' ? ' nav-mobile-resume' : ''}${item.name === ACCENT_ITEM ? ' nav-mobile-accent' : ''}`}
                             >
                                 <span><span className="nav-mobile-index" aria-hidden="true">0{index + 1}</span>{item.name}</span>
                                 <ArrowUpRight size={18} aria-hidden="true" />
