@@ -1,0 +1,41 @@
+{
+  "_comment": "Style rules for content/blog, enforced by scripts/lint_content.py. 'prefer' maps a wrong spelling to the right one (case-sensitive, whole words). 'avoid' maps a word or phrase to the reason it is flagged.",
+  "prefer": {
+    "Github": "GitHub",
+    "github": "GitHub",
+    "Javascript": "JavaScript",
+    "javascript": "JavaScript",
+    "Typescript": "TypeScript",
+    "typescript": "TypeScript",
+    "NextJS": "Next.js",
+    "Nextjs": "Next.js",
+    "NodeJS": "Node.js",
+    "Nodejs": "Node.js",
+    "Postgresql": "PostgreSQL",
+    "Firestore DB": "Firestore",
+    "Open AI": "OpenAI",
+    "Chat GPT": "ChatGPT",
+    "LLM's": "LLMs",
+    "API's": "APIs",
+    "e-mail": "email",
+    "E-mail": "Email",
+    "wifi": "Wi-Fi",
+    "WiFi": "Wi-Fi",
+    "login to": "log in to",
+    "setup the": "set up the",
+    "VS code": "VS Code",
+    "Vscode": "VS Code"
+  },
+  "avoid": {
+    "simply": "Tells the reader it's easy; if it isn't for them, it reads as a judgment. Cut it.",
+    "obviously": "If it were obvious, it wouldn't need saying.",
+    "easily": "Ease is the reader's call, not the writer's.",
+    "please note": "Filler. State the note.",
+    "in order to": "Use 'to'.",
+    "utilize": "Use 'use'.",
+    "as mentioned above": "Retrieval reads sections on their own; name the thing again.",
+    "see above": "Retrieval reads sections on their own; link or repeat instead.",
+    "see below": "Link to the section, or move the information here.",
+    "click here": "Link text should say where the link goes."
+  }
+}

@@ -162,6 +162,8 @@ html.dark .accent-period { color: var(--coral); }
 .writing-link:hover h3 { text-decoration: underline; text-underline-offset: 6px; }
 .writing-link p { margin-top: 10px; font-size: 13px; color: var(--muted-ink); max-width: 65ch; line-height: 1.8; }
 .writing-link > svg { flex-shrink: 0; }
+.writing-link + .writing-link { margin-top: 26px; padding-top: 26px; border-top: var(--border-hair); }
+.writing-all { margin: 34px 0 0 44px; }
 .contact-invitation { border-block: 2px solid #23231f; background: var(--lilac); color: #23231f; padding-block: 80px; }
 .contact-invitation > div { display: flex; align-items: center; justify-content: space-between; gap: 60px; }
 .contact-invitation h2 { font-size: clamp(36px, 4.2vw, 53px); }

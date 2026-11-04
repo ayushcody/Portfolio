@@ -8,9 +8,15 @@ export interface BlogPost {
     date: string;
     description: string;
     tags: string[];
+    /** Shown in the "Start here" picks on the blog index. */
+    featured: boolean;
     readingTime: string;
     content: string;
 }
+
+export type BlogPostSummary = Omit<BlogPost, 'content'>;
+
+export { formatPostDate } from './postFormat';
 
 const blogsDirectory = path.join(process.cwd(), 'content/blog');
 
@@ -54,6 +60,7 @@ export function getBlogPosts(): BlogPost[] {
                         date,
                         description: readText(data.description) || readText(data.excerpt),
                         tags,
+                        featured: data.featured === true,
                         readingTime: estimateReadingTime(content),
                         content,
                     };
@@ -70,14 +77,6 @@ export function getBlogPosts(): BlogPost[] {
         console.error("Error reading blog posts", e);
         return [];
     }
-}
-
-/** "2026-06-01" -> "1 Jun 2026". Returns the raw value when it is not an ISO calendar date. */
-export function formatPostDate(date: string): string {
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return date;
-    const parsed = new Date(`${date}T00:00:00Z`);
-    if (Number.isNaN(parsed.getTime())) return date;
-    return new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }).format(parsed);
 }
 
 export function getBlogPostBySlug(slug: string): BlogPost | null {

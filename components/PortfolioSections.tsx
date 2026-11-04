@@ -6,6 +6,7 @@ import { ProjectDiagram } from '@/components/projects/ProjectDiagram';
 import { skillCategories } from '@/src/data/skills';
 import type { Profile } from '@/src/data/profile';
 import type { BlogPost } from '@/lib/markdown';
+import { formatPostDate } from '@/lib/postFormat';
 
 const projectNotes: Record<string, string> = {
     'email-digital-twin': 'Email drafts that sound a little more like you.',
@@ -54,9 +55,9 @@ export function Toolkit({ profile }: { profile: Profile }) {
 }
 
 export function WritingNote({ posts }: { posts: BlogPost[] }) {
-    const post = posts[0];
-    if (!post) return null;
-    return <section id="blog" className="portfolio-wrap writing-section" aria-labelledby="writing-heading"><div className="writing-heading"><BookOpen size={28} aria-hidden="true" /><h2 id="writing-heading">Notes from the process.</h2></div><Link className="writing-link" href={`/blog/${post.slug}`}><div><span className="writing-meta">{post.readingTime} <span>·</span> {post.date}</span><h3>{post.title}</h3><p>{post.description}</p></div><ArrowUpRight size={32} aria-hidden="true" /></Link></section>;
+    const latest = posts.slice(0, 3);
+    if (latest.length === 0) return null;
+    return <section id="blog" className="portfolio-wrap writing-section" aria-labelledby="writing-heading"><div className="writing-heading"><BookOpen size={28} aria-hidden="true" /><h2 id="writing-heading">Notes from the process.</h2></div>{latest.map(post => <Link key={post.slug} className="writing-link" href={`/blog/${post.slug}`}><div><span className="writing-meta">{post.readingTime} <span>·</span> {formatPostDate(post.date)}</span><h3>{post.title}</h3><p>{post.description}</p></div><ArrowUpRight size={32} aria-hidden="true" /></Link>)}<Link href="/blog" className="text-link writing-all">Read all writing <ArrowUpRight size={18} aria-hidden="true" /></Link></section>;
 }
 
 export function ContactInvitation({ profile }: { profile: Profile }) {
