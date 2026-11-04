@@ -9,11 +9,7 @@ My timing has always been impeccable. I decided to get serious about running lan
 
 Through late 2025, AI data centers bought up DRAM supply at a pace the consumer market couldn't match, and the price of an ordinary RAM kit roughly doubled between summer and December. Upgrading my laptop's memory went from "small treat" to "major life decision."
 
-```meme
-format: stonks
-title: DDR5 prices · Q4 2025
-caption: Me, who only wanted 32 GB to run a 14B model.
-```
+![The "stonks" meme: a figure in a suit stands in front of a stock-market board with a glowing arrow shooting upward. The caption reads "POV: RAM in 2026".](/blog/local-ai/stonks.jpg "Me, who only wanted 32 GB to run a 14B model.")
 
 So this post is two things: why local AI is worth it anyway, and how to do the memory math *before* you spend money you'll miss.
 

@@ -180,7 +180,6 @@
 
 /* Meme cards (components/blog/MemeCard.tsx): original text panels, on the same ink-and-paper system. */
 .prose .meme { position: relative; margin-block: 2.2em; padding: 22px 24px 24px; border: var(--border); background: var(--panel); box-shadow: 6px 6px 0 var(--ink); font-family: var(--font-display-stack); }
-.meme-tag { position: absolute; top: -13px; left: 18px; padding: 2px 9px; border: var(--bw-hair) solid var(--ink-fixed); background: var(--yellow); color: var(--ink-fixed); font-family: var(--font-jetbrains), monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; transform: rotate(-3deg); }
 .meme p { margin: 0; font-size: 19px; line-height: 1.35; letter-spacing: -0.02em; }
 
 .prose .meme--nah-yeah { display: grid; gap: 0; padding: 0; }

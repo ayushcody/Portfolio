@@ -47,7 +47,6 @@ export function MemeCard({ source }: { source: string }) {
     if (format === 'stonks') {
         return (
             <figure className="meme meme--stonks">
-                <span className="meme-tag">meme</span>
                 {field(lines, 'title') ? <p className="meme-stonks-title">{field(lines, 'title')}</p> : null}
                 <div className="meme-stonks-board">
                     <StonksChart />
@@ -61,7 +60,6 @@ export function MemeCard({ source }: { source: string }) {
     if (format === 'nah-yeah') {
         return (
             <figure className="meme meme--nah-yeah">
-                <span className="meme-tag">meme</span>
                 <div className="meme-row meme-row--nah">
                     <span className="meme-verdict"><ThumbsDown size={22} aria-hidden="true" /> Nah</span>
                     <p>{field(lines, 'nah')}</p>
@@ -77,7 +75,6 @@ export function MemeCard({ source }: { source: string }) {
     if (format === 'versus') {
         return (
             <figure className="meme meme--versus">
-                <span className="meme-tag">meme</span>
                 <div className="meme-versus-grid">
                     <div>
                         <span className="meme-versus-label">{field(lines, 'leftLabel') || 'Expectation'}</span>
@@ -94,7 +91,6 @@ export function MemeCard({ source }: { source: string }) {
 
     return (
         <figure className="meme meme--dialogue">
-            <span className="meme-tag">meme</span>
             <dl>
                 {lines.map((line, index) => (
                     <div key={`${line.key}-${index}`}>
