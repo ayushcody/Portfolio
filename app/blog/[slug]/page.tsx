@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import ReactMarkdown, { type Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return pageMetadata({
         title: post.title,
         description: post.description,
-        path: `/blog/${slug}`,
+        path: `/blog/${post.slug}`,
         type: 'article',
     });
 }
@@ -140,6 +140,8 @@ export default async function BlogPostPage({ params }: PageProps) {
     const post = index >= 0 ? posts[index] : getBlogPostBySlug(slug);
 
     if (!post) notFound();
+    // One canonical address per post: send case variants to the camelCase slug.
+    if (post.slug !== slug) permanentRedirect(`/blog/${post.slug}`);
 
     // Posts are sorted newest first.
     const newer = index > 0 ? posts[index - 1] : undefined;

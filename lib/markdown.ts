@@ -8,8 +8,6 @@ export interface BlogPost {
     date: string;
     description: string;
     tags: string[];
-    /** Shown in the "Start here" picks on the blog index. */
-    featured: boolean;
     readingTime: string;
     content: string;
 }
@@ -60,7 +58,6 @@ export function getBlogPosts(): BlogPost[] {
                         date,
                         description: readText(data.description) || readText(data.excerpt),
                         tags,
-                        featured: data.featured === true,
                         readingTime: estimateReadingTime(content),
                         content,
                     };
@@ -79,7 +76,9 @@ export function getBlogPosts(): BlogPost[] {
     }
 }
 
+/** Slugs are camelCase; lookup ignores case so a hand-typed /blog/synergylearn still finds /blog/synergyLearn. */
 export function getBlogPostBySlug(slug: string): BlogPost | null {
     const posts = getBlogPosts();
-    return posts.find(post => post.slug === slug) || null;
+    const wanted = slug.toLowerCase();
+    return posts.find(post => post.slug === slug) || posts.find(post => post.slug.toLowerCase() === wanted) || null;
 }
