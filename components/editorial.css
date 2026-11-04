@@ -126,7 +126,6 @@
 .post-topic:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
 .post-year + .post-year { margin-top: 56px; }
 .secondary-page .post-year-label { margin-bottom: 14px; font-family: var(--font-jetbrains), monospace; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; color: var(--muted-ink); }
-.editorial-page .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 
 @media (max-width: 960px) {
   .post-featured-grid { grid-template-columns: 1fr; }

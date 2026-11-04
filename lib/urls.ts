@@ -6,7 +6,7 @@ export type UrlCheck =
   | { ok: true; value: string | undefined }
   | { ok: false; error: string };
 
-export type UrlKind = "any" | "github" | "loom" | "image";
+export type UrlKind = "any" | "github" | "loom" | "image" | "document";
 
 const HOSTNAME = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/i;
 
@@ -47,7 +47,7 @@ export function checkExternalUrl(input: string | undefined, kind: UrlKind = "any
   const raw = (input ?? "").trim();
   if (!raw) return { ok: true, value: undefined };
 
-  if (kind === "image" && isRootRelativePath(raw)) return { ok: true, value: raw };
+  if ((kind === "image" || kind === "document") && isRootRelativePath(raw)) return { ok: true, value: raw };
 
   if (/\s/.test(raw) || /[[\]<>"'`]/.test(raw)) {
     return { ok: false, error: "Paste a plain URL without spaces, brackets or quotes." };

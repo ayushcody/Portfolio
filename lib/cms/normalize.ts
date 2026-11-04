@@ -231,6 +231,7 @@ export function normalizeExperienceItem(item: unknown, base?: ExperienceItem): E
     id: asString(item.id, base?.id) || undefined,
     company,
     companyLogo: "companyLogo" in item ? cleanOptionalUrl(item.companyLogo) : base?.companyLogo,
+    certificate: "certificate" in item ? cleanOptionalUrl(item.certificate) : base?.certificate,
     chapterTitle: asString(item.chapterTitle, base?.chapterTitle) || undefined,
     progressionLabel: asString(item.progressionLabel, base?.progressionLabel) || undefined,
     role,
