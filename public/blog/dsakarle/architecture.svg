@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" width="1200" height="700" role="img" aria-labelledby="t d">
+<title id="t">DSA Karle architecture</title><desc id="d">Lesson content lives in JSON, and canonical code files in Python, Java and C++ carry @anchor comments. At build time a validator checks everything against the content schema and a script builds a Fuse.js search index. In the browser, a tracer runs the real algorithm on the reader&#x27;s input and a recorder captures up to 400 frames; the stage renders each frame as SVG, the code panel highlights the anchored lines, and predict questions pause the run. Tests compare every tracer with a brute-force reference.</desc>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#23231f"/></marker></defs>
+<rect width="100%" height="100%" fill="#f7f4eb"/>
+<text x="60" y="50" text-anchor="start" font-family="'JetBrains Mono',ui-monospace,Menlo,monospace" font-size="15" font-weight="700" fill="#62625b">DSA KARLE · ARCHITECTURE</text>
+<text x="60" y="76" text-anchor="start" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="17" font-weight="400" fill="#23231f">Lessons are data; walkthroughs come from running the real algorithm.</text>
+<rect x="40" y="100" width="340" height="560" fill="none" stroke="#23231f" stroke-width="2" stroke-dasharray="8 6"/>
+<text x="54" y="124" text-anchor="start" font-family="'JetBrains Mono',ui-monospace,Menlo,monospace" font-size="13" font-weight="700" fill="#62625b">CONTENT (GIT)</text>
+<rect x="76" y="146" width="280" height="96" fill="#23231f"/>
+<rect x="70" y="140" width="280" height="96" fill="#f4d738" stroke="#23231f" stroke-width="3"/>
+<text x="210.0" y="180.9" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="18" font-weight="700" fill="#23231f">curriculum.json</text>
+<text x="210.0" y="209.9" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#23231f" opacity="0.82">order · groups · prereqs</text>
+<rect x="76" y="276" width="280" height="96" fill="#23231f"/>
+<rect x="70" y="270" width="280" height="96" fill="#f4d738" stroke="#23231f" stroke-width="3"/>
+<text x="210.0" y="310.9" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="18" font-weight="700" fill="#23231f">topics/*.json</text>
+<text x="210.0" y="339.9" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#23231f" opacity="0.82">hook · shape · quiz · practice</text>
+<rect x="76" y="406" width="280" height="110" fill="#23231f"/>
+<rect x="70" y="400" width="280" height="110" fill="#f4d738" stroke="#23231f" stroke-width="3"/>
+<text x="210.0" y="438.1" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="17" font-weight="700" fill="#23231f">code/*.py · .java · .cpp</text>
+<text x="210.0" y="467.1" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#23231f" opacity="0.82">lines tagged # @init</text>
+<text x="210.0" y="486.1" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#23231f" opacity="0.82"># @compare  # @done</text>
+<rect x="420" y="100" width="300" height="560" fill="none" stroke="#23231f" stroke-width="2" stroke-dasharray="8 6"/>
+<text x="434" y="124" text-anchor="start" font-family="'JetBrains Mono',ui-monospace,Menlo,monospace" font-size="13" font-weight="700" fill="#62625b">BUILD TIME</text>
+<rect x="456" y="166" width="240" height="110" fill="#23231f"/>
+<rect x="450" y="160" width="240" height="110" fill="#b9d3b0" stroke="#23231f" stroke-width="3"/>
+<text x="570.0" y="189.2" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="19" font-weight="700" fill="#23231f">validate</text>
+<text x="570.0" y="218.2" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#23231f" opacity="0.82">Zod content schema</text>
+<text x="570.0" y="237.2" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#23231f" opacity="0.82">fails the build on</text>
+<text x="570.0" y="256.2" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#23231f" opacity="0.82">broken live lessons</text>
+<rect x="456" y="336" width="240" height="96" fill="#23231f"/>
+<rect x="450" y="330" width="240" height="96" fill="#b9d3b0" stroke="#23231f" stroke-width="3"/>
+<text x="570.0" y="371.2" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="19" font-weight="700" fill="#23231f">search index</text>
+<text x="570.0" y="400.2" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#23231f" opacity="0.82">Fuse.js, built once</text>
+<rect x="456" y="496" width="240" height="110" fill="#23231f"/>
+<rect x="450" y="490" width="240" height="110" fill="#b9d3b0" stroke="#23231f" stroke-width="3"/>
+<text x="570.0" y="528.7" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="19" font-weight="700" fill="#23231f">tests</text>
+<text x="570.0" y="557.7" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#23231f" opacity="0.82">every tracer vs a</text>
+<text x="570.0" y="576.7" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#23231f" opacity="0.82">brute-force reference</text>
+<line x1="360" y1="300" x2="440" y2="220" stroke="#23231f" stroke-width="3" marker-end="url(#ah)"/>
+<line x1="360" y1="320" x2="440" y2="370" stroke="#23231f" stroke-width="3" marker-end="url(#ah)"/>
+<rect x="760" y="100" width="400" height="560" fill="none" stroke="#23231f" stroke-width="2" stroke-dasharray="8 6"/>
+<text x="774" y="124" text-anchor="start" font-family="'JetBrains Mono',ui-monospace,Menlo,monospace" font-size="13" font-weight="700" fill="#62625b">IN THE BROWSER (NEXT.JS)</text>
+<rect x="796" y="146" width="340" height="96" fill="#23231f"/>
+<rect x="790" y="140" width="340" height="96" fill="#c3b0e4" stroke="#23231f" stroke-width="3"/>
+<text x="960.0" y="171.7" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="19" font-weight="700" fill="#23231f">Tracer</text>
+<text x="960.0" y="200.7" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#23231f" opacity="0.82">runs the real algorithm on</text>
+<text x="960.0" y="219.7" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#23231f" opacity="0.82">the reader&#x27;s own input</text>
+<rect x="796" y="276" width="340" height="96" fill="#23231f"/>
+<rect x="790" y="270" width="340" height="96" fill="#c3b0e4" stroke="#23231f" stroke-width="3"/>
+<text x="960.0" y="301.7" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="19" font-weight="700" fill="#23231f">Recorder</text>
+<text x="960.0" y="330.7" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#23231f" opacity="0.82">one frame per idea, deep-cloned</text>
+<text x="960.0" y="349.7" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#23231f" opacity="0.82">capped at 400 frames</text>
+<rect x="976" y="406" width="160" height="110" fill="#23231f"/>
+<rect x="970" y="400" width="160" height="110" fill="#ee8d74" stroke="#23231f" stroke-width="3"/>
+<text x="1050.0" y="439.4" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="18" font-weight="700" fill="#23231f">Stage</text>
+<text x="1050.0" y="467.4" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#23231f" opacity="0.82">SVG scene</text>
+<text x="1050.0" y="485.4" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#23231f" opacity="0.82">pointers · marks</text>
+<rect x="796" y="406" width="160" height="110" fill="#23231f"/>
+<rect x="790" y="400" width="160" height="110" fill="#ee8d74" stroke="#23231f" stroke-width="3"/>
+<text x="870.0" y="439.1" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="17" font-weight="700" fill="#23231f">Code panel</text>
+<text x="870.0" y="467.1" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#23231f" opacity="0.82">highlights the</text>
+<text x="870.0" y="485.1" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#23231f" opacity="0.82">@anchor lines</text>
+<rect x="796" y="551" width="340" height="80" fill="#23231f"/>
+<rect x="790" y="545" width="340" height="80" fill="#fffdf6" stroke="#23231f" stroke-width="3"/>
+<text x="960.0" y="578.1" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="17" font-weight="700" fill="#23231f">Narration + predict</text>
+<text x="960.0" y="606.1" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#23231f" opacity="0.82">pause: “which pointer moves?”</text>
+<line x1="960" y1="246" x2="960" y2="262" stroke="#23231f" stroke-width="3" marker-end="url(#ah)"/>
+<line x1="870" y1="376" x2="870" y2="392" stroke="#23231f" stroke-width="3" marker-end="url(#ah)"/>
+<line x1="1050" y1="376" x2="1050" y2="392" stroke="#23231f" stroke-width="3" marker-end="url(#ah)"/>
+<line x1="360" y1="455" x2="780" y2="455" stroke="#23231f" stroke-width="3" marker-end="url(#ah)"/>
+<text x="570" y="445" text-anchor="middle" font-family="'JetBrains Mono',ui-monospace,Menlo,monospace" font-size="13" fill="#62625b">@anchors</text>
+</svg>

@@ -17,6 +17,12 @@ The one-line version:
 
 > **Plan the product. Map the system. Hand off to AI.**
 
+## The full framework on Notion
+
+This post covers the core of AYUSH. The complete workspace has 17 pages: every phase prompt, the AI IDE prompt library, the review and hardening systems, the deployment playbook, master checklists, backlog and inventory templates, and a quick prompt reference.
+
+**[Click here](https://shiny-lilac-bc0.notion.site/framework)** to open the AYUSH Framework on Notion.
+
 ## The golden rule
 
 > The Architect AI decides what should be built.
@@ -250,3 +256,5 @@ And if you recognize yourself in any of these, the framework is for you:
 AI made writing code dramatically faster. It did not make *deciding what to write* any faster, and that's where most projects actually fail. AYUSH moves the thinking to the front, splits the work so each AI does the part it's good at, and keeps a human at every gate.
 
 The best part is that none of it is specific to one model or one IDE. Tools will change every few months. Clear scope, explicit contracts, small slices, and honest testing won't.
+
+If you want every prompt and template in one place, [click here](https://shiny-lilac-bc0.notion.site/framework) for the full AYUSH Framework on Notion.

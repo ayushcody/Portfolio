@@ -57,7 +57,7 @@ export function Toolkit({ profile }: { profile: Profile }) {
 export function WritingNote({ posts }: { posts: BlogPost[] }) {
     const latest = posts.slice(0, 3);
     if (latest.length === 0) return null;
-    return <section id="blog" className="portfolio-wrap writing-section" aria-labelledby="writing-heading"><div className="writing-heading"><BookOpen size={28} aria-hidden="true" /><h2 id="writing-heading">Notes from the process.</h2></div>{latest.map(post => <Link key={post.slug} className="writing-link" href={`/blog/${post.slug}`}><div><span className="writing-meta">{post.readingTime} <span>·</span> {formatPostDate(post.date)}</span><h3>{post.title}</h3><p>{post.description}</p></div><ArrowUpRight size={32} aria-hidden="true" /></Link>)}<Link href="/blog" className="text-link writing-all">Read all writing <ArrowUpRight size={18} aria-hidden="true" /></Link></section>;
+    return <section id="blog" className="portfolio-wrap writing-section" aria-labelledby="writing-heading"><div className="writing-heading"><BookOpen size={28} aria-hidden="true" /><h2 id="writing-heading">Notes from the process.</h2></div>{latest.map(post => <Link key={post.slug} className="writing-link" href={`/blog/${post.slug}`}><div><span className="writing-meta">{post.readingTime} <span>·</span> {formatPostDate(post.date)}</span><h3>{post.title}</h3><p>{post.description}</p></div><ArrowUpRight size={32} aria-hidden="true" /></Link>)}<Link href="/blog" className="text-link writing-all">Read all my blogs <ArrowUpRight size={18} aria-hidden="true" /></Link></section>;
 }
 
 export function ContactInvitation({ profile }: { profile: Profile }) {

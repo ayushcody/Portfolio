@@ -42,7 +42,7 @@ export default function BlogIndex() {
                         <section aria-labelledby="posts-heading" className="post-archive">
                             <div className="secondary-section-heading">
                                 <h2 id="posts-heading">
-                                    All writing <span className="secondary-count">{String(posts.length).padStart(2, '0')}</span>
+                                    My blogs <span className="secondary-count">{String(posts.length).padStart(2, '0')}</span>
                                 </h2>
                                 <p>Newest first. Filter by topic.</p>
                             </div>

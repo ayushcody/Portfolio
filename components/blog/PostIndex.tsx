@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import { TechTags } from '@/components/ui/TechTags';
 import { formatPostDate, type BlogPostSummary } from '@/lib/postFormat';
+import { tagLabel } from '@/lib/tagLabels';
 
 /** Topic filter plus a year-grouped list. Every post renders on the server; the filter only hides rows. */
 export function PostIndex({ posts }: { posts: BlogPostSummary[] }) {
@@ -29,13 +30,13 @@ export function PostIndex({ posts }: { posts: BlogPostSummary[] }) {
                     </button>
                     {topics.map((tag) => (
                         <button key={tag} type="button" className="post-topic" aria-pressed={topic === tag} onClick={() => setTopic(topic === tag ? null : tag)}>
-                            {tag}
+                            {tagLabel(tag)}
                         </button>
                     ))}
                 </div>
             ) : null}
 
-            <p className="sr-only" aria-live="polite">{topic ? `${visible.length} posts about ${topic}` : `${visible.length} posts`}</p>
+            <p className="sr-only" aria-live="polite">{topic ? `${visible.length} posts about ${tagLabel(topic)}` : `${visible.length} posts`}</p>
 
             {years.map((year) => (
                 <section key={year} className="post-year" aria-labelledby={`year-${year}`}>
@@ -54,7 +55,7 @@ export function PostIndex({ posts }: { posts: BlogPostSummary[] }) {
                                         <Link href={`/blog/${post.slug}`} className="post-row-link">{post.title}</Link>
                                     </h4>
                                     {post.description ? <p className="post-row-description">{post.description}</p> : null}
-                                    <TechTags items={post.tags} label="Post tags" />
+                                    <TechTags items={post.tags.map(tagLabel)} label="Post tags" />
                                 </article>
                                 <ArrowUpRight className="post-row-arrow" size={32} aria-hidden="true" />
                             </li>

@@ -9,6 +9,7 @@ import { MemeCard } from '@/components/blog/MemeCard';
 import { TechTags } from '@/components/ui/TechTags';
 import { profile } from '@/config/portfolio';
 import { videoEmbed } from '@/lib/embeds';
+import { tagLabel } from '@/lib/tagLabels';
 import { formatPostDate, getBlogPostBySlug, getBlogPosts } from '@/lib/markdown';
 import { pageMetadata } from '@/lib/seo';
 import '@/components/secondary-pages.css';
@@ -180,7 +181,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                             {post.tags.length > 0 ? (
                                 <div>
                                     <span className="editorial-label">Filed under</span>
-                                    <TechTags items={post.tags} label="Post tags" />
+                                    <TechTags items={post.tags.map(tagLabel)} label="Post tags" />
                                 </div>
                             ) : null}
                         </aside>
@@ -217,7 +218,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                     </div>
                     <div className="editorial-actions">
                         <Link href="/projects" className="brutal-button">Explore my work <ArrowUpRight size={18} aria-hidden="true" /></Link>
-                        <Link href="/blog" className="brutal-button brutal-button--secondary">All writing <ArrowRight size={17} aria-hidden="true" /></Link>
+                        <Link href="/blog" className="brutal-button brutal-button--secondary">All blogs <ArrowRight size={17} aria-hidden="true" /></Link>
                     </div>
                 </aside>
             </div>

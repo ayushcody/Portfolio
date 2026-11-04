@@ -25,6 +25,17 @@ killit inspect 3000   # who owns this port, where the binary lives, and the risk
 
 ![The killit reference guide, a dark page with four cards: the /proc-first resolver for Linux, PowerShell over wmic for Windows, a classifier fallthrough fix, and the --tree flag.](/blog/killit/reference-guide.jpg "The interactive reference guide I wrote while building it: one card per design change, each with the code behind it.")
 
+## The architecture
+
+![killit architecture. A CLI (ki, killit, a TUI picker, and the --force, --tree and --dry-run flags) and a library API (listPorts, inspectPort, killPort) feed one core, after validators check that each port is an integer from 1 to 65535. The core runs list (listening sockets), then inspect (owner, path, project type), then classify (SAFE, WARN or BLOCKED), then kill (SIGTERM, wait the 1.2 second grace period, SIGKILL only with --force, and --tree for the whole process group), and returns output as a table, JSON, quiet mode or exit codes 0, 2, 3 and 4. The list step calls platform adapters through spawn with argument arrays: lsof -F pcn on macOS, ss then lsof then /proc/net/tcp on Linux and Docker, and netstat plus PowerShell on Windows.](/blog/killit/architecture.svg "One core, two front doors, and an adapter per operating system.")
+
+killit is small, but it's organized like a larger tool, because a command that terminates processes deserves clear boundaries.
+
+- **Two front doors, one core.** The CLI (`ki` and `killit`) and the library API (`listPorts`, `inspectPort`, `killPort`) call the same functions. There's no "CLI-only" logic that the library could skip, so both get the same safety rules.
+- **A pipeline of four steps.** `list` finds listening sockets, `inspect` adds who owns each one and where its binary lives, `classify` decides how dangerous it would be to stop, and `kill` does it (or refuses).
+- **Adapters for each operating system.** Only the adapters know about `lsof`, `ss` or `netstat`. The core works with a plain list of `{ port, pid, process, owner, path }` records, whichever system produced them.
+- **Validation at the edge.** Ports are checked (whole numbers from 1 to 65535) before anything reaches the core.
+
 ## The core idea: classify before you kill
 
 Every process gets one of three safety levels before anything is terminated:
@@ -74,6 +85,30 @@ There is no single command that lists listening ports on every OS, so killit lay
 | Docker and Alpine | `/proc/net/tcp` directly (minimal images often have no `lsof`) |
 | Windows | `netstat` plus PowerShell (`wmic` is disabled by default in newer Windows 11 builds) |
 
+### Asking for machine-readable output
+
+On macOS, killit runs:
+
+```bash
+lsof -nP -iTCP -sTCP:LISTEN -F pcn
+```
+
+`-nP` skips DNS and port-name lookups (faster, and no surprises), and `-sTCP:LISTEN` keeps only listening sockets. `-F pcn` switches `lsof` to its field output mode: one value per line, each prefixed with a letter (`p` for process ID, `c` for command name, `n` for the address). Parsing a format designed for machines is far more reliable than splitting a table designed for humans, whose column widths change with the data.
+
+### The last-resort path: reading the kernel's own tables
+
+Minimal Linux containers often have neither `ss` nor `lsof`. But the kernel always exposes its socket tables as files, so killit reads them directly:
+
+1. Read `/proc/net/tcp` and `/proc/net/tcp6`. Each line is one socket. Addresses and ports are in hexadecimal, and a state of `0A` means *listening*. Each socket also has an **inode** number.
+2. Build a map from inode to port.
+3. Walk `/proc/<pid>/fd/` for each process. File descriptors that are sockets appear as symbolic links named `socket:[<inode>]`. A matching inode tells you which process owns the port.
+
+It's more work than calling a tool, but it needs nothing installed, which is exactly the situation it exists for.
+
+### The one exception to "no shell"
+
+Every command runs through `spawn()` with an argument array, never through a shell. There's one documented exception: on Windows, `netstat` runs with `shell: true`, because it needs the shell's pipe handling there. Its arguments (`-ano -p tcp`) are fixed, and no user input ever reaches that command line.
+
 ## Built for scripts, not just people
 
 A CLI that other tools can't rely on is only half a CLI:
@@ -97,6 +132,24 @@ import { listPorts, inspectPort, killPort } from 'killit'
 const [target] = await inspectPort(3000)
 const result = await killPort(target, { tree: true })
 ```
+
+## Testing a tool that kills things
+
+You can't trust a process killer you haven't watched kill something. The test suite has two kinds of tests:
+
+- **Unit tests** for the parts that are pure logic: the safety classifier, the output parsers, and the input validators. The classifier tests include the bug above: a process with no readable metadata must come back as WARN.
+- **Integration tests** that start real servers on real ports and kill them.
+
+The integration fixture I like most is the **stubborn server**: a tiny Node process that listens on a port and deliberately ignores `SIGTERM`.
+
+```ts
+// test/fixtures/stubborn.ts
+process.on('SIGTERM', () => {
+  /* intentionally ignored */
+})
+```
+
+It proves the escalation path actually works. The test starts the stubborn server, kills it with `force: true` and a 500 ms grace period, and asserts two things: the result is `killed`, and the signal that actually did it was `SIGKILL`. If the escalation logic ever broke, the process would survive `SIGTERM` and the test would fail. A well-behaved server would never exercise that path, which is why the fixture exists.
 
 ## Security choices
 
