@@ -1,13 +1,13 @@
 ---
-title: "SynergyLearn, and the README That Lied to Me"
+title: "SynergyLearn: An AI Learning Platform Built to Survive Its Own Dependencies"
 date: "2025-11-26"
-description: "What I built in SynergyLearn (an AI learning platform with roadmaps, an in-browser IDE and Gemini hints) and a before-and-after rewrite of its setup guide, which turned out to be wrong in three places."
+description: "How SynergyLearn is built: an AI learning platform with roadmaps, an in-browser IDE, sandboxed code execution and Gemini hints, where every external service is allowed to fail. Plus a rewrite of its setup guide."
 tags: ["projects", "writing", "genai"]
 ---
 
-This is a post about two things I made: a learning platform, and a mistake. The platform took weeks. The mistake took one paragraph, and I didn't notice it until I tried to follow my own instructions on a clean machine.
+SynergyLearn depends on five services I don't control: Firebase, Gemini, Judge0, YouTube and the network in between. Any of them can be slow, rate-limited or down on the morning a student finally sits down to study. Most of the engineering in this project went into one promise: **none of those failures should end a study session.**
 
-Let's start with the part that went well.
+This post walks through how it's built, how each failure is handled, and one more failure I didn't see coming: my own setup guide.
 
 ## What SynergyLearn is
 
@@ -33,28 +33,59 @@ The screenshots stop at the sign-up page. The walkthrough is recorded while sign
 
 [SynergyLearn: product walkthrough](https://www.loom.com/share/f8bde39155014a3e8241c6cbc84ec5cb)
 
-## The architecture, briefly
+## The architecture
 
-A React and Vite single-page app talks to an Express API. Firebase Auth issues ID tokens; the API verifies them with the Firebase Admin SDK before touching anyone's data in Firestore. Gemini handles content, assessments, and hints. Judge0 handles code execution.
+![SynergyLearn architecture. In the browser, a React and Vite single-page app (roadmaps, assessments, topic search, streaks) with a Monaco editor, and Firebase Auth issuing ID tokens. The app sends a bearer ID token to a stateless Express API, where requests pass through guards (Helmet, a 10 KB body limit and per-route rate limiters), then verifyToken (the Firebase Admin SDK, checking for revoked tokens), then the services (roadmap, topic, hint, assessment, code, profile), with a pre-cache worker warming popular topics. The services call Firestore (profiles, progress, a topic cache with a TTL), Gemini 2.5 Flash (content, assessments and hints, with built-in fallback hints), Judge0 (sandboxed code execution, rate limited) and the YouTube Data API (validating suggested videos, with a curated fallback list).](/blog/synergylearn/architecture.svg "Three tiers, five external services, and a fallback for each one that can fail.")
 
-The design rule I cared most about: **every external service is allowed to fail.** Gemini can time out. Judge0 has rate limits. YouTube has quotas. None of those should end a student's study session.
+SynergyLearn has three tiers.
 
-So every AI call has a non-AI fallback. Here's the hint service, in full:
+- **The browser** runs a React and Vite single-page app. Monaco (the editor engine behind VS Code) is the in-lesson IDE. Firebase Auth handles sign-up and sign-in and issues an ID token.
+- **The API** is a stateless Express server. Every request carries the ID token as a bearer token. Because the API keeps no session state, it can run as several copies behind a load balancer without coordination.
+- **External services** do the heavy lifting: Firestore stores data, Gemini generates content, Judge0 runs code, and the YouTube Data API checks tutorial links.
 
-```js
-async function getHint({ userCode, failingTest, stepTitle, hintLevel = 1 }) {
-  const hint = await requestGeminiHint({ userCode, failingTest, stepTitle, hintLevel });
-  if (hint) {
-    return { hint, source: 'gemini' };
-  }
-  const fallbackHint = FALLBACK_HINTS[hintLevel % FALLBACK_HINTS.length];
-  return { hint: fallbackHint, source: 'fallback' };
-}
-```
+### What every request passes through
 
-If Gemini isn't configured, or it fails, the student still gets a useful hint ("Review your loop boundaries; common issues are off-by-one errors"). The response also says which source it came from, so the UI never pretends a canned hint was personalized.
+Before any request reaches business logic, it goes through three layers of protection:
 
-The same idea runs through the rest: popular topics are pre-cached on startup, generated content is cached with a time-to-live, and when the YouTube quota runs out the app rotates curated fallback videos.
+1. **Helmet** sets security headers, and the JSON body parser rejects anything over 10 KB. A code submission doesn't need to be larger, and a cap stops someone from posting megabytes to an endpoint that forwards text to a paid API.
+2. **Rate limiters**, tuned per route to the cost of what's behind them:
+
+| Route group | Limit per IP | Why |
+| --- | --- | --- |
+| Gemini content generation | 5 per minute | Gemini's free tier allows 15 per minute; this leaves headroom |
+| Assessment generation | 3 per 15 minutes | Each assessment is several expensive model calls |
+| Topic search | 10 per hour | Each new topic can trigger a full content generation |
+
+3. **`verifyToken`** checks the ID token with the Firebase Admin SDK, *including whether it has been revoked*, so a user who signs out or changes their password can't keep using an old token. Only then does the request get a `req.user`, and every read and write to Firestore is scoped to that user.
+
+### Running code safely
+
+Students' code never runs on the API server. It goes to **Judge0**, a sandboxed execution service:
+
+1. The editor sends the source, the language and any test input to `/api/run-code`.
+2. The API base64-encodes the source and input (so quotes, newlines and Unicode survive the trip intact) and submits them with `wait=true`, so the call returns once execution finishes.
+3. The API decodes `stdout`, `stderr` and compiler output, maps Judge0's numeric status to a readable one (accepted, wrong answer, time limit, compile error) and returns it.
+4. On submit, the result is checked against the step's tests, and progress, the submission and the daily streak are saved to Firestore.
+
+When Judge0 rejects a request (for example, because of a missing or exhausted API key), the API returns a 502 error that names the execution service as the cause, instead of a generic failure. The problem is clearly the service, not the student's code.
+
+## Every external service is allowed to fail
+
+Here's the full fallback map:
+
+| Service | What can go wrong | What the student sees instead |
+| --- | --- | --- |
+| **Gemini (hints)** | Not configured, times out, quota exhausted | A built-in hint, chosen by hint level ("Review your loop boundaries; common issues are off-by-one errors") |
+| **Gemini (topic content)** | Slow or rate-limited | Cached content from Firestore, kept for 24 hours; the 10 most popular topics are pre-generated at startup |
+| **YouTube Data API** | Daily quota used up | A rotating list of curated tutorial videos |
+| **Judge0** | Rate limit or rejected key | An error that names the execution service as the cause, not a crash |
+| **Firestore cache** | Read or write fails | Content is generated and served anyway; the cache failure is only logged |
+
+Two rules made this work:
+
+**Fallbacks are labeled.** Every hint response says where it came from, `gemini` or `fallback`. The interface never presents a canned hint as if it were personalized. A student who knows a hint is generic will read it differently, and should.
+
+**Caching protects the quota, not just the latency.** The pre-cache worker generates the ten most popular topics on startup, two seconds apart so it doesn't trip the rate limit itself. Once cached, those topics cost no Gemini calls for 24 hours, no matter how many students open them. On a free tier, that's the difference between working all day and failing by lunch.
 
 ![SynergyLearn sign-up screen with email and password fields.](/blog/synergylearn/signup.jpg "Sign-up. Everything past this point is per-user and protected by Firebase Auth.")
 

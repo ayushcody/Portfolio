@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" width="1200" height="640" role="img" aria-labelledby="t d">
+<title id="t">Contextree (directree) architecture</title><desc id="d">A Rust CLI walks the project, drops noise through built-in, framework-specific and user ignore rules, detects the language and framework, tags each file with a role, optionally scores importance from git recency and import counts, and renders a tree, an AI-ready XML block with a token estimate, a flat list, JSON or grouped output to stdout, the clipboard or watch mode. The same binary is published to npm as per-platform packages behind a small contextree wrapper.</desc>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#23231f"/></marker></defs>
+<rect width="100%" height="100%" fill="#f7f4eb"/>
+<text x="60" y="50" text-anchor="start" font-family="'JetBrains Mono',ui-monospace,Menlo,monospace" font-size="15" font-weight="700" fill="#62625b">CONTEXTREE · ARCHITECTURE</text>
+<text x="60" y="76" text-anchor="start" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="17" font-weight="400" fill="#23231f">Show the model the map, not the whole territory.</text>
+<rect x="40" y="100" width="1120" height="330" fill="none" stroke="#23231f" stroke-width="2" stroke-dasharray="8 6"/>
+<text x="54" y="124" text-anchor="start" font-family="'JetBrains Mono',ui-monospace,Menlo,monospace" font-size="13" font-weight="700" fill="#62625b">RUST CLI (directree / contextree)</text>
+<rect x="76" y="146" width="170" height="110" fill="#23231f"/>
+<rect x="70" y="140" width="170" height="110" fill="#f4d738" stroke="#23231f" stroke-width="3"/>
+<text x="155.0" y="178.7" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="19" font-weight="700" fill="#23231f">walker</text>
+<text x="155.0" y="207.7" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#23231f" opacity="0.82">walks the</text>
+<text x="155.0" y="226.7" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#23231f" opacity="0.82">project tree</text>
+<rect x="276" y="146" width="200" height="110" fill="#23231f"/>
+<rect x="270" y="140" width="200" height="110" fill="#f4d738" stroke="#23231f" stroke-width="3"/>
+<text x="370.0" y="170.7" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="19" font-weight="700" fill="#23231f">ignorer</text>
+<text x="370.0" y="198.7" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#23231f" opacity="0.82">built-in · framework</text>
+<text x="370.0" y="216.7" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#23231f" opacity="0.82">.directreeignore</text>
+<text x="370.0" y="234.7" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#23231f" opacity="0.82">~/.directreerc</text>
+<rect x="506" y="146" width="190" height="110" fill="#23231f"/>
+<rect x="500" y="140" width="190" height="110" fill="#c3b0e4" stroke="#23231f" stroke-width="3"/>
+<text x="595.0" y="179.7" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="19" font-weight="700" fill="#23231f">detector</text>
+<text x="595.0" y="207.7" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#23231f" opacity="0.82">language + framework</text>
+<text x="595.0" y="225.7" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#23231f" opacity="0.82">file roles [page]…</text>
+<rect x="726" y="146" width="190" height="110" fill="#23231f"/>
+<rect x="720" y="140" width="190" height="110" fill="#c3b0e4" stroke="#23231f" stroke-width="3" stroke-dasharray="8 6"/>
+<text x="815.0" y="179.7" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="19" font-weight="700" fill="#23231f">importance</text>
+<text x="815.0" y="207.7" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#23231f" opacity="0.82">--important: git</text>
+<text x="815.0" y="225.7" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#23231f" opacity="0.82">recency · imports</text>
+<rect x="946" y="146" width="190" height="110" fill="#23231f"/>
+<rect x="940" y="140" width="190" height="110" fill="#ee8d74" stroke="#23231f" stroke-width="3"/>
+<text x="1035.0" y="179.7" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="19" font-weight="700" fill="#23231f">render</text>
+<text x="1035.0" y="207.7" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#23231f" opacity="0.82">tree · --ai XML</text>
+<text x="1035.0" y="225.7" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#23231f" opacity="0.82">flat · json · group</text>
+<line x1="250" y1="195" x2="262" y2="195" stroke="#23231f" stroke-width="3" marker-end="url(#ah)"/>
+<line x1="480" y1="195" x2="492" y2="195" stroke="#23231f" stroke-width="3" marker-end="url(#ah)"/>
+<line x1="700" y1="195" x2="712" y2="195" stroke="#23231f" stroke-width="3" marker-end="url(#ah)"/>
+<line x1="920" y1="195" x2="932" y2="195" stroke="#23231f" stroke-width="3" marker-end="url(#ah)"/>
+<rect x="506" y="306" width="410" height="96" fill="#23231f"/>
+<rect x="500" y="300" width="410" height="96" fill="#b9d3b0" stroke="#23231f" stroke-width="3"/>
+<text x="705.0" y="340.9" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="18" font-weight="700" fill="#23231f">token estimate</text>
+<text x="705.0" y="369.9" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="13" fill="#23231f" opacity="0.82">(characters per entry × 1.3) ÷ 4 → est_tokens</text>
+<line x1="1035" y1="260" x2="1035" y2="290" stroke="#23231f" stroke-width="3" marker-end="url(#ah)"/>
+<line x1="955" y1="260" x2="918" y2="296" stroke="#23231f" stroke-width="3" marker-end="url(#ah)"/>
+<rect x="946" y="306" width="190" height="96" fill="#23231f"/>
+<rect x="940" y="300" width="190" height="96" fill="#fffdf6" stroke="#23231f" stroke-width="3"/>
+<text x="1035.0" y="332.4" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="18" font-weight="700" fill="#23231f">output</text>
+<text x="1035.0" y="360.4" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#23231f" opacity="0.82">stdout · --copy</text>
+<text x="1035.0" y="378.4" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#23231f" opacity="0.82">--watch · --since</text>
+<rect x="40" y="460" width="1120" height="150" fill="none" stroke="#23231f" stroke-width="2" stroke-dasharray="8 6"/>
+<text x="54" y="484" text-anchor="start" font-family="'JetBrains Mono',ui-monospace,Menlo,monospace" font-size="13" font-weight="700" fill="#62625b">DISTRIBUTION</text>
+<rect x="76" y="501" width="240" height="90" fill="#23231f"/>
+<rect x="70" y="495" width="240" height="90" fill="#fffdf6" stroke="#23231f" stroke-width="3"/>
+<text x="190.0" y="533.1" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="17" font-weight="700" fill="#23231f">cargo build</text>
+<text x="190.0" y="561.1" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#23231f" opacity="0.82">one binary per platform</text>
+<rect x="356" y="501" width="400" height="90" fill="#23231f"/>
+<rect x="350" y="495" width="400" height="90" fill="#f4d738" stroke="#23231f" stroke-width="3"/>
+<text x="550.0" y="532.5" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="15" font-weight="700" fill="#23231f">@directree/darwin-arm64 · darwin-x64</text>
+<text x="550.0" y="560.5" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#23231f" opacity="0.82">linux-x64 · win32-x64 (optional deps)</text>
+<rect x="796" y="501" width="340" height="90" fill="#23231f"/>
+<rect x="790" y="495" width="340" height="90" fill="#ee8d74" stroke="#23231f" stroke-width="3"/>
+<text x="960.0" y="533.1" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="17" font-weight="700" fill="#23231f">npm i -g contextree</text>
+<text x="960.0" y="561.1" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#23231f" opacity="0.82">Node wrapper picks the right binary</text>
+<line x1="320" y1="540" x2="340" y2="540" stroke="#23231f" stroke-width="3" marker-end="url(#ah)"/>
+<line x1="760" y1="540" x2="780" y2="540" stroke="#23231f" stroke-width="3" marker-end="url(#ah)"/>
+</svg>

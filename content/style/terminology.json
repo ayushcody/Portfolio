@@ -35,7 +35,6 @@
     "utilize": "Use 'use'.",
     "as mentioned above": "Retrieval reads sections on their own; name the thing again.",
     "see above": "Retrieval reads sections on their own; link or repeat instead.",
-    "see below": "Link to the section, or move the information here.",
-    "click here": "Link text should say where the link goes."
+    "see below": "Link to the section, or move the information here."
   }
 }

@@ -39,11 +39,17 @@ Every lesson follows the same sequence, so you always know where you are:
 
 Consistency here is a feature, not laziness. When the structure never changes, your attention goes to the idea instead of to the page.
 
-## Lessons are data, not pages
+## The architecture
 
-This is the technical decision everything else depends on. A lesson is not a hand-built React page. It is a JSON document, and the app renders it.
+![DSA Karle architecture. Content lives in git: curriculum.json for order, groups and prerequisites, topics/*.json for each lesson's hook, shape, quiz and practice, and code files in Python, Java and C++ whose lines are tagged with @anchor comments such as @init, @compare and @done. At build time, a validator checks everything against a Zod content schema and fails the build on broken live lessons, a script builds a Fuse.js search index, and tests compare every tracer with a brute-force reference. In the browser, a tracer runs the real algorithm on the reader's own input, a recorder captures one deep-cloned frame per idea up to 400 frames, and the code panel highlights the anchored lines while the stage draws the SVG scene. Narration and predict questions pause the run.](/blog/dsakarle/architecture.svg "Lessons are data; walkthroughs come from running the real algorithm.")
 
-The diagram you see in the lesson above comes from this:
+DSA Karle has three layers, and the split between them is the whole design.
+
+### Layer 1: lessons are data, not pages
+
+A lesson is not a hand-built React page. It's a JSON document in `content/topics/`, and one set of components renders every lesson.
+
+The static picture at the top of the two pointers lesson, for example, comes from this:
 
 ```json
 {
@@ -61,13 +67,85 @@ The diagram you see in the lesson above comes from this:
 }
 ```
 
-Each step of a walkthrough is a state object like this one. Stepping forward means moving to the next state; the SVG diagram, the highlighted code line, and the variable panel all read from the same object, so they can never disagree.
+The same file holds the hook question, the glossary, the "use it when / not when" guidance, a five-question recognition quiz, worked examples and practice problems. Writing a new lesson is mostly writing.
 
-Treating content as data pays off in three ways:
+### Layer 2: walkthroughs come from running the real algorithm
 
-- **Validation.** Every lesson is checked against a Zod schema at build time. A typo in a pointer role fails the build instead of rendering a broken diagram for a student.
-- **Reuse.** The same array renderer draws two pointers, sliding window, and binary search. A new lesson is mostly writing, not engineering.
-- **Search.** A build script indexes every lesson with Fuse.js ahead of time, so search is instant and nothing heavy runs in the browser.
+The animated walkthrough is the part I'm proudest of, and it is **not** hand-written.
+
+Hand-writing steps ("frame 7: left moves to index 2") has two problems. It's tedious, and it can be wrong in ways nobody notices: a skipped step, an off-by-one pointer. Worse, it only works for the one example you wrote down. The moment a student types their own input, there are no steps.
+
+So every algorithm has a **tracer**: a TypeScript implementation of the real algorithm that records a frame each time something worth seeing happens.
+
+```ts
+// From lib/tracers/two-pointers/pair-sum.ts (trimmed)
+while (left < right && !rec.capped) {
+  const a = nums[left]
+  const b = nums[right]
+  total = a + b
+  const equal = total === target
+
+  emit('compare', `${sumText(a, b, total)}. Compare it with the target ${target}.`, {
+    marks: [
+      { index: left, role: 'compare' },
+      { index: right, role: 'compare' },
+    ],
+    predict: equal ? undefined : whichPointerPredict(total, target, a, b),
+  })
+
+  if (equal) {
+    emit('found', `That equals the target ${target}: ${a} and ${b} are the pair.`)
+    break
+  }
+  if (total < target) left++   // then emit('move-left', …)
+  else right--                 // then emit('move-right', …)
+}
+```
+
+Each call to `emit` builds a frame from the current state. A frame holds the array scene with both pointers, marks for the cells being compared or discarded, and the variables (`left`, `right`, `total`). It also holds a sentence of narration and `at`, the name of the step.
+
+The recorder deep-clones every frame when it's recorded, so the tracer can keep changing its working arrays without rewriting history. It also stops at 400 frames, so a student who types a huge input gets a capped walkthrough instead of a frozen tab.
+
+Because the walkthrough comes from running the algorithm, **the student's own input works.** Type a different array and target, and you get a correct, complete walkthrough for that input.
+
+### Layer 3: the code knows which step it's on
+
+Each lesson shows the algorithm in Python, Java and C++, and the line that matches the current step lights up as you step through. That link comes from a tiny convention in the code files: a trailing comment ending in `@` and an anchor name.
+
+```python
+def pair_sum(nums, target):
+    left = 0                                # @init
+    right = len(nums) - 1                   # @init
+    while left < right:
+        total = nums[left] + nums[right]    # @compare
+        if total == target:                 # @found
+            return [left + 1, right + 1]    # @done
+        if total < target:                  # @move-left
+            left += 1                       # @move-left
+        else:
+            right -= 1                      # @move-right
+    return [-1, -1]                         # @done
+```
+
+When the tracer emits a frame at `'compare'`, every language highlights its own `@compare` line. The parser only counts anchors inside real comments, so a string like `"a@b"` or Java's `@Override` annotation is never mistaken for one.
+
+The result is that one tracer drives three languages, and adding a fourth language means writing one more annotated file, not touching the engine.
+
+### Predict, then watch
+
+Frames can carry a **predict** question. Before the walkthrough shows the next move, it pauses and asks: the sum is 16 and the target is 18; which pointer moves? You commit to an answer, then watch what actually happens.
+
+This is the most important teaching feature in the product, and it costs almost nothing in the engine: the tracer already knows the answer, because it's about to do it.
+
+## How it stays correct
+
+Content that teaches has to be right. Three checks run before anything ships:
+
+- **Content validation.** `npm run validate` checks the curriculum, every topic file and every code file against a Zod schema. A broken *live* lesson fails the build; a draft lesson only warns.
+- **Reference tests.** Every tracer comes with a deliberately boring brute-force `reference` implementation, and the test suite runs both on many inputs and compares results. If a tracer's clever version disagrees with the obvious version, the test fails.
+- **A build-time search index.** A script indexes every lesson with Fuse.js during the build, so search is instant and validated content is the only content that can be found.
+
+The reference tests caught exactly the kind of bug a student would have trusted: when several pairs add up to the target, which one should the walkthrough find? The tracer and the reference now agree on purpose (the outermost pair), and the lesson text says so.
 
 ## Showing how ideas connect
 
