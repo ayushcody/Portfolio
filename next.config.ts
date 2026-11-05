@@ -15,8 +15,9 @@ const BLOG_SLUG_REDIRECTS: Record<string, string> = {
   "ayush-framework-architect-your-ux-system-handoff": "ayushFramework",
   "rag-is-dead-long-live-rag": "rag",
   "building-a-credible-ai-portfolio": "aiPortfolio",
-  // Retired post; its slot is now the semantic search post.
+  // Retired posts and their replacements.
   "i-put-a-style-linter-on-my-own-blog": "semanticSearch",
+  deepInfra: "deepInfer",
 };
 
 const nextConfig: NextConfig = {

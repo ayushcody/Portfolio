@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="1200" height="600" role="img" aria-labelledby="t d">
+<title id="t">Prefill versus decode</title><desc id="d">Prefill reads the whole prompt at once: thousands of tokens processed in parallel, compute-bound, so DeepSeek runs it on ordinary 8-GPU machines with small expert-parallel groups (EP2 to EP8). Decode then writes the answer one token at a time per user: memory-bound, so it needs very large batches, and DeepSeek runs it across 64 to 128 GPU supernodes with wide expert parallelism (EP64 to EP128). The KV cache produced by prefill is handed to decode.</desc>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#23231f"/></marker></defs>
+<rect width="100%" height="100%" fill="#f7f4eb"/>
+<text x="60" y="50" text-anchor="start" font-family="'JetBrains Mono',ui-monospace,Menlo,monospace" font-size="15" font-weight="700" fill="#62625b">TWO JOBS, TWO KINDS OF HARDWARE</text>
+<text x="60" y="76" text-anchor="start" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="17" font-weight="400" fill="#23231f">Every LLM request has a reading phase and a writing phase. They want opposite things.</text>
+<rect x="66" y="126" width="500" height="340" fill="#23231f"/>
+<rect x="60" y="120" width="500" height="340" fill="#f4d738" stroke="#23231f" stroke-width="3"/>
+<text x="90" y="160" text-anchor="start" font-family="'JetBrains Mono',ui-monospace,Menlo,monospace" font-size="15" font-weight="700" fill="#23231f">PREFILL · reading the prompt</text>
+<text x="90" y="200" text-anchor="start" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="15" font-weight="400" fill="#23231f">All prompt tokens go through the model at once.</text>
+<rect x="90" y="225" width="28" height="28" fill="#fffdf6" stroke="#23231f" stroke-width="2"/>
+<rect x="126" y="225" width="28" height="28" fill="#fffdf6" stroke="#23231f" stroke-width="2"/>
+<rect x="162" y="225" width="28" height="28" fill="#fffdf6" stroke="#23231f" stroke-width="2"/>
+<rect x="198" y="225" width="28" height="28" fill="#fffdf6" stroke="#23231f" stroke-width="2"/>
+<rect x="234" y="225" width="28" height="28" fill="#fffdf6" stroke="#23231f" stroke-width="2"/>
+<rect x="270" y="225" width="28" height="28" fill="#fffdf6" stroke="#23231f" stroke-width="2"/>
+<rect x="306" y="225" width="28" height="28" fill="#fffdf6" stroke="#23231f" stroke-width="2"/>
+<rect x="342" y="225" width="28" height="28" fill="#fffdf6" stroke="#23231f" stroke-width="2"/>
+<rect x="378" y="225" width="28" height="28" fill="#fffdf6" stroke="#23231f" stroke-width="2"/>
+<rect x="414" y="225" width="28" height="28" fill="#fffdf6" stroke="#23231f" stroke-width="2"/>
+<rect x="450" y="225" width="28" height="28" fill="#fffdf6" stroke="#23231f" stroke-width="2"/>
+<rect x="486" y="225" width="28" height="28" fill="#fffdf6" stroke="#23231f" stroke-width="2"/>
+<line x1="90" y1="275" x2="514" y2="275" stroke="#23231f" stroke-width="3" marker-end="url(#ah)"/>
+<text x="300" y="300" text-anchor="middle" font-family="'JetBrains Mono',ui-monospace,Menlo,monospace" font-size="13" font-weight="400" fill="#62625b">one big parallel pass</text>
+<text x="90" y="340" text-anchor="start" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="15" font-weight="700" fill="#23231f">Bottleneck: compute (FLOPs)</text>
+<text x="90" y="368" text-anchor="start" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" font-weight="400" fill="#23231f">DeepSeek&#x27;s setup: ordinary 8-GPU machines</text>
+<text x="90" y="392" text-anchor="start" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" font-weight="400" fill="#23231f">Smallest EP that fits memory (EP2–EP8)</text>
+<text x="90" y="420" text-anchor="start" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" font-weight="400" fill="#23231f">Sets: time to first token (TTFT)</text>
+<rect x="646" y="126" width="500" height="340" fill="#23231f"/>
+<rect x="640" y="120" width="500" height="340" fill="#c3b0e4" stroke="#23231f" stroke-width="3"/>
+<text x="670" y="160" text-anchor="start" font-family="'JetBrains Mono',ui-monospace,Menlo,monospace" font-size="15" font-weight="700" fill="#23231f">DECODE · writing the answer</text>
+<text x="670" y="200" text-anchor="start" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="15" font-weight="400" fill="#23231f">One new token per user per step, over and over.</text>
+<rect x="670" y="225" width="28" height="28" fill="#fffdf6" stroke="#23231f" stroke-width="2"/>
+<path d="M 700 239 l 32 0" stroke="#23231f" stroke-width="2" marker-end="url(#ah)"/>
+<rect x="740" y="225" width="28" height="28" fill="#fffdf6" stroke="#23231f" stroke-width="2"/>
+<path d="M 770 239 l 32 0" stroke="#23231f" stroke-width="2" marker-end="url(#ah)"/>
+<rect x="810" y="225" width="28" height="28" fill="#fffdf6" stroke="#23231f" stroke-width="2"/>
+<path d="M 840 239 l 32 0" stroke="#23231f" stroke-width="2" marker-end="url(#ah)"/>
+<rect x="880" y="225" width="28" height="28" fill="#fffdf6" stroke="#23231f" stroke-width="2"/>
+<path d="M 910 239 l 32 0" stroke="#23231f" stroke-width="2" marker-end="url(#ah)"/>
+<rect x="950" y="225" width="28" height="28" fill="#fffdf6" stroke="#23231f" stroke-width="2"/>
+<path d="M 980 239 l 32 0" stroke="#23231f" stroke-width="2" marker-end="url(#ah)"/>
+<rect x="1020" y="225" width="28" height="28" fill="#fffdf6" stroke="#23231f" stroke-width="2"/>
+<text x="880" y="300" text-anchor="middle" font-family="'JetBrains Mono',ui-monospace,Menlo,monospace" font-size="13" font-weight="400" fill="#62625b">many small sequential steps</text>
+<text x="670" y="340" text-anchor="start" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="15" font-weight="700" fill="#23231f">Bottleneck: memory bandwidth</text>
+<text x="670" y="368" text-anchor="start" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" font-weight="400" fill="#23231f">DeepSeek&#x27;s setup: 64–128-GPU supernodes</text>
+<text x="670" y="392" text-anchor="start" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" font-weight="400" fill="#23231f">Widest EP the GPUs allow (EP64–EP128)</text>
+<text x="670" y="420" text-anchor="start" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" font-weight="400" fill="#23231f">Sets: tokens per second per user (TPS)</text>
+<line x1="570" y1="290" x2="630" y2="290" stroke="#23231f" stroke-width="3" marker-end="url(#ah)"/>
+<text x="600" y="278" text-anchor="middle" font-family="'JetBrains Mono',ui-monospace,Menlo,monospace" font-size="13" font-weight="700" fill="#23231f">KV</text>
+<text x="60" y="520" text-anchor="start" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="15" font-weight="400" fill="#23231f">Splitting them (&quot;P/D disaggregation&quot;) lets each phase scale on hardware that suits it.</text>
+<text x="60" y="548" text-anchor="start" font-family="'JetBrains Mono',ui-monospace,Menlo,monospace" font-size="13" font-weight="400" fill="#62625b">Source: DeepInfer&#x27;s DeepSeek V4.1 Flash Inference Deployment Q&amp;A.</text>
+</svg>
