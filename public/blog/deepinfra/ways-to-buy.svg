@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 470" width="1200" height="470" role="img" aria-labelledby="t d">
+<title id="t">Three ways to buy DeepInfra</title><desc id="d">Serverless: shared models, pay per million tokens, no setup. Custom LLM deployments: your own model on dedicated GPUs, billed per GPU-hour by the minute, from 1.49 dollars for an A100 to 5.89 for a B300. Dedicated clusters: DGX H100, B200 and B300 clusters with 3.2 Tbps networking through sales, also offered as DeepCluster.</desc>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#23231f"/></marker></defs>
+<rect width="100%" height="100%" fill="#f7f4eb"/>
+<text x="60" y="50" text-anchor="start" font-family="'JetBrains Mono',ui-monospace,Menlo,monospace" font-size="15" font-weight="700" fill="#62625b">THREE WAYS TO BUY</text>
+<text x="60" y="76" text-anchor="start" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="17" font-weight="400" fill="#23231f">From pay-per-token to your own cluster.</text>
+<rect x="66" y="126" width="340" height="280" fill="#23231f"/>
+<rect x="60" y="120" width="340" height="280" fill="#f4d738" stroke="#23231f" stroke-width="3"/>
+<text x="230.0" y="213.6" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="22" font-weight="700" fill="#23231f">Serverless API</text>
+<text x="230.0" y="243.6" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#23231f" opacity="0.82">pay per 1M tokens</text>
+<text x="230.0" y="263.6" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#23231f" opacity="0.82">shared, autoscaled</text>
+<text x="230.0" y="283.6" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#23231f" opacity="0.82">200 concurrent requests</text>
+<text x="230.0" y="303.6" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#23231f" opacity="0.82">no setup</text>
+<text x="230.0" y="323.6" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#23231f" opacity="0.82">best for: most apps</text>
+<rect x="436" y="126" width="340" height="280" fill="#23231f"/>
+<rect x="430" y="120" width="340" height="280" fill="#c3b0e4" stroke="#23231f" stroke-width="3"/>
+<text x="600.0" y="213.6" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="22" font-weight="700" fill="#23231f">Custom deployments</text>
+<text x="600.0" y="243.6" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#23231f" opacity="0.82">your model, dedicated GPUs</text>
+<text x="600.0" y="263.6" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#23231f" opacity="0.82">A100 $1.49 → B300 $5.89</text>
+<text x="600.0" y="283.6" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#23231f" opacity="0.82">per GPU-hour</text>
+<text x="600.0" y="303.6" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#23231f" opacity="0.82">billed by the minute</text>
+<text x="600.0" y="323.6" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#23231f" opacity="0.82">best for: fine-tunes</text>
+<rect x="806" y="126" width="340" height="280" fill="#23231f"/>
+<rect x="800" y="120" width="340" height="280" fill="#ee8d74" stroke="#23231f" stroke-width="3"/>
+<text x="970.0" y="213.6" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="22" font-weight="700" fill="#23231f">Dedicated clusters</text>
+<text x="970.0" y="243.6" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#23231f" opacity="0.82">DGX H100 / B200 / B300</text>
+<text x="970.0" y="263.6" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#23231f" opacity="0.82">3.2 Tbps networking</text>
+<text x="970.0" y="283.6" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#23231f" opacity="0.82">DeepCluster offering</text>
+<text x="970.0" y="303.6" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#23231f" opacity="0.82">via sales</text>
+<text x="970.0" y="323.6" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="14" fill="#23231f" opacity="0.82">best for: big steady load</text>
+<text x="60" y="450" text-anchor="start" font-family="'JetBrains Mono',ui-monospace,Menlo,monospace" font-size="13" font-weight="400" fill="#62625b">Prices from deepinfra.com/pricing at the time of writing; they change often.</text>
+</svg>

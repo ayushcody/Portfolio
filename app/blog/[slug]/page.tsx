@@ -153,7 +153,7 @@ export default async function BlogPostPage({ params }: PageProps) {
             <div className="secondary-shell">
                 <article aria-labelledby="article-title">
                     <header className="secondary-intro">
-                        <Link href="/blog" className="secondary-back"><ArrowLeft size={16} aria-hidden="true" /> Back to writing</Link>
+                        <Link href="/blog" className="secondary-back"><ArrowLeft size={16} aria-hidden="true" /> Back to all blogs</Link>
                         <p className="post-meta article-meta">
                             {post.date ? (
                                 <>

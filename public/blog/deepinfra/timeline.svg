@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" width="1200" height="520" role="img" aria-labelledby="t d">
+<title id="t">DeepInfra timeline</title><desc id="d">2022: founded by the team behind the imo messenger. Seed: 8 million dollars led by A.Capital and Felicis. April 2025: 18 million dollar Series A led by Felicis and Georges Harik. May 2026: 107 million dollar Series B co-led by 500 Global and Georges Harik, about 5 trillion tokens a week. July 2026: Toronto, the ninth data center and first outside the US, with over 1,000 NVIDIA B300 GPUs. September 2026: over 105 million dollars annualized revenue and 22 trillion tokens a week.</desc>
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#23231f"/></marker></defs>
+<rect width="100%" height="100%" fill="#f7f4eb"/>
+<text x="60" y="50" text-anchor="start" font-family="'JetBrains Mono',ui-monospace,Menlo,monospace" font-size="15" font-weight="700" fill="#62625b">DEEPINFRA · 2022 → 2026</text>
+<text x="60" y="76" text-anchor="start" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="17" font-weight="400" fill="#23231f">From a seed-stage bet on inference to 22 trillion tokens a week.</text>
+<line x1="80" y1="280" x2="1140" y2="280" stroke="#23231f" stroke-width="4"/>
+<circle cx="170" cy="280" r="11" fill="#fffdf6" stroke="#23231f" stroke-width="3"/>
+<rect x="116" y="116" width="170" height="130" fill="#23231f"/>
+<rect x="110" y="110" width="170" height="130" fill="#fffdf6" stroke="#23231f" stroke-width="3"/>
+<text x="195.0" y="159.4" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="18" font-weight="700" fill="#23231f">Founded</text>
+<text x="195.0" y="187.4" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#23231f" opacity="0.82">by the team behind</text>
+<text x="195.0" y="205.4" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#23231f" opacity="0.82">the imo messenger</text>
+<text x="170" y="312" text-anchor="middle" font-family="'JetBrains Mono',ui-monospace,Menlo,monospace" font-size="13" font-weight="700" fill="#23231f">2022</text>
+<line x1="170" y1="250" x2="170" y2="269" stroke="#23231f" stroke-width="2"/>
+<circle cx="345" cy="280" r="11" fill="#f4d738" stroke="#23231f" stroke-width="3"/>
+<rect x="291" y="326" width="170" height="130" fill="#23231f"/>
+<rect x="285" y="320" width="170" height="130" fill="#f4d738" stroke="#23231f" stroke-width="3"/>
+<text x="370.0" y="369.4" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="18" font-weight="700" fill="#23231f">$8M</text>
+<text x="370.0" y="397.4" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#23231f" opacity="0.82">led by A.Capital</text>
+<text x="370.0" y="415.4" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#23231f" opacity="0.82">and Felicis</text>
+<text x="345" y="262" text-anchor="middle" font-family="'JetBrains Mono',ui-monospace,Menlo,monospace" font-size="13" font-weight="700" fill="#23231f">Seed</text>
+<line x1="345" y1="291" x2="345" y2="310" stroke="#23231f" stroke-width="2"/>
+<circle cx="520" cy="280" r="11" fill="#c3b0e4" stroke="#23231f" stroke-width="3"/>
+<rect x="466" y="116" width="170" height="130" fill="#23231f"/>
+<rect x="460" y="110" width="170" height="130" fill="#c3b0e4" stroke="#23231f" stroke-width="3"/>
+<text x="545.0" y="159.4" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="18" font-weight="700" fill="#23231f">$18M Series A</text>
+<text x="545.0" y="187.4" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#23231f" opacity="0.82">Felicis + Georges Harik</text>
+<text x="545.0" y="205.4" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#23231f" opacity="0.82">Blackwell GPUs arrive</text>
+<text x="520" y="312" text-anchor="middle" font-family="'JetBrains Mono',ui-monospace,Menlo,monospace" font-size="13" font-weight="700" fill="#23231f">Apr 2025</text>
+<line x1="520" y1="250" x2="520" y2="269" stroke="#23231f" stroke-width="2"/>
+<circle cx="700" cy="280" r="11" fill="#ee8d74" stroke="#23231f" stroke-width="3"/>
+<rect x="646" y="326" width="170" height="130" fill="#23231f"/>
+<rect x="640" y="320" width="170" height="130" fill="#ee8d74" stroke="#23231f" stroke-width="3"/>
+<text x="725.0" y="369.4" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="18" font-weight="700" fill="#23231f">$107M Series B</text>
+<text x="725.0" y="397.4" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#23231f" opacity="0.82">500 Global + Harik</text>
+<text x="725.0" y="415.4" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#23231f" opacity="0.82">~5T tokens / week</text>
+<text x="700" y="262" text-anchor="middle" font-family="'JetBrains Mono',ui-monospace,Menlo,monospace" font-size="13" font-weight="700" fill="#23231f">May 2026</text>
+<line x1="700" y1="291" x2="700" y2="310" stroke="#23231f" stroke-width="2"/>
+<circle cx="880" cy="280" r="11" fill="#b9d3b0" stroke="#23231f" stroke-width="3"/>
+<rect x="826" y="116" width="170" height="130" fill="#23231f"/>
+<rect x="820" y="110" width="170" height="130" fill="#b9d3b0" stroke="#23231f" stroke-width="3"/>
+<text x="905.0" y="159.4" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="18" font-weight="700" fill="#23231f">Toronto DC</text>
+<text x="905.0" y="187.4" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#23231f" opacity="0.82">9th site, first outside US</text>
+<text x="905.0" y="205.4" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#23231f" opacity="0.82">1,000+ B300 GPUs</text>
+<text x="880" y="312" text-anchor="middle" font-family="'JetBrains Mono',ui-monospace,Menlo,monospace" font-size="13" font-weight="700" fill="#23231f">Jul 2026</text>
+<line x1="880" y1="250" x2="880" y2="269" stroke="#23231f" stroke-width="2"/>
+<circle cx="1060" cy="280" r="11" fill="#f4d738" stroke="#23231f" stroke-width="3"/>
+<rect x="1006" y="326" width="150" height="130" fill="#23231f"/>
+<rect x="1000" y="320" width="150" height="130" fill="#f4d738" stroke="#23231f" stroke-width="3"/>
+<text x="1075.0" y="369.4" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="18" font-weight="700" fill="#23231f">$105M+ ARR</text>
+<text x="1075.0" y="397.4" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#23231f" opacity="0.82">~14x year over year</text>
+<text x="1075.0" y="415.4" text-anchor="middle" font-family="'Space Grotesk','Inter',system-ui,-apple-system,'Segoe UI',sans-serif" font-size="12" fill="#23231f" opacity="0.82">22T tokens / week</text>
+<text x="1060" y="262" text-anchor="middle" font-family="'JetBrains Mono',ui-monospace,Menlo,monospace" font-size="13" font-weight="700" fill="#23231f">Sep 2026</text>
+<line x1="1060" y1="291" x2="1060" y2="310" stroke="#23231f" stroke-width="2"/>
+<text x="60" y="495" text-anchor="start" font-family="'JetBrains Mono',ui-monospace,Menlo,monospace" font-size="13" font-weight="400" fill="#62625b">Sources: DeepInfra and GlobeNewswire press releases (Apr 2025, May, Jul and Sep 2026).</text>
+</svg>
