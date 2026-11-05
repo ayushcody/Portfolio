@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "lint:content": "python3 scripts/lint_content.py"
+    "lint:content": "python3 scripts/lint_content.py",
+    "shots": "node scripts/build_project_shots.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",

@@ -15,6 +15,8 @@ import { SignatureFooter } from "@/components/SignatureFooter";
 import { CaseList, CaseStudyIndex, CaseStudySection, type CaseSectionEntry } from "@/components/projects/CaseStudySection";
 import { projectTone, type VisualTone } from "@/components/projects/ProjectDiagram";
 import { ProjectGallery, ProjectHeroMedia, hasGallery } from "@/components/projects/ProjectMedia";
+import { ProjectShowcase } from "@/components/projects/ProjectShowcase";
+import { projectShots } from "@/src/data/projectShots";
 import "@/components/secondary-pages.css";
 import "@/components/projects.css";
 
@@ -114,6 +116,8 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
   if (!project) notFound();
 
   const tone = projectTone(project);
+  // Captioned screenshots lead the page; the CMS gallery is only the fallback when a project has none.
+  const shots = projectShots[project.id] ?? [];
   const hasLinks = getProjectLinks(project).length > 0;
   const once = createDeduper();
 
@@ -238,7 +242,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
       title: "Next steps",
       content: <CaseList items={nextSteps} />,
     },
-    hasGallery(project) && {
+    shots.length === 0 && hasGallery(project) && {
       id: "gallery",
       title: "Gallery",
       content: <ProjectGallery project={project} />,
@@ -280,6 +284,8 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
             <ProjectHeroMedia project={project} />
           </div>
         </header>
+
+        {shots.length > 0 ? <ProjectShowcase title={project.title} shots={shots} /> : null}
 
         {sections.length > 0 ? (
           <div className={sections.length > 2 ? "case-body" : "case-body case-body--single"}>

@@ -1,0 +1,22 @@
+[
+  {
+    "file": "01-today.jpg",
+    "alt": "Vasoli Today screen with a sidebar of sections and a card showing daily allowance ₹600, next payday 2026-11-30, additional spending room ₹61,272, a Salary Account balance confirmed at ₹94,521 with lowest projected ₹90,672, and a Next useful steps panel.",
+    "caption": "The Today screen turns recorded balances, upcoming bills and the payday plan into one number: how much extra can be spent before payday. It names the account it used and says which inputs, such as unrecorded spending, can change the estimate."
+  },
+  {
+    "file": "02-payday-plan.jpg",
+    "alt": "Vasoli Payday planning page showing the payday summary, a Try an extra expense form, and a Payday plan form with next payday 30/11/2026, daily allowance 600, minimum reserve 5000, Emergency fund goal reserve 10000, and Salary Account selected as the paying account.",
+    "caption": "The payday plan holds the inputs behind the Today number: payday date, daily allowance, a protected minimum reserve, money set aside for a goal, and which accounts count. The Go backend does the calculation in integer paise, and the extra-expense preview reruns it without saving anything."
+  },
+  {
+    "file": "03-activity.jpg",
+    "alt": "Vasoli Activity page with month totals (net flow ₹52,521, income ₹85,000, expenses ₹32,479), Import statement, Transfer and Add transaction buttons, server-side search and filters, and a table of November 2026 transactions on the Salary Account.",
+    "caption": "Activity after importing a sample HDFC-format CSV statement. The server parsed the file, checked the opening and closing balances, held back a row that duplicated a manual entry and a malformed row, and committed only the rows that were reviewed."
+  },
+  {
+    "file": "04-obligations.jpg",
+    "alt": "Vasoli Obligations page headed Your financial commitments, showing 5 rules and an estimated commitment of ₹27,908, an empty Upcoming Reminders panel, and a Recurring Obligations table listing Netflix, Bike insurance, Rent, Airtel postpaid and BESCOM electricity with cadence, next due date, paying account, amount and a Mark paid button.",
+    "caption": "Recurring bills are tied to the account that pays them, so the payday forecast can reserve money for each one before its due date. Marking a bill paid links it to an existing Activity record instead of adding a second expense."
+  }
+]

@@ -1,0 +1,17 @@
+[
+  {
+    "file": "01-home.jpg",
+    "alt": "DSA Karle home page with a sliding-window walkthrough playing beside the headline Watch algorithms think",
+    "caption": "The home page runs a real walkthrough instead of a hero image. Press the arrow key and the sliding window moves one decision at a time."
+  },
+  {
+    "file": "02-lesson-two-pointers.jpg",
+    "alt": "The Two Pointers lesson: a sidebar of topics, the seven lesson steps, and a diagram of a sorted array with left and right pointers labelled smallest and largest",
+    "caption": "Every lesson follows the same seven moves, from picture and hook to code and practice. Here the diagram labels the pointers smallest and largest, and states the rule: move the one that helps."
+  },
+  {
+    "file": "03-pattern-map.jpg",
+    "alt": "The DSA Karle pattern map: data structures as round nodes and algorithms as square nodes, connected by arrows showing which topic to learn first",
+    "caption": "The pattern map shows what each topic builds on. Round nodes are data structures, square nodes are algorithms, and arrows point from what to learn first to what it unlocks."
+  }
+]

@@ -174,7 +174,7 @@ export const projectsData: PortfolioProject[] = [
             "Prompt quality improves when generation is grounded in concrete behavior signals.",
         ],
         nextSteps: ["Add stronger privacy controls and explicit local/remote processing boundaries."],
-        links: { github: "https://github.com/ayushcody/emailDigitalTwin" },
+        links: { github: "https://github.com/ayushcody/emailDigitalTwin", loom: "https://www.loom.com/share/31e147285d0546b7a64b4f1d5365c26d" },
         description:
             "Analyzes sent-email history to model tone, formality, and structure, then generates reply drafts that mirror the user's actual communication style.",
         proofPoint: "Chrome Extension · OAuth2 Gmail API · 4 draft variants · Gemini LLM",
@@ -400,7 +400,7 @@ export const projectsData: PortfolioProject[] = [
             "Full-stack AI products need reliable non-AI fallbacks.",
             "Progress and feedback loops are central to learning-product UX.",
         ],
-        links: {},
+        links: { github: "https://github.com/ayushcody/Learning", loom: "https://www.loom.com/share/f8bde39155014a3e8241c6cbc84ec5cb" },
         description:
             "End-to-end learning platform with sandboxed code execution, in-browser IDE, AI hints, real-time progress tracking, and gamification.",
         proofPoint: "Judge0 sandbox · Monaco IDE · Gemini hints · Firebase progress sync",

@@ -30,8 +30,8 @@ export default function Hero({ profile = fallbackProfile }: { profile?: Profile 
         <section id="home" className="portfolio-hero" aria-labelledby="hero-heading">
             <div className="portfolio-wrap hero-layout">
                 <div className="hero-copy">
-                    <h1 id="hero-heading"><span className="hero-hello">Hey, I’m</span><span>{profile.fullName.split(' ')[0]}<Asterisk className="hero-asterisk" aria-hidden="true" /></span><span className="hero-surname">{profile.fullName.split(' ').slice(1).join(' ')}<span className="hero-period">.</span></span></h1>
-                    <p className="hero-role">{profile.headline} <span>/</span> Agents, RAG &amp; voice AI</p>
+                    <h1 id="hero-heading"><span className="hero-hello">Hey, I’m</span><span className="hero-name">{profile.fullName}<span className="hero-period">.</span><Asterisk className="hero-asterisk" aria-hidden="true" /></span></h1>
+                    <p className="hero-role">{profile.headline}</p>
                     <p className="hero-description">I build AI that does useful work — from grounded answers to voice agents that connect with real business workflows. Computer Science at MIT ADT, graduating in 2027.</p>
                     <div className="hero-actions">
                         <Link href="#projects" className="brutal-button">Explore my work <ArrowDownRight size={20} aria-hidden="true" /></Link>

@@ -1,0 +1,27 @@
+[
+  {
+    "file": "01-consent-gated-handoff.jpg",
+    "alt": "Hushh Personal Agent chat in dark mode. The user asked \"Check my budget status\"; a banner shows the Hushh Personal Agent handing off to Kai for a finance and optimization query, and Kai's reply says consent is required to access financial data, with steps to grant it.",
+    "caption": "The orchestrator classifies the request as finance and hands it to Kai, but financial consent is revoked, so the server answers with a consent prompt instead of reading any data. The check runs in the API against stored consent records, not in the model's prompt."
+  },
+  {
+    "file": "02-consent-controls.jpg",
+    "alt": "Consent Management page listing data categories with toggles. Financial Data is marked Revoked, with recent activity showing it changed from granted to revoked by the user. Identity Information is revoked and Location Data is granted. Summary tiles show 4 granted and 3 revoked.",
+    "caption": "Each data category has its own consent toggle, saved through the API. Every change is written to a history with its previous state, new state and source, shown here as the revoke that blocked the request in the first screen."
+  },
+  {
+    "file": "03-kai-affordability.jpg",
+    "alt": "Kai Workspace chat showing an affordability check: monthly net equals income 85000 minus expenses 52000, which is 33000; affordable: no, remaining -47000; assumptions: none; and a provenance block naming the FinanceVerifiedContext snapshot, its timestamp and currency INR.",
+    "caption": "Kai uses Gemini only to pull the intent and numbers out of the message. A saved finance snapshot and plain arithmetic produce the answer, and each reply names the snapshot it used. Here the check compares the price with one month's net income, so an 80,000 laptop does not fit a 33,000 monthly surplus."
+  },
+  {
+    "file": "04-kai-dashboard.jpg",
+    "alt": "Kai finance dashboard labelled Demo Data, showing net worth of 1,42,500 rupees, monthly net, a 38.8% savings rate, liabilities, a financial health score of 88 out of 100, asset allocation bars, insight cards and quick actions.",
+    "caption": "Kai's dashboard running on the app's built-in demo portfolio. The API calculates the health score, allocation split and insights, such as cash covering only 2.9 months of expenses."
+  },
+  {
+    "file": "05-nav-creator.jpg",
+    "alt": "Nav's Creator Dashboard with earnings totals, data source cards for Instagram, Twitter/X, Spotify and Amazon purchase history, each with an access toggle and monthly value, and a Brand Requests panel showing a Nike request with Accept, Counter and decline options.",
+    "caption": "Nav, the creator agent, lets a user choose which data sources brands may use and accept, counter or decline each brand's request. The sources, earnings and requests shown are sample data that ships with the app."
+  }
+]

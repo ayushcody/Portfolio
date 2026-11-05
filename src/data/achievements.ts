@@ -43,7 +43,8 @@ export const achievementsData: AchievementEntry[] = [
         featured: true,
         description:
             "Won a 24-hour cybersecurity hackathon focused on building security tools and demonstrating offensive/defensive security techniques.",
-        imageAlt: "Ayush Chougula at the Black Pearl Cybersecurity Hackathon",
+        image: "/achievements/blackpearl.jpg",
+        imageAlt: "The winning team at the Black Pearl Cybersecurity Hackathon holding the trophy and their certificates, standing with the judges and organisers",
         proofLabel: "1st place • 24-hour build",
         icon: Trophy,
         color: "text-orange",
@@ -62,7 +63,8 @@ export const achievementsData: AchievementEntry[] = [
         featured: true,
         description:
             "Placed second in a 3-day innovation hackathon, building a working prototype from ideation to presentation.",
-        imageAlt: "Ayush Chougula at Shodh 3-Day Hackathon",
+        image: "/achievements/shodh.jpg",
+        imageAlt: "Ayush Chougula's team receiving a prize cheque at SHODH 1.0, the Campus Problem Hackathon at MIT-ADT University, with faculty and organisers",
         proofLabel: "Runner-up • 3-day prototype",
         icon: Award,
         color: "text-purple",
@@ -100,7 +102,8 @@ export const achievementsData: AchievementEntry[] = [
         featured: false,
         description:
             "Won first place in a DSA and competitive programming bootcamp co-organized by CodeChef and GeeksForGeeks.",
-        imageAlt: "Ayush Chougula DSA bootcamp first prize",
+        image: "/achievements/dsa-bootcamp.jpg",
+        imageAlt: "Ayush Chougula receiving a certificate and a prize in front of a screen that reads And the winners are, with his name among the winners",
         proofLabel: "First prize • DSA/CP",
         icon: Star,
         color: "text-white",
