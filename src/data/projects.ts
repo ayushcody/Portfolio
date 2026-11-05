@@ -60,6 +60,8 @@ export type Project = {
     featured: boolean;
     showOnHome: boolean;
     archived: boolean;
+    /** Left out of the site entirely (not even the archive), e.g. while the code can't be shared. */
+    hidden?: boolean;
     priority: number;
 
     summary: string;
@@ -309,52 +311,31 @@ export const projectsData: PortfolioProject[] = [
         id: "research-saathi",
         title: "Research Saathi",
         category: "RAG Systems",
+        year: "2026",
         status: "Case Study",
         featured: true,
         showOnHome: true,
         archived: false,
         priority: 4,
-        summary:
-            "Multi-agent research pipeline combining vector retrieval and reasoning agents for structured, cited knowledge extraction from documents and the web.",
-        oneLine: "Multi-agent RAG research assistant for grounded knowledge synthesis.",
-        problem:
-            "Research workflows often fragment across PDFs, notes, web searches, and summaries, making citation tracking and factual grounding difficult.",
-        solution:
-            "Retrieval agents gather grounded context from documents and web sources while reasoning agents synthesize structured answers.",
-        myRole:
-            "Designed the agent workflow, retrieval/fallback behavior, and knowledge persistence approach.",
-        techStack: ["Python", "RAG", "Agents", "Vector Search", "Embeddings", "Web Search"],
-        tags: ["Research assistant", "Agents", "RAG", "Knowledge base"],
-        architecture:
-            "Documents and web sources are embedded into a vector store, retrieval agents collect grounded context, reasoning agents synthesize the answer, and fallback web-search agents fill missing context when local retrieval is weak.",
-        architectureHighlights: [
-            "Retrieval agents with reasoning-agent synthesis",
-            "Fallback web-search behavior for weak local context",
-            "Persistent knowledge base for reusable findings",
-        ],
-        features: ["Document retrieval", "Web fallback", "Grounded synthesis", "Knowledge persistence"],
-        impact: [
-            "Designed a research workflow that keeps retrieval and reasoning responsibilities explicit.",
-            "Reduced hallucination risk through grounding and fallback search patterns.",
-        ],
-        challenges: [
-            "Balancing local retrieval with external search without mixing weak context into final answers.",
-            "Maintaining traceability from generated answers back to source material.",
-        ],
-        learnings: [
-            "Agentic RAG systems need clear routing decisions before synthesis.",
-            "Persistent knowledge bases are most useful when source provenance is preserved.",
-        ],
+        summary: "A research assistant that turns a question and a set of PDFs or web pages into a grounded answer, then checks every claim in it against the retrieved evidence.",
+        oneLine: "Grounded research answers, with every claim checked against the sources.",
+        problem: "Research workflows often fragment across PDFs, notes, web searches, and summaries, making citation tracking and factual grounding difficult.",
+        solution: "A LangGraph pipeline plans the research, ingests PDFs and URLs, indexes them, retrieves evidence, writes an answer using only that evidence, and runs a separate verifier over each claim.",
+        myRole: "Designed the workflow, the evidence-only synthesis and verification prompts, the retrieval fallback, and run storage.",
+        techStack: ["Python", "LangGraph", "Gemini", "Chroma", "SQLite", "Streamlit"],
+        tags: ["Research assistant", "RAG", "Verification", "LangGraph"],
+        architecture: "A fixed LangGraph pipeline runs plan, ingest, index, retrieve, synthesize and verify in order. Sources are chunked and embedded into Chroma; when vector search is unavailable, retrieval falls back to keyword search over the chunks stored in SQLite. Every run, plan, source and verdict is saved, so a run can be reopened from History.",
+        architectureHighlights: ["Planner, synthesizer and verifier as separate model calls", "Evidence labels (S1, S2, …) shared by the answer and the verifier", "Keyword search over SQLite when vector search fails"],
+        features: ["PDF and URL ingestion", "Five output formats, from summary to interview prep", "Claim-by-claim verification", "Saved run history"],
+        impact: ["Each claim gets a verdict (supported, weak support or unsupported) with the evidence labels it relied on.", "Runs are stored, so any answer can be traced back to its sources later."],
+        challenges: ["Keeping the model inside the retrieved evidence instead of its own knowledge.", "Keeping retrieval working when the embeddings service fails."],
+        learnings: ["A verifier is more useful when it flags problems than when it quietly rewrites the answer.", "Stored runs are only useful when source provenance is preserved."],
+        nextSteps: ["Fix the embeddings call so vector search runs instead of the keyword fallback.", "Reuse already-ingested URLs instead of returning an empty answer on a repeat run."],
         links: {},
-        description:
-            "Multi-agent research pipeline combining vector retrieval and reasoning agents for structured, cited knowledge extraction from documents and the web.",
-        proofPoint: "Multi-agent RAG · Web fallback agents · Persistent knowledge base",
-        tech: ["Python", "RAG", "Agents", "Vector Search", "Embeddings", "Web Search"],
-        highlights: [
-            "Combines retrieval agents with reasoning agents",
-            "Uses grounding and fallback search to reduce hallucinations",
-            "Persists useful findings into a reusable knowledge base",
-        ],
+        description: "A research assistant that turns a question and a set of PDFs or web pages into a grounded answer, then checks every claim in it against the retrieved evidence.",
+        proofPoint: "LangGraph pipeline · Evidence-only answers · Claim verifier",
+        tech: ["Python", "LangGraph", "Gemini", "Chroma", "SQLite", "Streamlit"],
+        highlights: ["Planner, synthesizer and verifier as separate model calls", "Evidence labels (S1, S2, …) shared by the answer and the verifier", "Keyword search over SQLite when vector search fails"],
         demo: "",
         icon: BookOpen,
         color: "text-orange",
@@ -417,54 +398,32 @@ export const projectsData: PortfolioProject[] = [
     }),
     project({
         id: "agentic-soc",
-        title: "Agentic SOC",
-        category: "Agentic AI",
+        title: "Ragnarok SIEM Triage",
+        category: "AI Infrastructure",
+        year: "2025",
         status: "Case Study",
         featured: true,
         showOnHome: false,
         archived: false,
         priority: 7,
-        summary:
-            "Full-stack SIEM platform that ingests security alerts and uses agentic LLM workflows for triage, remediation suggestions, and orchestration.",
-        oneLine: "AI-driven SIEM alert triage platform built under hackathon constraints.",
-        problem:
-            "Security teams face noisy alert queues where triage, prioritization, and remediation planning consume valuable response time.",
-        solution:
-            "Security alerts enter an agentic triage layer that classifies severity, reasons about likely causes, and proposes remediation steps for analyst review.",
-        myRole:
-            "Helped design and build the AI triage flow, security workflow framing, and full-stack prototype behavior.",
-        techStack: ["SIEM", "Agentic AI", "LLM Workflows", "Cybersecurity", "Full Stack"],
-        tags: ["Cybersecurity", "Agentic workflows", "SIEM", "Hackathon"],
-        architecture:
-            "Security alerts flow into a triage layer where agentic LLM workflows classify severity, reason about likely causes, suggest remediation steps, and coordinate follow-up actions.",
-        architectureHighlights: [
-            "Alert ingestion and severity classification",
-            "Agentic reasoning over likely causes",
-            "Remediation suggestions for analyst review",
-        ],
-        features: ["Alert triage", "Severity classification", "Remediation suggestions"],
-        impact: [
-            "Built a working security-tool prototype under 24-hour hackathon constraints.",
-            "Won 1st place at the Black Pearl Cybersecurity Hackathon.",
-        ],
-        challenges: [
-            "Designing useful AI assistance while keeping analysts in control.",
-            "Making security reasoning legible in a short-build context.",
-        ],
-        learnings: [
-            "Agentic security tools need clear escalation and review boundaries.",
-            "Triage workflows benefit from concise reasoning traces.",
-        ],
+        summary: "A SIEM alert-triage service built with teammates in 24 hours: it scores incoming security alerts, explains every score, and suggests a first response.",
+        oneLine: "Explainable alert scoring for a SIEM, built in 24 hours. Won 1st place.",
+        problem: "Security teams face noisy alert queues where triage, prioritization, and remediation planning consume valuable response time.",
+        solution: "A FastAPI service scores each alert from rule severity, threat-intelligence hits, burst counts, asset criticality, MITRE technique risk and suspicious-command patterns, explains the score, and suggests whether to block the source IP or enrich the alert.",
+        myRole: "Team project at the Black Pearl hackathon. I helped design the triage flow and the security workflow around it; the service code lives in a teammate's repository.",
+        techStack: ["Python", "FastAPI", "SIEM", "MITRE ATT&CK", "Threat intelligence"],
+        tags: ["Cybersecurity", "SIEM", "Hackathon", "Explainability"],
+        architecture: "Alerts are posted to /score, which combines weighted signals into a priority and a suggested action. /why/{dedup_key} returns the reasons behind any score, and /metrics exposes counters. The team's design places the service between Wazuh alerts and TheHive cases, with MISP for threat intelligence.",
+        architectureHighlights: ["Weighted, explainable alert scoring", "Per-alert explanations through /why", "Suggested first response: block the IP or enrich the alert"],
+        features: ["Alert scoring", "Score explanations", "Suggested response"],
+        impact: ["Built in 24 hours with teammates.", "Won 1st place at the Black Pearl Cybersecurity Hackathon."],
+        challenges: ["Producing a score an analyst can trust: every point has to be explainable.", "Scoping a full SOC pipeline down to what could work in 24 hours."],
+        learnings: ["Explainable heuristics beat opaque scores when an analyst makes the final call.", "Security tooling needs clear escalation and review boundaries."],
         links: {},
-        description:
-            "Full-stack SIEM platform that ingests security alerts and uses agentic LLM workflows for triage, remediation suggestions, and orchestration.",
+        description: "A SIEM alert-triage service built with teammates in 24 hours: it scores incoming security alerts, explains every score, and suggests a first response.",
         proofPoint: "Black Pearl 24-hour Cybersecurity Hackathon · 1st place",
-        tech: ["SIEM", "Agentic AI", "LLM Workflows", "Cybersecurity", "Full Stack"],
-        highlights: [
-            "Automates first-pass alert triage and prioritization",
-            "Generates remediation suggestions for analyst review",
-            "Built under hackathon constraints and won 1st place",
-        ],
+        tech: ["Python", "FastAPI", "SIEM", "MITRE ATT&CK", "Threat intelligence"],
+        highlights: ["Weighted, explainable alert scoring", "Per-alert explanations through /why", "Suggested first response: block the IP or enrich the alert"],
         demo: "",
         icon: ShieldCheck,
         color: "text-orange",
@@ -473,53 +432,31 @@ export const projectsData: PortfolioProject[] = [
     project({
         id: "vasoli",
         title: "Vasoli",
-        category: "AI Infrastructure",
+        category: "Full-Stack Product",
+        year: "2026",
         status: "Prototype",
         featured: false,
         showOnHome: false,
         archived: false,
         priority: 8,
-        summary:
-            "High-throughput ETL pipeline in Go using Kafka for real-time event streaming and PostgreSQL for structured financial transaction storage.",
-        oneLine: "Go, Kafka, and PostgreSQL ETL pipeline for financial transaction workflows.",
-        problem:
-            "Financial transaction systems need reliable ingestion, transformation, and storage without losing security or fault tolerance.",
-        solution:
-            "Go services expose secured API endpoints, stream transaction events through Kafka, transform payloads, and persist structured records in PostgreSQL.",
-        myRole:
-            "Built backend pipeline components across API design, streaming, transformation, and persistence concerns.",
-        techStack: ["Go", "Kafka", "PostgreSQL", "JWT", "ETL", "REST APIs"],
-        tags: ["Backend", "ETL", "Kafka", "FinTech"],
-        architecture:
-            "Go services expose JWT-secured API endpoints, stream transaction events through Kafka, transform payloads through ETL workers, and persist structured records in PostgreSQL.",
-        architectureHighlights: [
-            "JWT-secured REST ingestion endpoints",
-            "Kafka-backed event streaming",
-            "PostgreSQL persistence for structured transaction data",
-        ],
-        features: ["Event ingestion", "ETL workers", "JWT-secured APIs"],
-        impact: [
-            "Built a backend-heavy prototype for financial data ingestion and transformation.",
-            "Practiced fault-tolerant pipeline design around event streaming and persistence.",
-        ],
-        challenges: [
-            "Keeping transaction payload flow reliable across service boundaries.",
-            "Designing secure ingestion without adding unnecessary complexity.",
-        ],
-        learnings: [
-            "Streaming pipelines need simple contracts between producers, workers, and storage.",
-            "Backend reliability starts with clear payload validation and failure handling.",
-        ],
-        links: { github: "https://github.com/ayushcody/Vasoli" },
-        description:
-            "High-throughput ETL pipeline in Go using Kafka for real-time event streaming and PostgreSQL for structured financial transaction storage.",
-        proofPoint: "Go services · Kafka streaming · PostgreSQL · JWT-secured APIs",
-        tech: ["Go", "Kafka", "PostgreSQL", "JWT", "ETL", "REST APIs"],
-        highlights: [
-            "Kafka-backed real-time event streaming pipeline",
-            "JWT-secured API surface for transaction ingestion",
-            "Fault-tolerant design for financial data workflows",
-        ],
+        summary: "A personal-finance app for salaried people in India that answers one question: how much can I still spend before payday?",
+        oneLine: "Payday-aware budgeting: one honest number for what is safe to spend before salary day.",
+        problem: "Budget apps show where money went. Salaried people mostly need to know what is safe to spend before the next payday, after bills, savings goals and a safety reserve.",
+        solution: "Vasoli combines recorded balances, recurring bills, goals and a payday plan into one spending-room estimate, imports bank statements through a server-checked preview, and says which inputs could change the number.",
+        myRole: "Built the product: the Next.js app, the Go backend and its PostgreSQL schema, and the payday forecast.",
+        techStack: ["Go", "Connect RPC", "PostgreSQL", "Supabase", "Next.js", "TypeScript"],
+        tags: ["FinTech", "Personal finance", "Forecasting"],
+        architecture: "A Next.js 14 frontend talks to a Go backend over Connect RPC. The backend uses sqlc for typed queries against PostgreSQL on Supabase, verifies Supabase JWTs, and computes the payday forecast in integer paise so rounding never drifts. An optional Gemini assistant, Marco, answers questions about your own data.",
+        architectureHighlights: ["Payday forecast computed in integer paise on the server", "Bank-statement import with balance checks and duplicate detection", "Bills linked to the accounts that pay them"],
+        features: ["Spending room until payday", "CSV statement import with review", "Recurring bills and goals", "Receipt vault"],
+        impact: ["Running as an invite-only private pilot.", "Statement imports check opening and closing balances before anything is saved."],
+        challenges: ["Giving one number without hiding its assumptions.", "Importing messy bank statements without double-counting manual entries."],
+        learnings: ["Money math belongs in integers on the server, not floats in the browser.", "A forecast earns trust when it says what it doesn't know."],
+        links: {"github": "https://github.com/ayushcody/Vasoli"},
+        description: "A personal-finance app for salaried people in India that answers one question: how much can I still spend before payday?",
+        proofPoint: "Go · Connect RPC · PostgreSQL · Integer-paise forecasting",
+        tech: ["Go", "Connect RPC", "PostgreSQL", "Supabase", "Next.js", "TypeScript"],
+        highlights: ["Payday forecast computed in integer paise on the server", "Bank-statement import with balance checks and duplicate detection", "Bills linked to the accounts that pay them"],
         demo: "",
         icon: BadgeDollarSign,
         color: "text-cyan",
@@ -527,6 +464,7 @@ export const projectsData: PortfolioProject[] = [
     }),
     project({
         id: "breast-cancer-detection",
+        hidden: true,
         title: "Breast Cancer Detection",
         category: "Labs",
         status: "Prototype",
@@ -582,6 +520,7 @@ export const projectsData: PortfolioProject[] = [
     }),
     project({
         id: "crop-price-forecasting",
+        hidden: true,
         title: "Crop Price Forecasting",
         category: "Labs",
         status: "Prototype",
@@ -691,202 +630,108 @@ export const projectsData: PortfolioProject[] = [
         bg: "bg-white/10",
     }),
     project({
-        "id": "documind",
-        "title": "DocuMind",
-        "category": "RAG Systems",
-        "summary": "Visual document retrieval with answers cited to the exact region of the source page.",
-        "techStack": [
-                "FastAPI",
-                "Celery",
-                "ColQwen2",
-                "Python"
-        ],
-        "architecture": "ColQwen2 handles layout-aware document retrieval. Celery ingests and indexes documents asynchronously, with FastAPI coordinating the pipeline.",
-        "features": [
-                "Visual and layout-aware document understanding",
-                "Bounding-box citations back to source regions",
-                "Asynchronous document ingestion and indexing"
-        ],
-        "year": "2025",
-        "status": "Case Study",
-        "featured": false,
-        "showOnHome": false,
-        "archived": false,
-        "priority": 12,
-        "oneLine": "Visual document retrieval with answers cited to the exact region of the source page.",
-        "description": "Visual document retrieval with answers cited to the exact region of the source page.",
-        "problem": "",
-        "solution": "ColQwen2 handles layout-aware document retrieval. Celery ingests and indexes documents asynchronously, with FastAPI coordinating the pipeline.",
-        "myRole": "Built the application and its core pipeline.",
-        "tags": [
-                "FastAPI",
-                "Celery",
-                "ColQwen2"
-        ],
-        "architectureHighlights": [
-                "Visual and layout-aware document understanding",
-                "Bounding-box citations back to source regions",
-                "Asynchronous document ingestion and indexing"
-        ],
-        "impact": [
-                "Visual and layout-aware document understanding",
-                "Bounding-box citations back to source regions",
-                "Asynchronous document ingestion and indexing"
-        ],
-        "challenges": [],
-        "learnings": [],
-        "links": {},
-        "proofPoint": "FastAPI · Celery · ColQwen2",
-        "tech": [
-                "FastAPI",
-                "Celery",
-                "ColQwen2",
-                "Python"
-        ],
-        "highlights": [
-                "Visual and layout-aware document understanding",
-                "Bounding-box citations back to source regions",
-                "Asynchronous document ingestion and indexing"
-        ],
-        "demo": "",
-        "color": "text-purple",
-        "bg": "bg-purple/10"
-,
-        icon: BookOpen
+        id: "documind",
+        title: "DocuMind",
+        category: "RAG Systems",
+        year: "2026",
+        status: "Case Study",
+        featured: false,
+        showOnHome: false,
+        archived: false,
+        priority: 12,
+        summary: "A document AI pipeline that parses pages into verified blocks, extracts fields against your own schema, and cites every value back to the exact region of the page.",
+        oneLine: "Document extraction where every value points to the region of the page it came from.",
+        problem: "Extraction models return confident values with no way to see where they came from, so reviewers end up re-reading the whole document.",
+        solution: "DocuMind parses each page into layout blocks, checks each block against the original, extracts fields against a user-defined JSON schema, and links every value to its source region for human review.",
+        myRole: "Built the pipeline end to end: parsing and verification, schema-based extraction, the review flow, and the Next.js interface.",
+        techStack: ["Python", "FastAPI", "Celery", "Docling", "ColQwen2", "Qdrant", "PostgreSQL", "Next.js"],
+        tags: ["Document AI", "Citations", "Human review"],
+        architecture: "FastAPI accepts documents and Celery workers process them. Docling turns each page into blocks with coordinates, and a verifier re-renders every block and compares it with the original crop using SSIM, layout overlap and CLIP similarity. Fields are extracted against a JSON schema with validators, each linked to its source block. ColQwen2 page embeddings in Qdrant handle visual retrieval across documents.",
+        architectureHighlights: ["Block-level verification against the source page", "Schema-based extraction with validators and source links", "Reviewer decisions stored apart from model output"],
+        features: ["Layout parsing with page coordinates", "Block verification", "Schema-based field extraction", "Human review with region citations", "Visual retrieval with ColQwen2"],
+        impact: ["Every extracted value can be traced to a region of the page.", "Blocks that don't match the source are flagged for review instead of passed through."],
+        challenges: ["Making confidence honest: uncalibrated scores are labelled as uncalibrated.", "Keeping reviewer corrections separate from the original machine output."],
+        learnings: ["A citation is only useful if it points to a region a person can check.", "Comparing output against the source catches errors an extractor will not admit."],
+        links: {"github": "https://github.com/ayushcody/DocuMint"},
+        description: "A document AI pipeline that parses pages into verified blocks, extracts fields against your own schema, and cites every value back to the exact region of the page.",
+        proofPoint: "Docling · Block verifier · Schema extraction · Region citations",
+        tech: ["Python", "FastAPI", "Celery", "Docling", "ColQwen2", "Qdrant", "PostgreSQL", "Next.js"],
+        highlights: ["Block-level verification against the source page", "Schema-based extraction with validators and source links", "Reviewer decisions stored apart from model output"],
+        demo: "",
+        icon: BookOpen,
+        color: "text-purple",
+        bg: "bg-purple/10",
     }),
     project({
-        "id": "voice-cloning",
-        "title": "Voice Cloning Pipeline",
-        "category": "Voice AI",
-        "summary": "A Qwen3 voice-cloning and text-to-speech pipeline tuned for clear pronunciation of emails, numbers, and dates.",
-        "techStack": [
-                "Qwen3",
-                "PyTorch",
-                "TTS",
-                "Audio processing"
-        ],
-        "architecture": "A Qwen3-based speech pipeline uses structured prompt formatting to improve pronunciation of email addresses, numeric identifiers, and dates.",
-        "features": [
-                "Voice cloning and text-to-speech generation",
-                "Prompt formatting for structured data pronunciation",
-                "Inference tuning for low-latency use"
-        ],
-        "year": "2025",
-        "status": "Case Study",
-        "featured": false,
-        "showOnHome": false,
-        "archived": false,
-        "priority": 13,
-        "oneLine": "A Qwen3 voice-cloning and text-to-speech pipeline tuned for clear pronunciation of emails, numbers, and dates.",
-        "description": "A Qwen3 voice-cloning and text-to-speech pipeline tuned for clear pronunciation of emails, numbers, and dates.",
-        "problem": "",
-        "solution": "A Qwen3-based speech pipeline uses structured prompt formatting to improve pronunciation of email addresses, numeric identifiers, and dates.",
-        "myRole": "Built the application and its core pipeline.",
-        "tags": [
-                "Qwen3",
-                "PyTorch",
-                "TTS"
-        ],
-        "architectureHighlights": [
-                "Voice cloning and text-to-speech generation",
-                "Prompt formatting for structured data pronunciation",
-                "Inference tuning for low-latency use"
-        ],
-        "impact": [
-                "Voice cloning and text-to-speech generation",
-                "Prompt formatting for structured data pronunciation",
-                "Inference tuning for low-latency use"
-        ],
-        "challenges": [],
-        "learnings": [],
-        "links": {},
-        "proofPoint": "Qwen3 · PyTorch · TTS",
-        "tech": [
-                "Qwen3",
-                "PyTorch",
-                "TTS",
-                "Audio processing"
-        ],
-        "highlights": [
-                "Voice cloning and text-to-speech generation",
-                "Prompt formatting for structured data pronunciation",
-                "Inference tuning for low-latency use"
-        ],
-        "demo": "",
-        "color": "text-purple",
-        "bg": "bg-purple/10"
-,
-        icon: Microscope
+        id: "voice-cloning",
+        title: "Voice Cloning Pipeline",
+        category: "Voice AI",
+        year: "2026",
+        status: "Case Study",
+        featured: false,
+        showOnHome: false,
+        archived: false,
+        priority: 13,
+        summary: "A local voice-cloning app: record a short clip in the browser, type what it should say, and get speech in that voice from Qwen3-TTS running on a Mac.",
+        oneLine: "Voice cloning from a short browser recording, running locally on Apple silicon.",
+        problem: "Trying voice cloning usually means a cloud API and uploading someone's voice. This keeps the whole loop on one laptop.",
+        solution: "A React frontend records reference audio, and a FastAPI endpoint builds a voice prompt for Qwen3-TTS 0.6B on Apple's MPS backend and returns the generated speech.",
+        myRole: "Built the app: in-browser recording, the FastAPI cloning endpoint, and local inference setup on Apple silicon.",
+        techStack: ["Python", "FastAPI", "Qwen3-TTS", "PyTorch (MPS)", "React", "Web Audio"],
+        tags: ["Voice AI", "TTS", "Local inference"],
+        architecture: "The browser records reference audio with MediaRecorder and draws the live microphone waveform. A FastAPI endpoint takes the clip, the text and an optional transcript, builds a voice prompt for Qwen3-TTS 0.6B on Apple's MPS backend, and returns a WAV with the inference time in a response header. Without a transcript it uses the faster speaker-embedding-only mode.",
+        architectureHighlights: ["One FastAPI endpoint for cloning", "Transcript-guided or speaker-embedding-only modes", "Local inference on Apple silicon"],
+        features: ["In-browser recording with a live waveform", "Optional reference transcript", "WAV playback and download"],
+        impact: ["Runs entirely on a laptop, with no cloud TTS calls.", "Reports inference time with every generated clip."],
+        challenges: ["The transcript has to match the reference clip, or the model speaks the leftover words.", "Structured text such as email addresses and phone numbers still needs normalizing before synthesis."],
+        learnings: ["Cloning quality depends on a clean reference clip and an accurate transcript.", "Local models make experimenting cheap, but setup details such as audio codecs decide whether it runs at all."],
+        nextSteps: ["Normalize emails, phone numbers and dates before synthesis.", "Add torchcodec to requirements so fresh installs work."],
+        links: {},
+        description: "A local voice-cloning app: record a short clip in the browser, type what it should say, and get speech in that voice from Qwen3-TTS running on a Mac.",
+        proofPoint: "Qwen3-TTS 0.6B · FastAPI · Apple MPS",
+        tech: ["Python", "FastAPI", "Qwen3-TTS", "PyTorch (MPS)", "React", "Web Audio"],
+        highlights: ["One FastAPI endpoint for cloning", "Transcript-guided or speaker-embedding-only modes", "Local inference on Apple silicon"],
+        demo: "",
+        icon: Microscope,
+        color: "text-purple",
+        bg: "bg-purple/10",
     }),
     project({
-        "id": "hushh",
-        "title": "Hushh",
-        "category": "Full-Stack Product",
-        "summary": "A full-stack application built with a Vite-powered React frontend and a Node.js API backed by PostgreSQL.",
-        "techStack": [
-                "React",
-                "Vite",
-                "Node.js",
-                "Express",
-                "Prisma",
-                "Supabase"
-        ],
-        "architecture": "React and Vite provide the frontend. An Express backend uses Prisma to access Supabase-hosted PostgreSQL.",
-        "features": [
-                "React frontend with Vite",
-                "Node.js and Express service layer",
-                "Prisma ORM over Supabase PostgreSQL"
-        ],
-        "year": "2025",
-        "status": "Case Study",
-        "featured": false,
-        "showOnHome": false,
-        "archived": false,
-        "priority": 14,
-        "oneLine": "A full-stack application built with a Vite-powered React frontend and a Node.js API backed by PostgreSQL.",
-        "description": "A full-stack application built with a Vite-powered React frontend and a Node.js API backed by PostgreSQL.",
-        "problem": "",
-        "solution": "React and Vite provide the frontend. An Express backend uses Prisma to access Supabase-hosted PostgreSQL.",
-        "myRole": "Built the application and its core pipeline.",
-        "tags": [
-                "React",
-                "Vite",
-                "Node.js"
-        ],
-        "architectureHighlights": [
-                "React frontend with Vite",
-                "Node.js and Express service layer",
-                "Prisma ORM over Supabase PostgreSQL"
-        ],
-        "impact": [
-                "React frontend with Vite",
-                "Node.js and Express service layer",
-                "Prisma ORM over Supabase PostgreSQL"
-        ],
-        "challenges": [],
-        "learnings": [],
-        "links": {},
-        "proofPoint": "React · Vite · Node.js",
-        "tech": [
-                "React",
-                "Vite",
-                "Node.js",
-                "Express",
-                "Prisma",
-                "Supabase"
-        ],
-        "highlights": [
-                "React frontend with Vite",
-                "Node.js and Express service layer",
-                "Prisma ORM over Supabase PostgreSQL"
-        ],
-        "demo": "",
-        "color": "text-purple",
-        "bg": "bg-purple/10"
-,
-        icon: Code2
+        id: "hushh",
+        title: "Hushh Personal Agent",
+        category: "Agentic AI",
+        year: "2026",
+        status: "Case Study",
+        featured: false,
+        showOnHome: false,
+        archived: false,
+        priority: 14,
+        summary: "A consent-first personal AI agent: a central agent routes requests to specialist agents for finance and creator work, and the server checks stored consent before any of them reads your data.",
+        oneLine: "A personal AI agent that asks before it reads: consent is enforced by the server, not the prompt.",
+        problem: "Personal AI agents need access to sensitive data, but consent written into a prompt is a suggestion, not a control.",
+        solution: "A personal agent routes each request to a specialist found through A2A agent cards. Before any data is read, the API checks the user's stored consent for that category, and every consent change is recorded with its history.",
+        myRole: "Built the proof of concept: the orchestrator and specialist agents, the consent API and its history, and the React interface.",
+        techStack: ["TypeScript", "Express", "React", "LangChain", "Gemini", "Prisma", "MCP", "A2A"],
+        tags: ["Agents", "Consent", "Personal AI"],
+        architecture: "A React 19 and Vite frontend talks to an Express API written in TypeScript. The orchestrator classifies each request and hands it to Kai (finance) or Nav (creator) through A2A agent cards. Kai uses Gemini only to extract the intent and numbers, then answers with arithmetic over a saved finance snapshot and names the snapshot it used. Payments follow AP2-style signed mandates that need human approval; signatures and payment rails are simulated. Data lives in SQLite through Prisma and libSQL.",
+        architectureHighlights: ["Consent checked in the API against stored records", "Specialist agents discovered through A2A agent cards", "The model extracts; plain arithmetic decides"],
+        features: ["Consent-gated agent handoff", "Per-category consent with history", "Kai, a finance assistant", "Nav, creator data controls"],
+        impact: ["Revoked consent blocks a request before any data is read.", "Every finance answer names the snapshot it was computed from."],
+        challenges: ["Keeping the model away from the arithmetic so answers stay correct.", "Making consent enforceable rather than a line in a prompt."],
+        learnings: ["Consent belongs in the data layer, not the prompt.", "Letting the model extract and code compute keeps finance answers checkable."],
+        links: {},
+        description: "A consent-first personal AI agent: a central agent routes requests to specialist agents for finance and creator work, and the server checks stored consent before any of them reads your data.",
+        proofPoint: "Consent-gated agents · A2A · Gemini extraction",
+        tech: ["TypeScript", "Express", "React", "LangChain", "Gemini", "Prisma", "MCP", "A2A"],
+        highlights: ["Consent checked in the API against stored records", "Specialist agents discovered through A2A agent cards", "The model extracts; plain arithmetic decides"],
+        demo: "",
+        icon: ShieldCheck,
+        color: "text-purple",
+        bg: "bg-purple/10",
     }),
-].sort((a, b) => a.priority - b.priority);
+]
+    .filter((item) => !item.hidden)
+    .sort((a, b) => a.priority - b.priority);
 
 export const featuredProjects = projectsData.filter((item) => item.featured);
 export const homeProjects = projectsData.filter((item) => item.showOnHome);

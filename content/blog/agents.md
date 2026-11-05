@@ -91,9 +91,9 @@ That split is the whole point. A single agent that searches and writes in one br
 
 Reading is cheap to undo. Sending, deleting, merging, deploying, and paying are not.
 
-On an alert-triage prototype built at a hackathon (Agentic SOC), the agent could classify severity, reason about likely causes, and *propose* remediation. It could not execute remediation. An analyst approved each action.
+On an alert-triage service my team built at a hackathon, the system could score an alert, explain every point of that score, and *suggest* a first response: block the source IP, or enrich the alert. It could not act on that suggestion. The analyst did.
 
-That wasn't a limitation we planned to remove later. It was the design. In security, finance, and anything customer-facing, the agent's job is to make the human faster, not absent.
+That wasn't a limitation we planned to remove later. It was the design. In security, finance, and anything customer-facing, the system's job is to make the human faster, not absent.
 
 ## 7. Evaluate the trajectory, not just the answer
 
