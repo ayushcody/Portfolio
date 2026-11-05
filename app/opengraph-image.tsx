@@ -20,8 +20,8 @@ const SAGE = "#c9d5b1";
 
 const FIRST_NAME = "Ayush";
 const LAST_NAME = "Chougula";
-const ROLE = "AI Systems Engineer";
-const BUILDS = ["Voice AI agents", "Agentic workflows", "RAG", "Full-stack AI products"];
+const ROLE = "AI Engineer";
+const BUILDS = ["Voice AI agents", "Agentic workflows", "RAG", "LLM evaluation"];
 const HOST = new URL(SITE_URL).host;
 const EYEBROW = "Portfolio";
 const LOCATION = "Pune, India";

@@ -19,7 +19,7 @@ export const revalidate = 300;
 export const metadata = pageMetadata({
   title: "Resume",
   description:
-    "Resume overview for Ayush Chougula, AI Systems Engineer focused on agentic AI, RAG systems, voice AI, and full-stack engineering.",
+    "Resume overview for Ayush Chougula, AI Engineer focused on agentic AI, RAG systems, voice AI, and LLM evaluation.",
   path: "/resume",
 });
 
@@ -33,7 +33,7 @@ const coreStrengths = [
   "Agentic AI workflows",
   "RAG systems",
   "Voice AI agents",
-  "Full-stack AI products",
+  "LLM evaluation",
   "Backend/API integrations",
   "AI infrastructure",
 ];
@@ -89,7 +89,7 @@ export default async function ResumePage() {
           <div>
             <Link href="/" className="secondary-back"><ArrowLeft size={16} aria-hidden="true" /> Back home</Link>
             <h1>Resume, <span className="secondary-highlight resume-title-nowrap">at a glance.</span></h1>
-            <p className="secondary-lead">A concise overview of my AI systems, full-stack engineering, and applied AI work.</p>
+            <p className="secondary-lead">A concise overview of my applied AI work: agents, RAG, voice AI, and the products around them.</p>
           </div>
 
           <section className="ink-card resume-file" aria-labelledby="resume-file-heading">

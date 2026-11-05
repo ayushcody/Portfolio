@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Hero from "@/components/Hero";
+import { HomeMotion } from "@/components/motion/HomeMotion";
 import Achievements from "@/components/Achievements";
 import { ContactInvitation, SelectedWork, Toolkit, WorkingStyle, WritingNote } from "@/components/PortfolioSections";
 import Experience from "@/components/Experience";
@@ -34,6 +35,7 @@ export default async function Home() {
       <Toolkit profile={profileResult.data} />
       <ContactInvitation profile={profileResult.data} />
       <SignatureFooter />
+      <HomeMotion />
     </main>
   );
 }

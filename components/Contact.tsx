@@ -16,10 +16,10 @@ type FormErrors = Partial<Record<keyof FormState, string>>;
 type CopyState = 'idle' | 'copied' | 'failed';
 
 const bestFit = [
-    'AI systems / agentic workflows',
+    'Agents and agentic workflows',
     'RAG and document AI',
     'Voice AI agents',
-    'Full-stack AI products',
+    'Shipping AI into real products',
     'Backend/API integrations',
 ];
 
@@ -148,7 +148,7 @@ export default function Contact({ profile = fallbackProfile }: { profile?: Profi
                         <h2 id="contact-heading">Let’s build something useful<span className="accent-period">.</span></h2>
                     </div>
                     <p className="contact-intro">
-                        I’m open to AI engineering internships, full-stack roles, freelance builds, and collaboration around practical AI systems.
+                        I’m open to AI engineering roles and internships, freelance builds, and collaboration around practical AI systems.
                     </p>
                 </header>
 

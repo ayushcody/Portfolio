@@ -68,7 +68,7 @@ export const systemsData: SystemEntry[] = [
     {
         id: "fullstack",
         icon: Cpu,
-        title: "Full-Stack AI Products",
+        title: "Shipping AI Products",
         color: "text-purple",
         bg: "bg-purple/10",
         desc: "User-facing products with real APIs, auth, data state, deployment constraints, and integrated AI behavior.",

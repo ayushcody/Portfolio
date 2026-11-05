@@ -67,10 +67,10 @@ const resumePath = "/resume";
 export const profile: Profile = {
     fullName: "Ayush Chougula",
     initials: "AC",
-    headline: "AI Systems Engineer",
-    role: "AI Systems Engineer",
+    headline: "AI Engineer",
+    role: "AI Engineer",
     shortBio:
-        "Computer Science undergraduate building agentic AI, RAG, evaluation pipelines, and voice automation, backed by hands-on full-stack engineering.",
+        "AI engineer and Computer Science undergraduate building agentic AI, RAG, evaluation pipelines, and voice automation.",
     longBio:
         "I study Computer Science at MIT ADT University and build AI products alongside internships and freelance work. At Quensulting, I connect voice agents to business workflows. Previously at Persistent Systems, I built agentic RAG workflows, LLM evaluation pipelines, and Persona Mail. I care about the whole product: APIs, interfaces, data, and the fallback paths that keep it useful.",
     location: "Pune, Maharashtra, India",
@@ -81,15 +81,15 @@ export const profile: Profile = {
     preferredRoles: [
         "AI Engineer · 2027 graduate roles",
         "Software Engineer · 2027 graduate roles",
-        "AI Systems / Agentic AI Developer",
-        "Freelance AI & full-stack projects",
+        "Agentic AI / LLM Engineer",
+        "Freelance AI projects",
     ],
     currentFocus: [
         "Agentic AI workflows",
         "RAG systems",
         "Voice AI agents",
         "LLM evaluation & hallucination detection",
-        "Full-stack AI products",
+        "Shipping AI into real products",
     ],
     engineeringStyle: [
         "Product-first engineering",
@@ -117,7 +117,7 @@ export const profile: Profile = {
     },
     credibility: [
         "GenAI engineering internship experience",
-        "Built RAG, agentic AI, evaluation, and full-stack AI projects",
+        "Built RAG, agentic AI, evaluation, and voice AI projects",
         "Hackathon recognition across cybersecurity, innovation, and DSA",
         "Comfortable across frontend, backend, cloud, data, and security layers",
     ],
@@ -126,12 +126,12 @@ export const profile: Profile = {
     name: "Ayush Chougula",
     firstName: "Ayush",
     lastName: "Chougula",
-    title: "AI Systems Engineer",
-    tagline: "Agentic AI • RAG • Voice AI • Full-Stack Products",
+    title: "AI Engineer",
+    tagline: "Agentic AI • RAG • Voice AI • LLM Evaluation",
     heroDescription:
         "I build production-grade AI systems across agentic workflows, RAG pipelines, voice AI, and AI infrastructure.",
     contactDescription:
-        "I’m open to freelance builds and AI or software engineering roles for 2027. Let’s talk about useful AI systems, voice automation, and full-stack products.",
+        "I’m open to freelance builds and AI or software engineering roles for 2027. Let’s talk about agents, RAG, and voice automation.",
     github,
     githubHandle: "ayushcody",
     linkedin,

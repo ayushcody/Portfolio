@@ -64,7 +64,7 @@ export function SignatureFooter() {
               <div className="footer-muted space-y-3">
                 <p>GenAI Systems</p>
                 <p>RAG Pipelines</p>
-                <p>Full-Stack AI</p>
+                <p>Voice AI</p>
                 <p>LLM Evaluation</p>
               </div>
             </div>

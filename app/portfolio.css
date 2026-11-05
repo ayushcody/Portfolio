@@ -54,8 +54,8 @@ html.dark .accent-period { color: var(--coral); }
 .hero-location { display: flex; flex-wrap: wrap; gap: 7px; align-items: center; margin-top: 34px; font-size: 11px; color: var(--muted-ink); }
 .hero-location span { margin-inline: 2px; }
 .hero-photo-area { position: relative; padding: 10px 16px 0; width: 100%; max-width: 395px; justify-self: end; }
-.hero-print { transform: rotate(4deg); padding: 11px 11px 0; border: 2px solid #23231f; background: #fffdf6; color: #23231f; box-shadow: 8px 8px 0 #23231f; transition: transform 280ms ease; }
-.hero-print:hover { transform: rotate(1deg) translateY(-3px); }
+.hero-print { padding: 11px 11px 0; border: 2px solid #23231f; background: #fffdf6; color: #23231f; box-shadow: 8px 8px 0 #23231f; transform: perspective(1100px) translateY(var(--lift, 0px)) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) rotate(var(--settle, 4deg)); transition: --settle 280ms ease, --lift 280ms ease; }
+.hero-print:hover { --settle: 1deg; --lift: -3px; }
 .hero-photo { position: relative; aspect-ratio: 4 / 4.7; overflow: hidden; border: 1px solid #23231f; }
 .hero-photo img { object-fit: cover; object-position: center 31%; }
 .hero-print figcaption { display: flex; justify-content: space-between; align-items: center; gap: 10px; min-height: 54px; padding-inline: 5px; font-size: 13px; font-weight: 600; }
@@ -66,7 +66,11 @@ html.dark .accent-period { color: var(--coral); }
 .hero-note svg { transform: rotate(27deg) translateY(7px); }
 .hero-bottom { display: flex; justify-content: space-between; align-items: center; padding-block: 26px; font-size: 10px; color: var(--muted-ink); border-top: 1px solid var(--rule); }
 .hero-bottom a { display: flex; align-items: center; gap: 14px; min-height: 24px; }
-.discipline-band { display: flex; justify-content: center; align-items: center; gap: clamp(24px, 4vw, 65px); padding: 20px 30px; border-block: 2px solid #23231f; background: var(--yellow); color: #23231f; font-family: var(--font-display), sans-serif; font-size: 17px; font-weight: 600; }
+/* Focus band: two identical sets side by side. HomeMotion loops the track; without it the first set fills the width. */
+.discipline-band { overflow: hidden; padding-block: 20px; border-block: 2px solid #23231f; background: var(--yellow); color: #23231f; font-family: var(--font-display), sans-serif; font-size: 17px; font-weight: 600; }
+.discipline-track { display: flex; width: max-content; }
+.discipline-track[data-animated] { will-change: transform; }
+.discipline-set { --band-gap: clamp(24px, 4vw, 65px); display: flex; flex-shrink: 0; align-items: center; justify-content: space-around; gap: var(--band-gap); min-width: 100vw; padding-right: var(--band-gap); white-space: nowrap; }
 .discipline-band svg { width: 21px; height: 21px; flex-shrink: 0; }
 
 .selected-work-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
@@ -171,11 +175,38 @@ html.dark .accent-period { color: var(--coral); }
 .contact-invitation .text-link { margin-left: 25px; }
 .contact-asterisk { width: 160px; height: 160px; stroke-width: 1.2; transform: rotate(10deg); }
 
+/*
+ * Hero entrance: plain CSS so it starts with first paint. Everything animates individual properties
+ * (translate, rotate, scale) and fills backwards only, so hover transforms take over once it ends.
+ */
+@property --rx { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+@property --ry { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+@property --settle { syntax: '<angle>'; inherits: false; initial-value: 4deg; }
+@property --lift { syntax: '<length>'; inherits: false; initial-value: 0px; }
+
 @media (prefers-reduced-motion: no-preference) {
-  .hero-copy { animation: hero-settle 700ms cubic-bezier(.16, 1, .3, 1) both; }
-  .hero-print { animation: portrait-settle 850ms cubic-bezier(.16, 1, .3, 1) both; }
-  @keyframes hero-settle { from { transform: translateY(16px); } to { transform: translateY(0); } }
-  @keyframes portrait-settle { from { transform: translateY(20px) rotate(7deg); } to { transform: translateY(0) rotate(4deg); } }
+  .portfolio-hero { --spring: linear(0, .009, .035 2.1%, .141 4.4%, .723 12.9%, .938 16.7%, 1.017 19.9%, 1.072 23.4%, 1.088 26.6%, 1.074 30.9%, 1.019 39.6%, .997 46.3%, .992 53.5%, 1.001 72%, 1); --ease-out-expo: cubic-bezier(.16, 1, .3, 1); }
+  .hero-copy h1 > span { animation: hero-line-rise 950ms var(--ease-out-expo) backwards; }
+  .hero-copy h1 > span:nth-child(2) { animation-delay: 90ms; }
+  .hero-copy h1 > span:nth-child(3) { animation-delay: 180ms; }
+  .hero-copy > :not(h1) { animation: hero-fade-up 800ms var(--ease-out-expo) backwards; }
+  .hero-copy > .hero-role { animation-delay: 360ms; }
+  .hero-copy > .hero-description { animation-delay: 440ms; }
+  .hero-copy > .hero-actions { animation-delay: 520ms; }
+  .hero-copy > .hero-location { animation-delay: 600ms; }
+  .hero-asterisk { animation: hero-asterisk-in 1200ms 300ms var(--spring) backwards; transition: rotate 700ms var(--spring); }
+  .hero-copy h1:hover .hero-asterisk { rotate: 90deg; }
+  .hero-print { animation: portrait-drop 1100ms 200ms var(--spring) backwards; }
+  .hero-availability { animation: tag-stamp 600ms 900ms var(--spring) backwards; }
+  .hero-note { animation: hero-fade-up 700ms 1150ms var(--ease-out-expo) backwards; }
+  .hero-bottom { animation: hero-fade 900ms 700ms ease backwards; }
+
+  @keyframes hero-line-rise { from { opacity: 0; translate: 0 .5em; clip-path: inset(0 -20% 100% -10%); } to { opacity: 1; translate: 0 0; clip-path: inset(-30% -20% -40% -10%); } }
+  @keyframes hero-fade-up { from { opacity: 0; translate: 0 18px; } }
+  @keyframes hero-fade { from { opacity: 0; } }
+  @keyframes hero-asterisk-in { from { opacity: 0; rotate: -200deg; scale: .2; } }
+  @keyframes portrait-drop { from { opacity: 0; translate: 0 -48px; rotate: -9deg; } 25% { opacity: 1; } }
+  @keyframes tag-stamp { from { opacity: 0; scale: 1.7; } 30% { opacity: 1; } }
 }
 
 @media (min-width: 1500px) { .portfolio-hero { padding-top: 170px; } .hero-layout { min-height: 540px; } }
@@ -187,7 +218,8 @@ html.dark .accent-period { color: var(--coral); }
   .hero-description { font-size: 14px; }
   .hero-actions { gap: 16px; }
   .hero-availability { left: -10px; }
-  .discipline-band { gap: 22px; font-size: 14px; }
+  .discipline-band { font-size: 14px; }
+  .discipline-set { --band-gap: 22px; }
   .approach-layout, .toolkit-layout { gap: 45px; }
   .experience-row { gap: 24px; grid-template-columns: .85fr 1.2fr 1.1fr; }
   .project-visual { padding-inline: 16px; }
@@ -219,8 +251,8 @@ html.dark .accent-period { color: var(--coral); }
   .hero-bottom { font-size: 9px; gap: 20px; padding-block: 18px; }
   .hero-bottom > span { max-width: 110px; }
   .hero-bottom a { gap: 8px; }
-  .discipline-band { display: grid; grid-template-columns: 1fr 18px 1fr; gap: 15px; text-align: center; padding: 17px; font-size: 12px; }
-  .discipline-band > svg:nth-child(4) { display: none; }
+  .discipline-band { padding-block: 16px; font-size: 13px; }
+  .discipline-set { --band-gap: 20px; }
   .discipline-band svg { width: 18px; height: 18px; }
   .section-heading { flex-direction: column; align-items: flex-start; gap: 15px; margin-bottom: 27px; }
   .section-heading p { font-size: 13px; margin-top: 12px; }

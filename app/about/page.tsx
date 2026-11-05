@@ -16,7 +16,7 @@ export const revalidate = 300;
 
 export const metadata = pageMetadata({
   title: "About",
-  description: "Meet Ayush Chougula, an AI Systems Engineer in Pune. Explore his approach, education, current focus, and ways to work together.",
+  description: "Meet Ayush Chougula, an AI Engineer in Pune. Explore his approach, education, current focus, and ways to work together.",
   path: "/about",
 });
 
@@ -95,7 +95,7 @@ export default async function AboutPage() {
               <h1 id="about-heading">Hi, I’m <mark className="about-mark">{firstName}.</mark></h1>
               <p className="about-lead">I like turning a useful idea into a system people can actually use.</p>
               <div className="about-bio">
-                <p>I’m {profile.fullName}, an {profile.role} based in {profile.locationShort}. I build across agentic workflows, RAG pipelines, voice AI, and full-stack products.</p>
+                <p>I’m {profile.fullName}, an {profile.role} based in {profile.locationShort}. I build across agentic workflows, RAG pipelines, voice AI, and the products that put them to work.</p>
                 <p>At Quensulting AI LLP, I build voice agents and automation with Retell, Vapi, n8n, and FastAPI. Before that, I worked on agentic workflows and LLM evaluation at Persistent Systems.</p>
                 <p>I balance my Computer Science degree at MIT ADT University with internships and freelance client work. I care about explainable engineering decisions, grounded AI outputs, and fallback paths that hold up when a dependency fails.</p>
               </div>

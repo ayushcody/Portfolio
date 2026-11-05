@@ -13,7 +13,7 @@ export const revalidate = 300;
 
 export const metadata = pageMetadata({
   title: "Projects",
-  description: "Explore Ayush Chougula's AI systems, full-stack products, developer tools, and experiments, with architecture and implementation notes.",
+  description: "Explore Ayush Chougula's AI projects, developer tools, and experiments, with architecture and implementation notes.",
   path: "/projects",
 });
 

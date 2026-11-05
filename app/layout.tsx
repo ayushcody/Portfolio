@@ -43,12 +43,12 @@ export const metadata: Metadata = {
   description: SITE_DESCRIPTION,
   keywords: [
     "Ayush Chougula",
-    "AI Systems Engineer",
+    "AI Engineer",
     "AI engineer Pune",
     "voice AI agents",
     "agentic workflows",
     "RAG systems",
-    "full-stack AI products",
+    "LLM evaluation",
     "Next.js",
   ],
   authors: [{ name: SITE_NAME, url: SITE_URL }],
@@ -95,7 +95,7 @@ const jsonLd = {
   name: profile.fullName,
   url: SITE_URL,
   image: absoluteUrl("/profile.png"),
-  jobTitle: "AI Systems Engineer",
+  jobTitle: "AI Engineer",
   email: profile.email,
   address: {
     "@type": "PostalAddress",

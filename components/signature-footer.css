@@ -53,6 +53,11 @@
 .footer-name-effect:hover .footer-name-highlight { opacity: 1; }
 .footer-name-touch { opacity: 0; stroke-width: 1.5px; }
 
+/* HomeMotion sets data-draw: the outline traces itself the first time the name scrolls into view. */
+.footer-name-effect[data-draw] :is(.footer-name-outline, .footer-name-touch) { stroke-dasharray: 1400; stroke-dashoffset: 1400; }
+.footer-name-effect[data-draw='drawing'] :is(.footer-name-outline, .footer-name-touch) { animation: footer-name-draw 3s cubic-bezier(.65, 0, .35, 1) forwards; }
+@keyframes footer-name-draw { to { stroke-dashoffset: 0; } }
+
 @media (hover: none) {
   .footer-name-touch { opacity: .85; }
   .footer-name-highlight { display: none; }

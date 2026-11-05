@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { ArrowDown, ArrowDownRight, ArrowUpRight, Asterisk, MapPin } from 'lucide-react';
 import { profile as fallbackProfile, type Profile } from '@/src/data/profile';
 
@@ -20,6 +20,8 @@ function canOptimize(src: string) {
     }
 }
 
+const FOCUS = ['Applied AI', 'Agents & RAG', 'Voice AI', 'LLM evaluation', 'Always learning'];
+
 export default function Hero({ profile = fallbackProfile }: { profile?: Profile }) {
     const [photoFailed, setPhotoFailed] = useState(false);
     const photoSrc = photoFailed ? '/profile.png' : profile.profilePhoto || '/profile.png';
@@ -29,7 +31,7 @@ export default function Hero({ profile = fallbackProfile }: { profile?: Profile 
             <div className="portfolio-wrap hero-layout">
                 <div className="hero-copy">
                     <h1 id="hero-heading"><span className="hero-hello">Hey, I’m</span><span>{profile.fullName.split(' ')[0]}<Asterisk className="hero-asterisk" aria-hidden="true" /></span><span className="hero-surname">{profile.fullName.split(' ').slice(1).join(' ')}<span className="hero-period">.</span></span></h1>
-                    <p className="hero-role">{profile.headline} <span>/</span> Full-stack builder</p>
+                    <p className="hero-role">{profile.headline} <span>/</span> Agents, RAG &amp; voice AI</p>
                     <p className="hero-description">I build AI that does useful work — from grounded answers to voice agents that connect with real business workflows. Computer Science at MIT ADT, graduating in 2027.</p>
                     <div className="hero-actions">
                         <Link href="#projects" className="brutal-button">Explore my work <ArrowDownRight size={20} aria-hidden="true" /></Link>
@@ -47,7 +49,19 @@ export default function Hero({ profile = fallbackProfile }: { profile?: Profile 
                 </div>
             </div>
             <div className="hero-bottom portfolio-wrap"><span>Useful systems. Thoughtful details.</span><a href="#projects">A little more about what I do <ArrowDown size={16} aria-hidden="true" /></a></div>
-            <div className="discipline-band" aria-label="Engineering focus"><span>Applied AI</span><Asterisk aria-hidden="true" /><span>Full-stack products</span><Asterisk aria-hidden="true" /><span>Systems thinking</span><Asterisk aria-hidden="true" /><span>Always learning</span></div>
+            <div className="discipline-band">
+                {/* Two identical sets let the band loop seamlessly; the copy is hidden from assistive tech. */}
+                <div className="discipline-track">
+                    {[0, 1].map((copy) => (
+                        <p className="discipline-set" key={copy} aria-hidden={copy === 1 ? true : undefined}>
+                            {copy === 0 ? <span className="sr-only">Engineering focus: {FOCUS.join(', ')}.</span> : null}
+                            {FOCUS.map((item) => (
+                                <Fragment key={item}><span aria-hidden="true">{item}</span><Asterisk aria-hidden="true" /></Fragment>
+                            ))}
+                        </p>
+                    ))}
+                </div>
+            </div>
         </section>
     );
 }
