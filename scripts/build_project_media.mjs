@@ -24,6 +24,7 @@ const outFile = path.join(root, 'src', 'data', 'projectMedia.ts');
 
 const COVER = { width: 1600, height: 1000 };
 const GALLERY_WIDTH = 1600;
+const GALLERY_MAX_HEIGHT = 1200;
 const SOFT_LIMIT_BYTES = 200 * 1024;
 
 /** Width and height from a PNG IHDR chunk, a JPEG SOF marker or a WebP VP8/VP8L/VP8X chunk. */
@@ -98,10 +99,17 @@ for (const slug of slugs) {
             .map((item, index) => {
                 const image = readImage(slug, item, `${slug}/media.json gallery[${index}]`, { needCaption: true });
                 if (image && image.width !== GALLERY_WIDTH) warnings.push(`${slug}/media.json gallery[${index}]: ${image.width} px wide, expected ${GALLERY_WIDTH}`);
+                if (image && image.height > GALLERY_MAX_HEIGHT) warnings.push(`${slug}/media.json gallery[${index}]: ${image.height} px tall (aim for ≤ ${GALLERY_MAX_HEIGHT})`);
                 return image;
             })
             .filter(Boolean);
         if (spec.noVisualReason?.trim()) entry.noVisualReason = spec.noVisualReason.trim();
+        // Images left in the folder that media.json no longer points at are dead weight in public/.
+        const referenced = new Set([spec.cover?.file, ...(spec.gallery ?? []).map((item) => item?.file)].filter(Boolean));
+        for (const name of fs.readdirSync(dir)) {
+            if (/\.(webp|png|jpe?g)$/i.test(name) && !referenced.has(name)) warnings.push(`${slug}: ${name} is not referenced by media.json`);
+        }
+        if (fs.existsSync(shotsFile)) warnings.push(`${slug}: shots.json is ignored because media.json exists`);
         media[slug] = entry;
     } else if (fs.existsSync(shotsFile)) {
         const list = JSON.parse(fs.readFileSync(shotsFile, 'utf8'));
