@@ -1,0 +1,18 @@
+{
+  "cover": {
+    "file": "cover.webp",
+    "alt": "Voice Cloner web app in a dark theme after a cloning run: the Reference Audio panel with a 9-second recorded preview and an orb visualizer, and the output panel reading READY with Inference: 57.94s, an audio player at 0:02 of 0:17 and a Download WAV link"
+  },
+  "gallery": [
+    {
+      "file": "01-recording-reference.webp",
+      "alt": "Voice Cloner while recording: the reference panel shows a live cyan waveform with a red REC 0:02 timer and a Stop button, a glowing orb below it, a greyed-out Generate Speech button, and an empty output panel",
+      "caption": "Reference audio is recorded in the browser with MediaRecorder, and a canvas draws the live microphone waveform. Generate Speech stays disabled until a recording exists."
+    },
+    {
+      "file": "02-clone-api.webp",
+      "alt": "FastAPI Swagger page for POST /api/clone with ref.wav attached, the text and transcript fields filled in, the generated curl command, and a 200 response whose headers include content-type audio/wav and an x-inference-time of about 53 seconds",
+      "caption": "The backend is one FastAPI endpoint: a reference clip, the text to speak and an optional transcript go in, and a WAV comes back with the inference time in a header. Both runs used a synthetic macOS voice as the reference, not a real person."
+    }
+  ]
+}

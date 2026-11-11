@@ -351,26 +351,25 @@ export const projectMedia: Record<string, ProjectMediaSet> = {
     "voice-cloning": {
         "gallery": [
             {
-                "src": "/projects/voice-cloning/01-cloned-speech-output.jpg",
-                "alt": "Voice Cloner web app in a dark theme. Left: a Reference Audio panel with a 9-second recorded preview and an orb visualizer, and a Target Text panel with a sentence containing a date, a time, a five-digit code, an email address and a phone number, plus a transcript of the reference clip. Right: an output panel reading READY and Inference: 57.94s, an audio player at 0:02 of 0:17, and a Download WAV link.",
-                "width": 1440,
-                "height": 1340,
-                "caption": "One full cloning run on an Apple M4 laptop (MPS) with Qwen3-TTS 0.6B Base. The FastAPI backend builds a voice prompt from the reference clip, using the transcript when one is given, and returns a WAV that the page plays and offers for download. The reference voice here is a synthetic macOS voice, not a real person."
+                "src": "/projects/voice-cloning/01-recording-reference.webp",
+                "alt": "Voice Cloner while recording: the reference panel shows a live cyan waveform with a red REC 0:02 timer and a Stop button, a glowing orb below it, a greyed-out Generate Speech button, and an empty output panel",
+                "width": 1600,
+                "height": 956,
+                "caption": "Reference audio is recorded in the browser with MediaRecorder, and a canvas draws the live microphone waveform. Generate Speech stays disabled until a recording exists."
             },
             {
-                "src": "/projects/voice-cloning/02-recording-reference.jpg",
-                "alt": "Voice Cloner while recording: the reference panel shows a live cyan waveform with a red REC 0:02 timer and a Stop button, a glowing orb visualizer below it, a greyed-out Generate Speech button, and an empty output panel reading Output will appear here.",
-                "width": 1440,
-                "height": 860,
-                "caption": "Reference audio is recorded in the browser with MediaRecorder. A canvas draws the live microphone waveform, and the orb reacts to input level. Generate Speech stays disabled until a recording exists."
-            },
-            {
-                "src": "/projects/voice-cloning/03-clone-api.jpg",
-                "alt": "FastAPI Swagger page for POST /api/clone with ref.wav attached, the text and transcript fields filled in, the generated curl command, and a 200 response whose headers include content-type audio/wav and an x-inference-time of about 53 seconds.",
-                "width": 1440,
-                "height": 1246,
-                "caption": "The backend is one FastAPI endpoint that takes the reference clip, the text to speak and an optional transcript. Without a transcript it uses the faster speaker-embedding-only mode. It returns the WAV with the inference time in a response header."
+                "src": "/projects/voice-cloning/02-clone-api.webp",
+                "alt": "FastAPI Swagger page for POST /api/clone with ref.wav attached, the text and transcript fields filled in, the generated curl command, and a 200 response whose headers include content-type audio/wav and an x-inference-time of about 53 seconds",
+                "width": 1600,
+                "height": 1129,
+                "caption": "The backend is one FastAPI endpoint: a reference clip, the text to speak and an optional transcript go in, and a WAV comes back with the inference time in a header. Both runs used a synthetic macOS voice as the reference, not a real person."
             }
-        ]
+        ],
+        "cover": {
+            "src": "/projects/voice-cloning/cover.webp",
+            "alt": "Voice Cloner web app in a dark theme after a cloning run: the Reference Audio panel with a 9-second recorded preview and an orb visualizer, and the output panel reading READY with Inference: 57.94s, an audio player at 0:02 of 0:17 and a Download WAV link",
+            "width": 1600,
+            "height": 1000
+        }
     }
 };
