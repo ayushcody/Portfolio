@@ -14,9 +14,10 @@ export type ProjectLink = {
   primary: boolean;
 };
 
-// Order is the visual hierarchy for a recruiter: try it, watch it, read the code, read the write-up.
+// Order is the visual hierarchy for a recruiter: try it, install it, watch it, read the code, read the write-up.
 const LINK_ORDER: { kind: ProjectLinkKind; label: string; describe: (title: string) => string }[] = [
   { kind: "demo", label: "Live demo", describe: (title) => `Open the live ${title} demo` },
+  { kind: "package", label: "npm", describe: (title) => `${title} package on npm` },
   { kind: "video", label: "Video", describe: (title) => `Watch the ${title} walkthrough video` },
   { kind: "repo", label: "Code", describe: (title) => `${title} source code on GitHub` },
   { kind: "writeup", label: "Write-up", describe: (title) => `Read the ${title} write-up` },
@@ -39,6 +40,6 @@ export function getProjectLinks(project: Pick<Project, "title" | "links">): Proj
     links.push({ kind, label, href, external, ariaLabel: external ? `${describe(project.title)} (opens in a new tab)` : describe(project.title), primary: false });
   }
 
-  if (links[0]?.kind === "demo") links[0].primary = true;
+  if (links[0]?.kind === "demo" || links[0]?.kind === "package") links[0].primary = true;
   return links;
 }

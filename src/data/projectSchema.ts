@@ -17,13 +17,17 @@ export const PROJECT_CATEGORIES = [
 export type ProjectCategory = (typeof PROJECT_CATEGORIES)[number];
 
 /**
- * Live          publicly deployed; `links.demo` opens it.
+ * Live          publicly deployed or published; `links.demo` or `links.package` opens it.
  * Pilot         in use by a limited group of real users.
  * Working build runs end to end from its source; not deployed publicly.
  * Archived      no longer maintained; kept for the record.
  */
 export const PROJECT_STATUSES = ["Live", "Pilot", "Working build", "Archived"] as const;
 export type ProjectStatus = (typeof PROJECT_STATUSES)[number];
+
+/** How the project came about, when that is part of the story. Shown beside the status. */
+export const PROJECT_ORIGINS = ["Freelance", "Hackathon", "Take-home", "Challenge entry"] as const;
+export type ProjectOrigin = (typeof PROJECT_ORIGINS)[number];
 
 /** What a project proves. Skill groups on /skills link to the projects that carry their capability. */
 export const CAPABILITIES = {
@@ -53,6 +57,8 @@ export type ProjectLinks = {
     repo?: string;
     /** Deployed product that loads for a visitor. */
     demo?: string;
+    /** Published package page (npm, PyPI) that the author owns. */
+    package?: string;
     /** Walkthrough video (Loom, YouTube). */
     video?: string;
     /** Internal write-up, e.g. "/blog/mlx". */
@@ -68,6 +74,8 @@ export type Project = {
     category: ProjectCategory;
     capabilities: Capability[];
     status: ProjectStatus;
+    /** Only when evidenced: freelance client work, a hackathon, a take-home assignment, a challenge entry. */
+    origin?: ProjectOrigin;
     /** "1st place, Black Pearl Cybersecurity Hackathon" */
     recognition?: string;
     year: string;

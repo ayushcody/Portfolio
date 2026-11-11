@@ -11,7 +11,7 @@ import '@/components/projects.css';
 
 export type CardProject = Pick<
     ProjectWithMedia,
-    'slug' | 'title' | 'outcome' | 'category' | 'status' | 'recognition' | 'stack' | 'links' | 'media' | 'architecture'
+    'slug' | 'title' | 'outcome' | 'category' | 'status' | 'origin' | 'recognition' | 'stack' | 'links' | 'media' | 'architecture'
 >;
 
 type ProjectCardProps = {
@@ -54,7 +54,7 @@ export function ProjectCard({ project, sizes, headingLevel = 3, eager = false, c
                 {/* Positioned over the cover's top edge; listed after the title so it is read after it. */}
                 <p className="pcard-meta">
                     <span className="pcard-category"><span className="visually-hidden">Category: </span>{project.category}</span>
-                    <span className={`pcard-status pcard-status--${statusSlug(project.status)}`}><span className="visually-hidden">Status: </span>{project.status}</span>
+                    <span className={`pcard-status pcard-status--${statusSlug(project.status)}`}><span className="visually-hidden">Status: </span>{project.status}{project.origin ? <> · {project.origin}</> : null}</span>
                 </p>
 
                 <div className="pcard-foot">

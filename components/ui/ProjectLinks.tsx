@@ -1,4 +1,4 @@
-import { ArrowUpRight, FileText, Github, Globe, PlayCircle } from "lucide-react";
+import { ArrowUpRight, FileText, Github, Globe, Package, PlayCircle } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { getProjectLinks, type ProjectLinkKind } from "@/lib/projectLinks";
 import type { Project } from "@/src/data/projectSchema";
@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 
 const icons: Record<ProjectLinkKind, LucideIcon> = {
   demo: Globe,
+  package: Package,
   video: PlayCircle,
   repo: Github,
   writeup: FileText,

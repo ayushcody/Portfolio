@@ -216,6 +216,12 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                   <span className="visually-hidden">Status: </span>
                   {project.status}
                 </span>
+                {project.origin ? (
+                  <span>
+                    <span className="visually-hidden">Origin: </span>
+                    {project.origin}
+                  </span>
+                ) : null}
                 {project.year ? (
                   <span>
                     <span className="visually-hidden">Year: </span>
