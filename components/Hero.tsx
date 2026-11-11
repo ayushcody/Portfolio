@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { Fragment, useState } from 'react';
 import { ArrowDownRight, ArrowUpRight, Asterisk, MapPin } from 'lucide-react';
 import { profile as fallbackProfile, type Profile } from '@/src/data/profile';
-import { Scribble } from '@/components/ui/Scribble';
 
 // Hosts allowed by images.remotePatterns in next.config.ts; anything else is served as-is.
 const OPTIMIZABLE_HOSTS = new Set(['firebasestorage.googleapis.com', 'storage.googleapis.com']);
@@ -37,7 +36,7 @@ export default function Hero({ profile = fallbackProfile }: { profile?: Profile 
                     <h1 id="hero-heading" className="hero-title">
                         <span className="hero-name">{profile.fullName}</span>
                         <span className="visually-hidden">, </span>
-                        <span className="hero-role"><Scribble color="var(--coral)">{profile.role}</Scribble></span>
+                        <span className="hero-role"><span className="hero-highlight">{profile.role}</span></span>
                     </h1>
                     <p className="hero-place"><MapPin size={14} aria-hidden="true" /> {profile.locationShort || profile.location}</p>
 

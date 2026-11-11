@@ -47,7 +47,11 @@ html.dark .accent-period { color: var(--coral); }
 .hero-copy { min-width: 0; }
 .hero-title { display: flex; flex-direction: column; gap: 12px; margin: 0; }
 .hero-name { font-size: clamp(64px, 7.2vw, 112px); line-height: .92; letter-spacing: -.055em; text-wrap: balance; }
-.hero-role { font-size: clamp(24px, 2.2vw, 34px); font-weight: 600; line-height: 1.15; letter-spacing: -.03em; }
+.hero-role { font-size: clamp(24px, 2.2vw, 34px); font-weight: 700; line-height: 1.15; letter-spacing: -.03em; }
+/* A straight highlighter swipe across the role: a thick yellow band with slanted marker-tip ends. The text stays
+   dark ink on it in both themes, so it reads as well in dark mode as on paper. */
+.hero-highlight { position: relative; z-index: 0; display: inline-block; padding: 0 .16em; color: var(--ink-fixed); }
+.hero-highlight::before { content: ''; position: absolute; z-index: -1; inset: .1em -.08em .02em -.04em; background: var(--yellow); clip-path: polygon(1.5% 6%, 99% 0, 100% 92%, 0 100%); transform: rotate(-1.2deg); transform-origin: left center; }
 .hero-place { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; color: var(--muted-ink); font-size: 14px; font-weight: 500; }
 /* The working loop: the first three steps are quieter, the last one is the point. */
 .hero-motto { max-width: 34ch; margin-top: 32px; color: var(--muted-ink); font-family: var(--font-display), sans-serif; font-size: clamp(22px, 2vw, 30px); font-weight: 600; line-height: 1.25; letter-spacing: -.03em; text-wrap: balance; }
@@ -123,7 +127,9 @@ html.dark .accent-period { color: var(--coral); }
 @media (prefers-reduced-motion: no-preference) {
   .portfolio-hero { --ease-out-expo: cubic-bezier(.16, 1, .3, 1); }
   .hero-print { animation: portrait-settle 950ms 60ms var(--ease-out-expo) backwards; }
+  .hero-highlight::before { animation: highlight-swipe 520ms 180ms cubic-bezier(.3, .7, .2, 1) backwards; }
 
+  @keyframes highlight-swipe { from { transform: rotate(-1.2deg) scaleX(0); } }
   @keyframes portrait-settle { from { translate: 0 -30px; rotate: -7deg; } }
 }
 
