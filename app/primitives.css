@@ -14,6 +14,8 @@
 .ink-card--interactive:hover { transform: translate(-2px, -3px); box-shadow: var(--shadow-md-hover); }
 .ink-card--flat { box-shadow: none; }
 :is(.ink-card, .tone-block):is(.tone-yellow, .tone-lilac, .tone-coral, .tone-sage, .tone-note) { border-color: var(--ink-fixed); color: var(--ink-fixed); --muted-ink: #45443d; --rule: #23231f40; }
+/* Coral is the darkest accent: #45443d on it is only 4.2:1, so small secondary text goes darker there. */
+:is(.ink-card, .tone-block).tone-coral { --muted-ink: #2f2e29; }
 .tone-yellow { background: var(--yellow); }
 .tone-lilac { background: var(--lilac); }
 .tone-coral { background: var(--coral); }

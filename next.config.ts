@@ -21,6 +21,10 @@ const BLOG_SLUG_REDIRECTS: Record<string, string> = {
 };
 
 const nextConfig: NextConfig = {
+  // Route changes cross-fade through React's <ViewTransition> (see app/layout.tsx); first loads are unaffected.
+  experimental: {
+    viewTransition: true,
+  },
   async redirects() {
     return Object.entries(BLOG_SLUG_REDIRECTS).map(([from, to]) => ({
       source: `/blog/${from}`,

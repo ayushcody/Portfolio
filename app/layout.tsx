@@ -1,4 +1,6 @@
+/// <reference types="react/canary" />
 import type { Metadata, Viewport } from "next";
+import { ViewTransition } from "react";
 import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import "./tokens.css";
@@ -131,7 +133,10 @@ export default function RootLayout({
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml }} />
         <Navbar />
         <div id="main-content" tabIndex={-1} className="flex flex-1 flex-col">
-          {children}
+          {/* Client navigations swap pages through a short view transition (styles in app/portfolio.css). */}
+          <ViewTransition update="page-swap" default="none">
+            {children}
+          </ViewTransition>
         </div>
       </body>
     </html>
