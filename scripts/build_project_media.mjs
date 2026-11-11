@@ -6,7 +6,9 @@
  *   {
  *     "cover":   { "file": "cover.webp", "alt": "…" },                 // 16:10, 1600×1000
  *     "gallery": [{ "file": "01-name.webp", "alt": "…", "caption": "…" }],  // 1600 wide
- *     "noVisualReason": "…"                                            // only when there is no cover
+ *     "noVisualReason": "…",                                           // only when there is no cover
+ *     "clip": { "file": "call.mp4", "poster": "call-poster.webp", "label": "A real call",
+ *               "duration": "0:34", "caption": "…", "transcript": [{ "speaker": "…", "text": "…" }] }
  *   }
  *
  * A folder that still has the older shots.json ([{ file, alt, caption }]) is read as a gallery
@@ -26,6 +28,7 @@ const COVER = { width: 1600, height: 1000 };
 const GALLERY_WIDTH = 1600;
 const GALLERY_MAX_HEIGHT = 1200;
 const SOFT_LIMIT_BYTES = 200 * 1024;
+const CLIP_LIMIT_BYTES = 4 * 1024 * 1024;
 
 /** Width and height from a PNG IHDR chunk, a JPEG SOF marker or a WebP VP8/VP8L/VP8X chunk. */
 function imageSize(file) {
@@ -104,8 +107,29 @@ for (const slug of slugs) {
             })
             .filter(Boolean);
         if (spec.noVisualReason?.trim()) entry.noVisualReason = spec.noVisualReason.trim();
+        if (spec.clip) {
+            const where = `${slug}/media.json clip`;
+            for (const key of ['file', 'poster', 'label', 'duration', 'caption']) if (!spec.clip[key]?.trim()) problems.push(`${where}: missing ${key}`);
+            const video = path.join(dir, spec.clip.file ?? '');
+            const poster = path.join(dir, spec.clip.poster ?? '');
+            if (!spec.clip.file || !fs.existsSync(video)) problems.push(`${where}: ${spec.clip.file} does not exist`);
+            else if (!/\.mp4$/i.test(spec.clip.file)) problems.push(`${where}: use an MP4 (H.264 + AAC)`);
+            else if (fs.statSync(video).size > CLIP_LIMIT_BYTES) warnings.push(`${where}: ${spec.clip.file} is ${(fs.statSync(video).size / 1048576).toFixed(1)} MB (aim for ≤ ${CLIP_LIMIT_BYTES / 1048576} MB)`);
+            if (!spec.clip.poster || !fs.existsSync(poster)) problems.push(`${where}: poster ${spec.clip.poster} does not exist`);
+            else {
+                entry.clip = {
+                    src: `/projects/${slug}/${spec.clip.file}`,
+                    poster: `/projects/${slug}/${spec.clip.poster}`,
+                    ...imageSize(poster),
+                    label: spec.clip.label.trim(),
+                    duration: spec.clip.duration.trim(),
+                    caption: spec.clip.caption.trim(),
+                    ...(Array.isArray(spec.clip.transcript) && spec.clip.transcript.length ? { transcript: spec.clip.transcript } : {}),
+                };
+            }
+        }
         // Images left in the folder that media.json no longer points at are dead weight in public/.
-        const referenced = new Set([spec.cover?.file, ...(spec.gallery ?? []).map((item) => item?.file)].filter(Boolean));
+        const referenced = new Set([spec.cover?.file, spec.clip?.poster, ...(spec.gallery ?? []).map((item) => item?.file)].filter(Boolean));
         for (const name of fs.readdirSync(dir)) {
             if (/\.(webp|png|jpe?g)$/i.test(name) && !referenced.has(name)) warnings.push(`${slug}: ${name} is not referenced by media.json`);
         }

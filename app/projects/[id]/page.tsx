@@ -15,6 +15,7 @@ import { FlowDiagram } from "@/components/projects/FlowDiagram";
 import { ProjectCard } from "@/components/projects/ProjectCard";
 import { ProjectCover } from "@/components/projects/ProjectCover";
 import { ProjectShowcase } from "@/components/projects/ProjectShowcase";
+import { ProjectClip } from "@/components/projects/ProjectClip";
 import { projectTone, statusSlug, toneClass, toneColor } from "@/components/projects/tone";
 import "@/components/secondary-pages.css";
 import "@/components/projects.css";
@@ -245,6 +246,8 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
             </figure>
           </div>
         </header>
+
+        {project.media.clip ? <ProjectClip title={project.title} clip={project.media.clip} /> : null}
 
         {shots.length > 0 ? (
           <ProjectShowcase title={project.title} shots={shots} />

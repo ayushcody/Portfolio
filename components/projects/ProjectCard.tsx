@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, ArrowUpRight, Asterisk } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Asterisk, Play } from 'lucide-react';
 import type { ProjectWithMedia } from '@/src/data/projectSchema';
 import { projectHref } from '@/lib/projects';
 import { getProjectLinks } from '@/lib/projectLinks';
@@ -34,6 +34,7 @@ export function ProjectCard({ project, sizes, headingLevel = 3, eager = false, c
     const links = getProjectLinks(project);
     const Heading = headingLevel === 2 ? 'h2' : 'h3';
     const titleId = `pcard-${project.slug}`;
+    const clip = project.media.clip;
 
     return (
         <article className={cn('pcard', className)} aria-labelledby={titleId}>
@@ -59,8 +60,17 @@ export function ProjectCard({ project, sizes, headingLevel = 3, eager = false, c
 
                 <div className="pcard-foot">
                     <span className="pcard-cta" aria-hidden="true">Case study <ArrowRight size={16} strokeWidth={2.25} /></span>
-                    {links.length > 0 ? (
+                    {links.length > 0 || clip ? (
                         <ul className="pcard-links" aria-label={`${project.title} links`}>
+                            {/* A real recording beats any description: it comes first, and plays on the case study. */}
+                            {clip ? (
+                                <li>
+                                    <a href={`${href}#clip`} className="pcard-clip" aria-label={`${clip.label} with ${project.title}, ${clip.duration}`}>
+                                        <Play size={13} strokeWidth={2.5} aria-hidden="true" />
+                                        {clip.label} <span className="pcard-clip-time">{clip.duration}</span>
+                                    </a>
+                                </li>
+                            ) : null}
                             {links.map((link) => (
                                 <li key={link.kind}>
                                     <a href={link.href} {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})} aria-label={link.ariaLabel}>

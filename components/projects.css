@@ -323,3 +323,19 @@
   .pcard:hover .project-cover > img, .pcard:hover .flow-cover-steps, .shot-frame:hover { transform: none; }
   .case-next:hover .case-next-arrow { transform: none; }
 }
+
+/* Real recording on a case study (components/projects/ProjectClip.tsx). */
+.case-clip { padding-bottom: 40px; }
+.case-clip-frame { border: var(--border); background: var(--ink-fixed); box-shadow: var(--shadow-md); overflow: hidden; }
+.case-clip-frame video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; background: var(--ink-fixed); }
+.case-clip .shot-index { background: var(--lilac); font-size: 10px; }
+.case-clip-transcript { margin-top: 18px; border: var(--border-hair); background: var(--panel); }
+.case-clip-transcript summary { display: flex; align-items: center; min-height: 46px; padding: 0 16px; font-size: 14px; font-weight: 650; cursor: pointer; }
+.case-clip-transcript summary:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.case-clip-transcript dl { display: grid; gap: 10px; margin: 0; padding: 4px 16px 18px; }
+.case-clip-transcript dl > div { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 12px; font-size: 14px; line-height: 1.6; }
+.case-clip-transcript dt { color: var(--muted-ink); font-weight: 650; }
+.case-clip-transcript dd { margin: 0; }
+.pcard-links a.pcard-clip { gap: 5px; text-decoration-color: currentColor; }
+.pcard-clip svg { flex: none; }
+.pcard-clip-time { color: var(--muted-ink); font-weight: 600; font-variant-numeric: tabular-nums; }

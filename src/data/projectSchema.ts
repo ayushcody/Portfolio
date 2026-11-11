@@ -124,11 +124,30 @@ export type ProjectImage = {
     height: number;
 };
 
+/** A short real recording (a call, a session), played on the case study and linked from the card. */
+export type ProjectClip = {
+    /** Root-relative MP4 (H.264 + AAC, 720p), e.g. /projects/vakya/call.mp4 */
+    src: string;
+    /** Poster frame (WebP) with the clip's pixel size. */
+    poster: string;
+    width: number;
+    height: number;
+    /** Short name, e.g. "A real call". */
+    label: string;
+    /** "0:34" */
+    duration: string;
+    /** What happens in the clip, and how it was cut. */
+    caption: string;
+    /** Text of what is said, for people who can't play or hear it. */
+    transcript?: { speaker: string; text: string }[];
+};
+
 export type ProjectMediaSet = {
     /** 16:10, 1600×1000 WebP. Absent when the project has no real interface to show. */
     cover?: ProjectImage;
     /** Ordered gallery, each 1600 px wide WebP with a caption. */
     gallery: ProjectImage[];
+    clip?: ProjectClip;
     /** Why there is no cover, when there is none (e.g. "Backend service; code lives in a teammate's repository"). */
     noVisualReason?: string;
 };
