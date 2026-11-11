@@ -31,8 +31,8 @@ function journeyRange(periods: string[]) {
 }
 
 export default function Experience({ experiences = experiencesData }: { experiences?: ExperienceItem[] }) {
-    // Data is newest-first; the journey reads oldest-first.
-    const journey = [...experiences].reverse().map((role, index) => ({ ...role, id: role.id || `role-${index}` }));
+    // Newest first, as stored: the current role is the first chapter a visitor reaches.
+    const journey = experiences.map((role, index) => ({ ...role, id: role.id || `role-${index}` }));
     const trackRef = useRef<HTMLOListElement>(null);
     const followed = useCareerTimeline(trackRef, journey.map((role) => role.id).join('|'));
     const active = Math.min(followed, Math.max(journey.length - 1, 0));
@@ -46,14 +46,14 @@ export default function Experience({ experiences = experiencesData }: { experien
                 <div className="section-heading career-heading">
                     <div>
                         <h2 id="experience-heading">Built along the way<span className="accent-period">.</span></h2>
-                        <p>From finding weak points to building systems that speak. {countLabel(journey.length, 'role')}, each adding something to how I work.</p>
+                        <p>Newest first: from the voice agents I build today back to where I started, finding the weak points in web apps. {countLabel(journey.length, 'role')}, each adding something to how I work.</p>
                     </div>
                     {range && range.start !== range.end && (
                         <p className="career-range">
-                            <span>{range.start}</span>
-                            <ArrowRight size={16} aria-hidden="true" />
-                            <span className="visually-hidden">to</span>
                             <span>{range.end}</span>
+                            <ArrowRight size={16} aria-hidden="true" />
+                            <span className="visually-hidden">back to</span>
+                            <span>{range.start}</span>
                         </p>
                     )}
                 </div>
@@ -65,7 +65,7 @@ export default function Experience({ experiences = experiencesData }: { experien
                             <small>/ {pad(journey.length)}</small>
                             <Asterisk size={36} />
                         </div>
-                        <p className="career-guide-title">A little more range.<br />With every chapter.</p>
+                        <p className="career-guide-title">Start with now.<br />Scroll back in time.</p>
                         <nav aria-label="Jump to a role" style={{ '--career-columns': Math.min(journey.length, MAX_JUMP_COLUMNS) } as CSSProperties}>
                             {journey.map((role, index) => (
                                 <a key={role.id} href={`#career-${role.id}`} aria-current={index === active ? 'step' : undefined}>
@@ -134,7 +134,7 @@ export default function Experience({ experiences = experiencesData }: { experien
                                                             </a>
                                                         )}
                                                         {role.id === 'persistent' && (
-                                                            <Link className="text-link" href="/projects/email-digital-twin">Explore Persona Mail <ArrowUpRight size={16} aria-hidden="true" /></Link>
+                                                            <Link className="text-link" href="/projects/email-digital-twin">Explore Email Digital Twin <ArrowUpRight size={16} aria-hidden="true" /></Link>
                                                         )}
                                                     </p>
                                                 )}
