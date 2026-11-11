@@ -1,0 +1,23 @@
+{
+  "cover": {
+    "file": "cover.webp",
+    "alt": "AndhaKaanun Case analysis for a hit-and-run in Pune, Maharashtra: tags for criminal and traffic law, 3 sections cited and 90% high confidence, a summary, a timeline of events, and the start of the prosecution and defense arguments side by side"
+  },
+  "gallery": [
+    {
+      "file": "01-input.webp",
+      "alt": "AndhaKaanun input screen with the Hit and run sample narrative typed in, likely sections IPC 279, IPC 304A, IPC 325, IPC 338 and MVA 184 shown as badges, the location Pune, Maharashtra, and an Analyze case button",
+      "caption": "Describe an incident in plain language. While you type, a keyword and pattern pass flags the sections that probably apply, here five for a hit-and-run. Retrieval then pulls the text of the matching sections."
+    },
+    {
+      "file": "02-prosecution-defense.webp",
+      "alt": "Prosecution and defense arguments side by side: the prosecution's claim, strongest points and burden of proof, and the defense's position, counter points and possible loopholes",
+      "caption": "Both sides of the argument from the same facts and the same retrieved sections. The defense column names the weak spots, such as no direct speed measurement."
+    },
+    {
+      "file": "03-sections-cited.webp",
+      "alt": "Sections cited: IPC 279, IPC 338 and MVA 184, each with its title, what it punishes and a Why it applies note, followed by possible criminal, civil and bail consequences",
+      "caption": "Every cited section says why it applies. A validation step removes any section the model names that retrieval did not return. This run used the keyword fallback instead of Pinecone, so the match scores read 0.50."
+    }
+  ]
+}

@@ -9,48 +9,33 @@ export const projectMedia: Record<string, ProjectMediaSet> = {
     "andhakaanun": {
         "gallery": [
             {
-                "src": "/projects/andhakaanun/01-input.jpg",
-                "alt": "AndhaKaanun input screen with a hit-and-run narrative typed in, and live-detected sections IPC 279, IPC 304A, IPC 325, IPC 338 and MVA 184 shown as badges",
+                "src": "/projects/andhakaanun/01-input.webp",
+                "alt": "AndhaKaanun input screen with the Hit and run sample narrative typed in, likely sections IPC 279, IPC 304A, IPC 325, IPC 338 and MVA 184 shown as badges, the location Pune, Maharashtra, and an Analyze case button",
                 "width": 1600,
-                "height": 1075,
-                "caption": "Describe an incident in plain language. While you type, a keyword and regex pass flags the Indian law sections that probably apply, here IPC 279, 304A, 325, 338 and Motor Vehicles Act 184 for a hit-and-run."
+                "height": 1000,
+                "caption": "Describe an incident in plain language. While you type, a keyword and pattern pass flags the sections that probably apply, here five for a hit-and-run. Retrieval then pulls the text of the matching sections."
             },
             {
-                "src": "/projects/andhakaanun/02-analysis.jpg",
-                "alt": "First-pass analysis showing location, legal domains, three sections cited, an 88% confidence score, a summary and a timeline of events",
+                "src": "/projects/andhakaanun/02-prosecution-defense.webp",
+                "alt": "Prosecution and defense arguments side by side: the prosecution's claim, strongest points and burden of proof, and the defense's position, counter points and possible loopholes",
                 "width": 1600,
-                "height": 1075,
-                "caption": "The first pass: retrieved sections go to the model as the only law it may use, and it returns a structured analysis with a summary, a timeline and a confidence score."
+                "height": 1000,
+                "caption": "Both sides of the argument from the same facts and the same retrieved sections. The defense column names the weak spots, such as no direct speed measurement."
             },
             {
-                "src": "/projects/andhakaanun/03-prosecution-defense.jpg",
-                "alt": "Prosecution and defense arguments side by side, with strongest points and burden of proof for the prosecution, and counter points and possible loopholes for the defense",
+                "src": "/projects/andhakaanun/03-sections-cited.webp",
+                "alt": "Sections cited: IPC 279, IPC 338 and MVA 184, each with its title, what it punishes and a Why it applies note, followed by possible criminal, civil and bail consequences",
                 "width": 1600,
-                "height": 782,
-                "caption": "Both sides of the argument from the same facts and sections: the prosecution's strongest points and burden of proof next to the defense's counter points and possible loopholes."
-            },
-            {
-                "src": "/projects/andhakaanun/04-sections-cited.jpg",
-                "alt": "Cited sections IPC 279, IPC 338 and MVA 184, each with an explanation of why it applies",
-                "width": 1600,
-                "height": 945,
-                "caption": "Every cited section says why it applies. A validation step drops any section the model cites that retrieval did not return, and lowers confidence for each one. This run used keyword fallback instead of Pinecone, so match scores read 0.50."
-            },
-            {
-                "src": "/projects/andhakaanun/05-follow-up.jpg",
-                "alt": "Follow-up form titled What would sharpen this analysis, with five questions about speed, location, the driver, prior violations and medical certification, four of them answered",
-                "width": 1600,
-                "height": 1355,
-                "caption": "The model also lists the facts it is missing, and the page turns them into questions. Answer any of them and the case is analyzed again."
-            },
-            {
-                "src": "/projects/andhakaanun/06-refined.jpg",
-                "alt": "Refined analysis whose summary and timeline now include the speed estimate, the zebra crossing location and the hospital's medical certification",
-                "width": 1600,
-                "height": 1075,
-                "caption": "After refinement, the summary and timeline carry the new facts: the speed estimate against a 40 km/h limit, the zebra crossing, and the certified injuries."
+                "height": 1000,
+                "caption": "Every cited section says why it applies. A validation step removes any section the model names that retrieval did not return. This run used the keyword fallback instead of Pinecone, so the match scores read 0.50."
             }
-        ]
+        ],
+        "cover": {
+            "src": "/projects/andhakaanun/cover.webp",
+            "alt": "AndhaKaanun Case analysis for a hit-and-run in Pune, Maharashtra: tags for criminal and traffic law, 3 sections cited and 90% high confidence, a summary, a timeline of events, and the start of the prosecution and defense arguments side by side",
+            "width": 1600,
+            "height": 1000
+        }
     },
     "auralis": {
         "gallery": [
