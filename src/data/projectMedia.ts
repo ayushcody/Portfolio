@@ -157,41 +157,40 @@ export const projectMedia: Record<string, ProjectMediaSet> = {
     "hushh": {
         "gallery": [
             {
-                "src": "/projects/hushh/01-consent-gated-handoff.jpg",
-                "alt": "Hushh Personal Agent chat in dark mode. The user asked \"Check my budget status\"; a banner shows the Hushh Personal Agent handing off to Kai for a finance and optimization query, and Kai's reply says consent is required to access financial data, with steps to grant it.",
-                "width": 1440,
-                "height": 900,
-                "caption": "The orchestrator classifies the request as finance and hands it to Kai, but financial consent is revoked, so the server answers with a consent prompt instead of reading any data. The check runs in the API against stored consent records, not in the model's prompt."
+                "src": "/projects/hushh/01-consent-controls.webp",
+                "alt": "Consent Management page listing data categories with toggles. Financial Data is marked Revoked, with recent activity showing it changed from granted to revoked by the user. Identity Information is revoked and Location Data is granted. Summary tiles show 4 granted and 3 revoked",
+                "width": 1600,
+                "height": 1000,
+                "caption": "Each data category has its own consent toggle, saved through the API. Every change goes into a history with the old state, the new state and who made it. This revoke is what blocked the budget request on the cover."
             },
             {
-                "src": "/projects/hushh/02-consent-controls.jpg",
-                "alt": "Consent Management page listing data categories with toggles. Financial Data is marked Revoked, with recent activity showing it changed from granted to revoked by the user. Identity Information is revoked and Location Data is granted. Summary tiles show 4 granted and 3 revoked.",
-                "width": 1440,
-                "height": 900,
-                "caption": "Each data category has its own consent toggle, saved through the API. Every change is written to a history with its previous state, new state and source, shown here as the revoke that blocked the request in the first screen."
+                "src": "/projects/hushh/02-kai-affordability.webp",
+                "alt": "Kai Workspace chat showing an affordability check: monthly net equals income 85000 minus expenses 52000, which is 33000; affordable: no, remaining -47000; assumptions: none; and a provenance block naming the finance snapshot, its timestamp and currency INR",
+                "width": 1600,
+                "height": 1000,
+                "caption": "Kai uses Gemini only to pull the intent and the numbers out of the message. Plain arithmetic over a saved finance snapshot produces the answer, and the reply names the snapshot it used. An 80,000 laptop does not fit a 33,000 monthly surplus."
             },
             {
-                "src": "/projects/hushh/03-kai-affordability.jpg",
-                "alt": "Kai Workspace chat showing an affordability check: monthly net equals income 85000 minus expenses 52000, which is 33000; affordable: no, remaining -47000; assumptions: none; and a provenance block naming the FinanceVerifiedContext snapshot, its timestamp and currency INR.",
-                "width": 1440,
-                "height": 900,
-                "caption": "Kai uses Gemini only to pull the intent and numbers out of the message. A saved finance snapshot and plain arithmetic produce the answer, and each reply names the snapshot it used. Here the check compares the price with one month's net income, so an 80,000 laptop does not fit a 33,000 monthly surplus."
+                "src": "/projects/hushh/03-kai-dashboard.webp",
+                "alt": "Kai finance dashboard labelled Demo Data, showing net worth of 1,42,500 rupees, monthly net, a 38.8% savings rate, liabilities, a financial health score of 88 out of 100, asset allocation bars, insight cards and quick actions",
+                "width": 1600,
+                "height": 1000,
+                "caption": "Kai's dashboard on the demo portfolio that ships with the app. The API calculates the health score, the allocation split and insights such as cash covering only 2.9 months of expenses."
             },
             {
-                "src": "/projects/hushh/04-kai-dashboard.jpg",
-                "alt": "Kai finance dashboard labelled Demo Data, showing net worth of 1,42,500 rupees, monthly net, a 38.8% savings rate, liabilities, a financial health score of 88 out of 100, asset allocation bars, insight cards and quick actions.",
-                "width": 1440,
-                "height": 900,
-                "caption": "Kai's dashboard running on the app's built-in demo portfolio. The API calculates the health score, allocation split and insights, such as cash covering only 2.9 months of expenses."
-            },
-            {
-                "src": "/projects/hushh/05-nav-creator.jpg",
-                "alt": "Nav's Creator Dashboard with earnings totals, data source cards for Instagram, Twitter/X, Spotify and Amazon purchase history, each with an access toggle and monthly value, and a Brand Requests panel showing a Nike request with Accept, Counter and decline options.",
-                "width": 1440,
-                "height": 900,
-                "caption": "Nav, the creator agent, lets a user choose which data sources brands may use and accept, counter or decline each brand's request. The sources, earnings and requests shown are sample data that ships with the app."
+                "src": "/projects/hushh/04-nav-creator.webp",
+                "alt": "Nav's Creator Dashboard with earnings totals, data source cards for Instagram, Twitter/X, Spotify and Amazon purchase history, each with an access toggle and monthly value, and a Brand Requests panel showing a Nike request with Accept, Counter and decline options",
+                "width": 1600,
+                "height": 1000,
+                "caption": "Nav, the creator agent, lets a user choose which data sources brands may use, and accept, counter or decline each brand's request. The sources, earnings and requests are sample data."
             }
-        ]
+        ],
+        "cover": {
+            "src": "/projects/hushh/cover.webp",
+            "alt": "Hushh Personal Agent chat in dark mode. The user asked Check my budget status; a banner shows the personal agent handing off to Kai for a finance query, and Kai replies that consent is required before it can read financial data, with steps to grant it",
+            "width": 1600,
+            "height": 1000
+        }
     },
     "killit": {
         "gallery": [
