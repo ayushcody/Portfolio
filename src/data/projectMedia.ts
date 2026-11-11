@@ -247,41 +247,33 @@ export const projectMedia: Record<string, ProjectMediaSet> = {
     "research-saathi": {
         "gallery": [
             {
-                "src": "/projects/research-saathi/01-live-run-overview.jpg",
-                "alt": "Research Saarthi Live Run page for a completed run: progress bar at 100%, stage and status both Completed, run metadata with output format literature_review, the user query asking how retrieval-augmented generation reduces hallucinations and what limitations remain, the start of the generated plan, and the first ingested source, the Wikipedia article on retrieval-augmented generation.",
-                "width": 1440,
-                "height": 900,
-                "caption": "The Live Run page after a finished run. The LangGraph workflow ran plan, ingest, index, retrieve, synthesize and verify in order, and the run, its plan and its sources are saved in SQLite so it can be opened again from History."
+                "src": "/projects/research-saathi/01-new-research.webp",
+                "alt": "New Research form with a research query asking how retrieval-augmented generation reduces hallucinations and where it still fails, two Wikipedia URLs in the URLs field, literature_review selected as the output format, and a Start Research button",
+                "width": 1600,
+                "height": 1000,
+                "caption": "A run starts from a question and its sources: PDFs, URLs or both. Here the sources are two public Wikipedia articles."
             },
             {
-                "src": "/projects/research-saathi/02-new-research-intake.jpg",
-                "alt": "New Research form with a research query about RAG and hallucinations, an empty PDF upload box, two Wikipedia URLs in the URLs field, literature_review selected as the output format, and a Start Research button.",
-                "width": 1440,
-                "height": 900,
-                "caption": "A run starts from a question, uploaded PDFs, URLs or both, and an output format: summary, literature review, comparison, company brief or interview prep. Here the sources are two Wikipedia articles."
+                "src": "/projects/research-saathi/02-live-run.webp",
+                "alt": "Live Run page for the completed run: progress at 100%, stage and status Completed, run metadata with the output format literature_review, the user query, the planner's answer structure and the two ingested sources",
+                "width": 1600,
+                "height": 1000,
+                "caption": "Every run is stored with its plan, sources and verdicts, so it can be reopened later. The planner's outline comes from a separate model call before any writing starts."
             },
             {
-                "src": "/projects/research-saathi/03-grounded-answer.jpg",
-                "alt": "Research Output section on the Final Answer tab, showing a one-paragraph structured research response that explains how RAG reduces hallucinations and then lists remaining limitations.",
-                "width": 1440,
-                "height": 660,
-                "caption": "The answer for that run. The synthesis prompt only allows the retrieved chunks as evidence and tells the model to say when evidence is missing, so the limitations it lists (the cost of confidence scoring, users preferring fast answers) come from the source text."
-            },
-            {
-                "src": "/projects/research-saathi/04-retrieved-evidence.jpg",
-                "alt": "Citations tab reporting 5 retrieved evidence chunks. The first, labelled S1, is chunk 51 of the Wikipedia article on hallucination in artificial intelligence, with a relevance score of 8.0 and the full chunk text.",
-                "width": 1440,
-                "height": 580,
-                "caption": "Each retrieved chunk gets a label (S1 to S5) with its source and chunk number, and the verifier cites these labels. In this run Gemini's embeddings endpoint rejected the request, so the app fell back to keyword search over the chunks stored in SQLite; the score is the number of query words matched."
-            },
-            {
-                "src": "/projects/research-saathi/05-claim-verifier.jpg",
-                "alt": "Verifier tab with a verifier summary stating the draft answer is fully supported by the evidence, followed by Claim-Level Issues; the first claim is marked supported, with a rationale and citations S1, S3 and S4.",
-                "width": 1440,
-                "height": 900,
-                "caption": "A separate verifier call checks the draft against the same evidence and gives each claim a verdict (supported, weak_support or unsupported), a short reason and the labels it relied on. It flags problems; it does not rewrite the answer."
+                "src": "/projects/research-saathi/03-draft-and-verified.webp",
+                "alt": "Answer Details tab with the draft answer and the verifier-approved answer side by side, both citing evidence labels such as S1, S2, S3 and S4",
+                "width": 1600,
+                "height": 1000,
+                "caption": "The draft is written only from the retrieved evidence and cites it with labels like S1 and S4. The verifier checks each claim and keeps a separate approved copy. In this run the embeddings call failed, so retrieval fell back to keyword search over the stored chunks."
             }
-        ]
+        ],
+        "cover": {
+            "src": "/projects/research-saathi/cover.webp",
+            "alt": "Research Saarthi Verifier tab: a verifier summary saying the draft answer is well supported by the evidence, a list of citations S1 to S5 from the Wikipedia articles on retrieval-augmented generation and on AI hallucination, and claim-level verdicts marked supported, each with the evidence labels it relied on",
+            "width": 1600,
+            "height": 1000
+        }
     },
     "synergylearn": {
         "gallery": [

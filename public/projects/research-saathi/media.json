@@ -1,0 +1,23 @@
+{
+  "cover": {
+    "file": "cover.webp",
+    "alt": "Research Saarthi Verifier tab: a verifier summary saying the draft answer is well supported by the evidence, a list of citations S1 to S5 from the Wikipedia articles on retrieval-augmented generation and on AI hallucination, and claim-level verdicts marked supported, each with the evidence labels it relied on"
+  },
+  "gallery": [
+    {
+      "file": "01-new-research.webp",
+      "alt": "New Research form with a research query asking how retrieval-augmented generation reduces hallucinations and where it still fails, two Wikipedia URLs in the URLs field, literature_review selected as the output format, and a Start Research button",
+      "caption": "A run starts from a question and its sources: PDFs, URLs or both. Here the sources are two public Wikipedia articles."
+    },
+    {
+      "file": "02-live-run.webp",
+      "alt": "Live Run page for the completed run: progress at 100%, stage and status Completed, run metadata with the output format literature_review, the user query, the planner's answer structure and the two ingested sources",
+      "caption": "Every run is stored with its plan, sources and verdicts, so it can be reopened later. The planner's outline comes from a separate model call before any writing starts."
+    },
+    {
+      "file": "03-draft-and-verified.webp",
+      "alt": "Answer Details tab with the draft answer and the verifier-approved answer side by side, both citing evidence labels such as S1, S2, S3 and S4",
+      "caption": "The draft is written only from the retrieved evidence and cites it with labels like S1 and S4. The verifier checks each claim and keeps a separate approved copy. In this run the embeddings call failed, so retrieval fell back to keyword search over the stored chunks."
+    }
+  ]
+}
