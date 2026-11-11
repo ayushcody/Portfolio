@@ -376,6 +376,45 @@ export const projectMedia: Record<string, ProjectMediaSet> = {
             "alt": "Vakya owner desk showing the Doctor consultations schedule as a week calendar. In the Ask like a caller panel, a Hinglish message asks whether a 6 pm slot tomorrow is free; the desk highlights Thursday 6 pm on the calendar and answers in Hindi that the slot is free",
             "width": 1600,
             "height": 1000
+        },
+        "clip": {
+            "src": "/projects/vakya/call.mp4",
+            "poster": "/projects/vakya/call-poster.webp",
+            "width": 1280,
+            "height": 720,
+            "label": "A real call",
+            "duration": "0:34",
+            "caption": "34 seconds of a real phone call, taken in one piece from Vakya's demo film. The caller asks in Hindi to cancel one of two bookings; Vakya asks which, reads A107 back, cancels only after a yes, and sends the WhatsApp confirmation. The on-screen subtitles and labels come from the film.",
+            "transcript": [
+                {
+                    "speaker": "Caller",
+                    "text": "Cancel that booking."
+                },
+                {
+                    "speaker": "Vakya",
+                    "text": "Which one? Wednesday 7 PM, A107, or Thursday 11 AM, A108?"
+                },
+                {
+                    "speaker": "Caller",
+                    "text": "Cancel A107."
+                },
+                {
+                    "speaker": "Vakya",
+                    "text": "A107, Wednesday 7 PM. Shall I cancel it?"
+                },
+                {
+                    "speaker": "Caller",
+                    "text": "Yes."
+                },
+                {
+                    "speaker": "Vakya",
+                    "text": "Cancelled. A107, Wednesday 7 PM. Confirmation on WhatsApp."
+                },
+                {
+                    "speaker": "Both",
+                    "text": "Thank you, bye."
+                }
+            ]
         }
     },
     "vasoli": {

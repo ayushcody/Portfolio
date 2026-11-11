@@ -14,5 +14,42 @@
       "alt": "Vakya report card table of booking completion by audio condition (clean, 8 kHz phone line, G.711 codec, street noise at 10, 5 and 0 dB, phone line with noise), with and without keyterms, word error and median time, followed by a table of which booking field was lost",
       "caption": "The report card plays 24 invented booking calls in Hindi, Marathi and Hinglish through phone-line and noise conditions, then scores whether the name, day and time all survived. The audio is synthetic speech, and the page says so."
     }
-  ]
+  ],
+  "clip": {
+    "file": "call.mp4",
+    "poster": "call-poster.webp",
+    "label": "A real call",
+    "duration": "0:34",
+    "caption": "34 seconds of a real phone call, taken in one piece from Vakya's demo film. The caller asks in Hindi to cancel one of two bookings; Vakya asks which, reads A107 back, cancels only after a yes, and sends the WhatsApp confirmation. The on-screen subtitles and labels come from the film.",
+    "transcript": [
+      {
+        "speaker": "Caller",
+        "text": "Cancel that booking."
+      },
+      {
+        "speaker": "Vakya",
+        "text": "Which one? Wednesday 7 PM, A107, or Thursday 11 AM, A108?"
+      },
+      {
+        "speaker": "Caller",
+        "text": "Cancel A107."
+      },
+      {
+        "speaker": "Vakya",
+        "text": "A107, Wednesday 7 PM. Shall I cancel it?"
+      },
+      {
+        "speaker": "Caller",
+        "text": "Yes."
+      },
+      {
+        "speaker": "Vakya",
+        "text": "Cancelled. A107, Wednesday 7 PM. Confirmation on WhatsApp."
+      },
+      {
+        "speaker": "Both",
+        "text": "Thank you, bye."
+      }
+    ]
+  }
 }
