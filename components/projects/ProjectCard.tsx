@@ -64,7 +64,8 @@ export function ProjectCard({ project, sizes, headingLevel = 3, eager = false, c
                             {links.map((link) => (
                                 <li key={link.kind}>
                                     <a href={link.href} {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})} aria-label={link.ariaLabel}>
-                                        {link.label}
+                                        {/* The "Live" status sticker sits on the cover, so the card can say "Demo" and keep its links on one line. */}
+                                        {link.kind === 'demo' ? 'Demo' : link.label}
                                         {link.external ? <ArrowUpRight size={14} strokeWidth={2.25} aria-hidden="true" /> : <ArrowRight size={14} strokeWidth={2.25} aria-hidden="true" />}
                                     </a>
                                 </li>

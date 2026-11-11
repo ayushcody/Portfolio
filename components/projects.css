@@ -58,11 +58,11 @@
 .pcard-status--working-build { --status-color: var(--lilac); }
 .pcard-status--archived { --status-color: var(--paper-deep); }
 
-.pcard-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 0 14px; margin-top: auto; padding-top: 18px; }
+.pcard-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 0 12px; margin-top: auto; padding-top: 18px; }
 .pcard-foot::before { content: ''; flex-basis: 100%; height: 0; margin-bottom: 2px; border-top: var(--border-hair); }
 .pcard-cta { display: inline-flex; align-items: center; gap: 7px; min-height: 46px; font-size: 13px; font-weight: 750; }
 .pcard-cta svg { transition: transform var(--dur) var(--ease-out); }
-.pcard-links { position: relative; z-index: 2; display: flex; flex-wrap: wrap; gap: 0 13px; margin: 0 0 0 auto; padding: 0; list-style: none; }
+.pcard-links { position: relative; z-index: 2; display: flex; flex-wrap: wrap; gap: 0 11px; margin: 0 0 0 auto; padding: 0; list-style: none; }
 .pcard-links a { display: inline-flex; align-items: center; gap: 4px; min-height: 46px; color: var(--ink); font-size: 13px; font-weight: 650; text-decoration: underline; text-decoration-color: var(--rule); text-decoration-thickness: 1.5px; text-underline-offset: 5px; transition: text-decoration-color var(--dur-fast) ease; }
 .pcard-links a:hover { text-decoration-color: currentColor; }
 .pcard-links a svg { transition: transform var(--dur-fast) ease; }
@@ -163,8 +163,11 @@
 .case-tags .tag { padding: 7px 11px; font-size: var(--text-sm); }
 
 /* Metrics: value, what it measures, and where it can be checked. */
-.case-metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 2px; margin: 0 0 32px; border: var(--border); background: var(--ink); box-shadow: var(--shadow-md); }
-.case-metric { display: flex; flex-direction: column; padding: 20px 20px 18px; background: var(--panel); }
+/* Flex, not grid: a last cell on a short row grows to fill it, so the ink background never shows through as an empty block. */
+.case-metrics { display: flex; flex-wrap: wrap; gap: 2px; margin: 0 0 32px; border: var(--border); background: var(--ink); box-shadow: var(--shadow-md); }
+.case-metric { flex: 1 1 210px; display: flex; flex-direction: column; padding: 20px 20px 18px; background: var(--panel); }
+/* Exactly four metrics read best as a 2×2 block. */
+.case-metrics:has(> .case-metric:nth-child(4):last-child) > .case-metric { flex-basis: calc(50% - 1px); }
 .case-metric-value { order: -1; font-family: var(--font-display-stack); font-size: clamp(36px, 4vw, 50px); font-weight: 700; line-height: 1; letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
 .case-metric dt { margin-top: 12px; font-size: 14px; font-weight: 600; line-height: 1.5; }
 .case-metric-source { margin-top: auto; padding-top: 14px; color: var(--muted-ink); font-size: 12px; line-height: 1.5; }
