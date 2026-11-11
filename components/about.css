@@ -104,7 +104,7 @@ html.dark .about-principle__number { border-color: var(--ink-fixed); box-shadow:
 /* Tools + experience snapshot */
 .about-split--even { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 72px; }
 .about-tools__rows { margin: 28px 0 10px; padding: 0; list-style: none; border-top: var(--border); }
-.about-tools__rows > li { display: grid; grid-template-columns: 128px minmax(0, 1fr); align-items: baseline; gap: var(--space-4); padding: 17px 0; border-bottom: var(--bw-hair) solid var(--rule); }
+.about-tools__rows > li { display: grid; grid-template-columns: 150px minmax(0, 1fr); align-items: baseline; gap: var(--space-4); padding: 17px 0; border-bottom: var(--bw-hair) solid var(--rule); }
 .about-tools__rows h3 { font-size: var(--text-md); letter-spacing: -.02em; line-height: 1.35; }
 
 .about-experience__head { display: flex; justify-content: space-between; align-items: center; gap: var(--space-4); padding: 20px 24px; border-bottom: var(--border); }

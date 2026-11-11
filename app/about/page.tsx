@@ -6,10 +6,9 @@ import { SignatureFooter } from "@/components/SignatureFooter";
 import { ExperienceLogo } from "@/components/ui/ExperienceLogo";
 import { TechTags } from "@/components/ui/TechTags";
 import { getPublicExperience, getPublicProfile } from "@/lib/cms/publicReads";
-import { getProjects } from "@/lib/projects";
+import { getProjects, getSkillGroups } from "@/lib/projects";
 import { pageMetadata } from "@/lib/seo";
 import { profile as staticProfile } from "@/src/data/profile";
-import { skillCategories } from "@/src/data/skills";
 import "@/components/about.css";
 
 // Static at build time; admin CMS changes appear within five minutes (ISR).
@@ -33,8 +32,6 @@ const certifications = [
   { title: "AWS Cloud Practitioner Cloud Quest", provider: "Amazon Web Services", date: "Jan 2024" },
   { title: "Computational Thinking for Problem Solving", provider: "Penn Engineering", date: "Dec 2023" },
 ];
-
-const toolCategories = ["AI/LLM Systems", "Voice AI", "Backend", "Frontend", "Data/Vector Search"];
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -81,9 +78,8 @@ export default async function AboutPage() {
     graduation ? { value: graduation.year, label: "graduating class", tone: "lilac" } : null,
   ].filter((stat): stat is { value: string; label: string; tone: string } => Boolean(stat));
 
-  const tools = toolCategories
-    .map((name) => skillCategories.find((category) => category.name === name))
-    .filter((category): category is (typeof skillCategories)[number] => Boolean(category));
+  // The groups that carry a specialty, plus the product work around them.
+  const tools = getSkillGroups().filter((group) => group.specialty || group.id === "full-stack");
 
   return (
     <main className="about-page">
@@ -227,10 +223,10 @@ export default async function AboutPage() {
           <div className="about-tools reveal">
             <h2 id="tools-heading">Tools I reach for<span className="accent-period">.</span></h2>
             <ul className="about-tools__rows" aria-labelledby="tools-heading">
-              {tools.map((category) => (
-                <li key={category.name}>
-                  <h3>{category.name}</h3>
-                  <TechTags items={category.skills} max={5} label={`${category.name} tools`} />
+              {tools.map((group) => (
+                <li key={group.id}>
+                  <h3><Link href={`/skills#${group.id}`}>{group.name}</Link></h3>
+                  <TechTags items={group.tools} max={5} label={`${group.name} tools`} />
                 </li>
               ))}
             </ul>

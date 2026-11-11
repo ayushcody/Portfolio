@@ -1,69 +1,74 @@
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
-import { skillCategories } from "@/src/data/skills";
+import { ArrowLeft, ArrowRight, ArrowUpRight, BriefcaseBusiness } from "lucide-react";
+import { getSkillGroups, projectHref } from "@/lib/projects";
 import { SignatureFooter } from "@/components/SignatureFooter";
 import { pageMetadata } from "@/lib/seo";
 import "@/components/secondary-pages.css";
 
 export const metadata = pageMetadata({
   title: "Skills",
-  description: "Ayush Chougula's practical toolkit for AI systems, backend engineering, frontend development, retrieval, cloud, voice AI, and security.",
+  description: "Ayush Chougula's toolkit, grouped by what he uses it for: voice agents, agentic workflows, RAG, LLM evaluation, document AI, local inference and full-stack product, each linked to the projects that prove it.",
   path: "/skills",
 });
 
-const workflows = [
-  { title: "Ground an AI answer.", copy: "Ingest documents, build a retrieval path, pass useful context to the model, then evaluate the result.", project: "See AndhaKaanun", href: "/projects/andhakaanun" },
-  { title: "Connect the whole product.", copy: "Bring the interface, APIs, auth, data, and AI provider together in one usable flow.", project: "See Email Digital Twin", href: "/projects/email-digital-twin" },
-  { title: "Make the next version better.", copy: "Compare prompts, check structured outputs, and catch regressions before they become product behavior.", project: "See how I measure search quality", href: "/blog/semanticSearch" },
-];
-
 export default function SkillsPage() {
+  const groups = getSkillGroups();
+
   return (
     <main className="secondary-page">
       <div className="secondary-shell">
         <header className="secondary-intro">
           <Link href="/" className="secondary-back"><ArrowLeft size={16} aria-hidden="true" /> Back home</Link>
-          <h1>The tools.<br />The <span className="secondary-highlight secondary-highlight-coral">thinking.</span></h1>
-          <p className="secondary-lead">A practical toolkit for taking an AI idea from interface to infrastructure.</p>
+          <h1>The tools.<br />The <span className="secondary-highlight secondary-highlight-coral">proof.</span></h1>
+          <p className="secondary-lead">Grouped by what I use them for. Every tool here appears in a project or a role, and each group links to the builds that show it.</p>
+          <nav className="secondary-jump-links skills-jump" aria-label="Skill groups">
+            {groups.map((group) => (
+              <a key={group.id} href={`#${group.id}`}>{group.name} <ArrowRight size={15} aria-hidden="true" /></a>
+            ))}
+          </nav>
         </header>
 
-        <section className="secondary-skills-index" aria-label="Skills grouped by how I use them">
-          {skillCategories.map((category, index) => (
-            <article className="secondary-skill-row" key={category.name}>
-              <div className="secondary-skill-heading">
-                <span className="secondary-row-number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
-                <h2>{category.name}</h2>
-                <p>{category.summary}</p>
+        <div className="skill-groups">
+          {groups.map((group, index) => (
+            <section key={group.id} id={group.id} className={`skill-group skill-group--${index % 4}`} aria-labelledby={`${group.id}-heading`}>
+              <div className="skill-group-head">
+                <h2 id={`${group.id}-heading`}>{group.name}</h2>
+                <p>{group.use}</p>
               </div>
-              <div className="secondary-skill-content">
-                <ul className="secondary-tool-list" aria-label={`${category.name} tools`}>
-                  {category.skills.map((skill) => <li key={skill}>{skill}</li>)}
+              <div className="skill-group-body">
+                <ul className="skill-tools" aria-label={`${group.name} tools`}>
+                  {group.tools.map((tool) => <li key={tool}>{tool}</li>)}
                 </ul>
-                <p className="secondary-note-label">What I use them for</p>
-                <ul className="secondary-use-cases">
-                  {category.useCases.map((useCase) => <li key={useCase}><ArrowRight size={15} aria-hidden="true" />{useCase}</li>)}
-                </ul>
-              </div>
-            </article>
-          ))}
-        </section>
 
-        <section className="secondary-workflows" aria-labelledby="workflows-heading">
-          <div className="secondary-section-heading">
-            <h2 id="workflows-heading">Better together.</h2>
-            <p>Here&apos;s what those tools look like in practice.</p>
-          </div>
-          <div className="secondary-workflow-grid">
-            {workflows.map((workflow, index) => (
-              <article key={workflow.title}>
-                <span className="secondary-workflow-number" aria-hidden="true">0{index + 1}</span>
-                <h3>{workflow.title}</h3>
-                <p>{workflow.copy}</p>
-                <Link href={workflow.href} className="secondary-text-link">{workflow.project}<ArrowUpRight size={18} aria-hidden="true" /></Link>
-              </article>
-            ))}
-          </div>
-        </section>
+                {group.projects.length > 0 || group.roles.length > 0 ? (
+                  <div className="skill-proof">
+                    <h3 className="skill-proof-title">Where it shows</h3>
+                    <ul className="skill-proof-list">
+                      {group.roles.map((role) => (
+                        <li key={role.id}>
+                          <Link href={`/#career-${role.id}`} className="skill-proof-link skill-proof-link--role">
+                            <BriefcaseBusiness size={16} aria-hidden="true" />
+                            <span><strong>{role.company}</strong><span className="skill-proof-kind">At work</span></span>
+                            <ArrowUpRight size={16} aria-hidden="true" />
+                          </Link>
+                        </li>
+                      ))}
+                      {group.projects.map((project) => (
+                        <li key={project.slug}>
+                          <Link href={projectHref(project.slug)} className="skill-proof-link">
+                            <span className="skill-proof-dot" aria-hidden="true" />
+                            <span><strong>{project.title}</strong><span className="skill-proof-kind">{project.category}</span></span>
+                            <ArrowUpRight size={16} aria-hidden="true" />
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+              </div>
+            </section>
+          ))}
+        </div>
 
         <aside className="secondary-closing">
           <h2>See the thinking in action.</h2>

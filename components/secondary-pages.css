@@ -10,7 +10,7 @@
 .secondary-intro { padding: 145px 0 72px; }
 .secondary-back { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 40px; font-size: 13px; font-weight: 650; }
 .secondary-back:hover { text-decoration: underline; text-underline-offset: 4px; }
-.secondary-page h1, .secondary-page h2, .secondary-page h3, .secondary-archive summary { font-family: var(--font-display), var(--font-inter), sans-serif; font-weight: 750; }
+.secondary-page h1, .secondary-page h2, .secondary-page h3 { font-family: var(--font-display), var(--font-inter), sans-serif; font-weight: 750; }
 .secondary-page h1 { max-width: 920px; font-size: clamp(54px, 6.8vw, 94px); line-height: 1.03; letter-spacing: -0.065em; }
 .secondary-page h2 { font-size: clamp(30px, 3.3vw, 43px); line-height: 1.12; letter-spacing: -0.045em; }
 .secondary-page h3 { font-size: 27px; line-height: 1.17; letter-spacing: -0.035em; }
@@ -25,23 +25,15 @@
 .secondary-jump-links { display: flex; gap: 28px; margin-top: 34px; flex-wrap: wrap; }
 .secondary-jump-links a { display: inline-flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--ink); padding-bottom: 6px; font-size: 13px; font-weight: 750; }
 .secondary-jump-links a:hover { gap: 13px; }
-.secondary-project-group { margin-bottom: 74px; }
 .secondary-section-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; margin-bottom: 28px; }
 .secondary-section-heading > p { max-width: 430px; color: var(--muted-ink); font-size: 14px; line-height: 1.7; }
 .secondary-count { display: inline-block; position: relative; top: -4px; margin-left: 8px; padding: 4px 7px; border: 1.5px solid var(--ink); background: var(--lilac); color: var(--ink-fixed); font-family: var(--font-jetbrains), monospace; font-size: 12px; font-weight: 600; letter-spacing: -0.02em; vertical-align: middle; }
-.secondary-project-list { border-top: 2px solid var(--ink); }
 .secondary-row-number { padding-top: 3px; color: var(--muted-ink); font-family: var(--font-jetbrains), monospace; font-size: 12px; font-weight: 600; }
 .secondary-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 11px; color: var(--muted-ink); font-size: 11px; font-weight: 600; }
 .secondary-meta span { opacity: 0.5; }
 .secondary-text-link { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 750; line-height: 1.4; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 5px; }
 .secondary-text-link svg { flex-shrink: 0; transition: transform 150ms; }
 .secondary-text-link:hover svg { transform: translate(2px, -2px); }
-.secondary-archive { border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); margin-top: -2px; }
-.secondary-archive summary { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 25px 0; cursor: pointer; font-size: 29px; letter-spacing: -0.035em; list-style: none; }
-.secondary-archive summary::-webkit-details-marker { display: none; }
-.secondary-disclosure-icon { flex-shrink: 0; transition: transform 180ms; }
-.secondary-archive[open] .secondary-disclosure-icon { transform: rotate(45deg); }
-.secondary-archive .secondary-project-list { border-top-width: 1px; }
 .secondary-closing { display: flex; justify-content: space-between; align-items: center; gap: 36px; padding: 58px 0 70px; }
 .secondary-closing h2 { max-width: 600px; }
 /* Same geometry and hover as the homepage .brutal-button. */
@@ -50,39 +42,35 @@
 .secondary-button:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--ink-fixed); }
 html.dark .secondary-button { box-shadow: 4px 4px 0 var(--ink); }
 html.dark .secondary-button:hover { box-shadow: 6px 6px 0 var(--ink); }
-.secondary-note-label { display: block; margin-bottom: 18px; font-size: 11px; font-weight: 750; }
-.secondary-skills-index { border-top: 2px solid var(--ink); }
-.secondary-skill-row { display: grid; grid-template-columns: minmax(0, 0.78fr) minmax(0, 1fr); gap: 90px; padding: 36px 0 40px; border-bottom: 1px solid var(--ink); }
-.secondary-skill-heading .secondary-row-number { display: block; margin-bottom: 16px; }
-.secondary-skill-heading h2 { font-size: 30px; margin-bottom: 15px; }
-.secondary-skill-heading > p { max-width: 380px; color: var(--muted-ink); font-size: 14px; line-height: 1.8; }
-.secondary-skill-content { padding-top: 4px; }
-.secondary-tool-list { display: flex; flex-wrap: wrap; gap: 9px; margin-bottom: 28px; }
-.secondary-tool-list li { padding: 8px 12px; border: 1px solid var(--ink); background: var(--panel); font-size: 12px; font-weight: 650; }
-.secondary-skill-row:nth-child(3n + 1) .secondary-tool-list li:first-child { background: var(--yellow); color: var(--ink-fixed); }
-.secondary-skill-row:nth-child(3n + 2) .secondary-tool-list li:first-child { background: var(--lilac); color: var(--ink-fixed); }
-.secondary-skill-row:nth-child(3n) .secondary-tool-list li:first-child { background: var(--coral); color: var(--ink-fixed); }
-.secondary-skill-content .secondary-note-label { margin-bottom: 12px; }
-.secondary-use-cases { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 22px; }
-.secondary-use-cases li { display: flex; align-items: flex-start; gap: 8px; color: var(--muted-ink); font-size: 12px; line-height: 1.65; }
-.secondary-use-cases svg { flex-shrink: 0; margin-top: 3px; }
-.secondary-workflows { padding-top: 74px; }
-.secondary-workflow-grid { display: grid; grid-template-columns: repeat(3, 1fr); border: 2px solid var(--ink); }
-.secondary-workflow-grid article { display: flex; flex-direction: column; align-items: flex-start; padding: 27px; border-right: 1px solid var(--ink); }
-.secondary-workflow-grid article:last-child { border-right: 0; }
-.secondary-workflow-number { display: flex; align-items: center; justify-content: center; width: 37px; height: 37px; margin-bottom: 25px; border: 1px solid var(--ink-fixed); background: var(--yellow); color: var(--ink-fixed); font-family: var(--font-jetbrains), monospace; font-size: 12px; }
-.secondary-workflow-grid article:nth-child(2) .secondary-workflow-number { background: var(--lilac); }
-.secondary-workflow-grid article:nth-child(3) .secondary-workflow-number { background: var(--coral); }
-.secondary-workflow-grid h3 { max-width: 240px; font-size: 27px; }
-.secondary-workflow-grid p { margin: 18px 0 25px; color: var(--muted-ink); font-size: 13px; line-height: 1.8; }
-.secondary-workflow-grid .secondary-text-link { margin-top: auto; font-size: 12px; }
 
-@media (max-width: 1023px) {
-  .secondary-skill-row { gap: 48px; }
-  .secondary-workflow-grid article { padding: 22px; }
-}
+/* ---------- /skills: groups by what the tools are for, each with its proof ---------- */
+.skills-jump { gap: 12px 26px; }
+.skill-groups { border-top: var(--border); }
+.skill-group { --group-color: var(--yellow); display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1fr); gap: 32px 80px; padding: 44px 0 48px; border-bottom: var(--border-hair); scroll-margin-top: calc(var(--nav-offset) + 8px); }
+.skill-group--1 { --group-color: var(--lilac); }
+.skill-group--2 { --group-color: var(--coral); }
+.skill-group--3 { --group-color: var(--sage); }
+.skill-group-head h2 { font-size: clamp(28px, 3vw, 36px); }
+.skill-group-head h2::before { content: ''; display: inline-block; width: .42em; height: .42em; margin-right: .32em; border: 2px solid var(--ink-fixed); background: var(--group-color); vertical-align: .12em; }
+.skill-group-head p { max-width: 40ch; margin-top: 14px; color: var(--muted-ink); font-size: 16px; line-height: 1.7; }
+.skill-tools { display: flex; flex-wrap: wrap; gap: 9px; margin: 0; padding: 0; list-style: none; }
+.skill-tools li { padding: 7px 12px; border: 1.5px solid var(--ink); background: var(--panel); font-size: 13px; font-weight: 650; line-height: 1.35; }
+.skill-tools li:first-child { border-color: var(--ink-fixed); background: var(--group-color); color: var(--ink-fixed); box-shadow: 2px 2px 0 var(--ink); }
+.skill-proof { margin-top: 26px; }
+.secondary-page .skill-proof-title { margin-bottom: 8px; color: var(--muted-ink); font-family: var(--font-inter), sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0; }
+.skill-proof-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 24px; margin: 0; padding: 0; list-style: none; border-top: var(--border-hair); }
+.skill-proof-link { display: grid; grid-template-columns: 16px minmax(0, 1fr) 16px; align-items: center; gap: 12px; min-height: 52px; padding-block: 8px; border-bottom: var(--border-hair); }
+.skill-proof-link strong { display: block; font-size: 14px; font-weight: 700; line-height: 1.3; }
+.skill-proof-kind { display: block; margin-top: 1px; color: var(--muted-ink); font-size: 12px; line-height: 1.4; }
+.skill-proof-dot { width: 10px; height: 10px; border: 1.5px solid var(--ink-fixed); background: var(--group-color); }
+.skill-proof-link > svg { transition: transform var(--dur-fast) ease; }
+.skill-proof-link:hover strong { text-decoration: underline; text-underline-offset: 4px; }
+.skill-proof-link:hover > svg:last-child { transform: translate(2px, -2px); }
 
 @media (max-width: 760px) {
+  .skill-group { grid-template-columns: minmax(0, 1fr); gap: 20px; padding: 34px 0 38px; }
+  .skill-group-head p { font-size: 15px; }
+  .skill-proof-list { grid-template-columns: minmax(0, 1fr); }
   .secondary-intro { padding-top: 116px; padding-bottom: 48px; }
   .secondary-back { margin-bottom: 28px; }
   .secondary-page h1 { font-size: clamp(49px, 10.5vw, 76px); }
@@ -96,24 +84,11 @@ html.dark .secondary-button:hover { box-shadow: 6px 6px 0 var(--ink); }
   .secondary-jump-links a { font-size: 12px; }
   .secondary-section-heading { display: block; margin-bottom: 23px; }
   .secondary-section-heading > p { margin-top: 15px; }
-  .secondary-project-group { margin-bottom: 48px; }
-  .secondary-archive summary { font-size: 27px; }
   .secondary-closing { align-items: flex-start; flex-direction: column; gap: 24px; padding: 45px 0 60px; }
-  .secondary-skill-row { grid-template-columns: 1fr; gap: 23px; padding: 28px 0 32px; }
-  .secondary-skill-heading .secondary-row-number { margin-bottom: 10px; }
-  .secondary-skill-heading > p { max-width: none; }
-  .secondary-tool-list { margin-bottom: 24px; }
-  .secondary-workflows { padding-top: 47px; }
-  .secondary-workflow-grid { grid-template-columns: 1fr; }
-  .secondary-workflow-grid article { padding: 26px; border-right: 0; border-bottom: 1px solid var(--ink); }
-  .secondary-workflow-grid article:last-child { border-bottom: 0; }
-  .secondary-workflow-grid h3 { max-width: none; }
-  .secondary-workflow-number { margin-bottom: 19px; }
 }
 
 @media (max-width: 390px) {
   .secondary-project-total { display: none; }
-  .secondary-use-cases { grid-template-columns: 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {
