@@ -1,0 +1,23 @@
+{
+  "cover": {
+    "file": "cover.webp",
+    "alt": "DocuMind Parse screen in dark mode. A test invoice has passed the Intake, Layout, Specialists, Assembly and Verifier stages, and the results list 7 blocks. The first block, a table with the invoice header, shows a confidence of 0.67, verifier scores for SSIM 0.80, IoU 0.03, CLIP 0.62 and L_ver 0.60, its bounding box, and a red note that it is flagged for review"
+  },
+  "gallery": [
+    {
+      "file": "01-extract-review.webp",
+      "alt": "DocuMind Extract screen. The schema builder on the left defines fields invoice_no, total_due, vendor and date. On the right, the results show date 2024-01-15 and vendor Acme Corp, each with a reported confidence of 0.69, a passing presence check, a warning that the score is uncalibrated, a View source, page 1 button, and a review panel with the original and reviewed values",
+      "caption": "Fields are extracted against a JSON schema you define. Each value shows its validator results, a warning when its confidence is uncalibrated, and a link to its source. A reviewer's decision is stored apart from the original model output."
+    },
+    {
+      "file": "02-citation-source.webp",
+      "alt": "Citation dialog over the Extract screen. The left side lists the matching text, page 1, block blk_p0_table_0 and its bounding box. The right side shows a crop of the rendered invoice page outlined in green, with the invoice number, date, vendor Acme Corp and total amount due",
+      "caption": "Opening a field's source loads the stored page image and outlines the cited region, with its page, block ID and bounding box. A reviewer checks the value against the page instead of re-reading the document."
+    },
+    {
+      "file": "03-parse-json-ast.webp",
+      "alt": "DocuMind Parse screen with the JSON AST tab open, showing the first block's JSON: block_id, page, type table, a normalised bounding box, reading order, text and HTML, and a source object naming the OCR and layout engines and the verifier scores",
+      "caption": "The same run as a JSON tree. Each block records its type, position, reading order, text, the engine that produced it and the verifier's scores. Extracted fields cite blocks from this tree."
+    }
+  ]
+}

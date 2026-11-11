@@ -86,34 +86,33 @@ export const projectMedia: Record<string, ProjectMediaSet> = {
     "documind": {
         "gallery": [
             {
-                "src": "/projects/documind/01-parse-verifier.jpg",
-                "alt": "DocuMind Parse screen in dark mode. On the left, invoice.pdf has been uploaded and the Intake, Layout, Specialists, Assembly and Verifier stages are all checked. On the right, run results list 7 blocks. The first block, typed table, contains the invoice header text and shows a confidence bar of 0.67, verifier bars for SSIM 0.80, IoU 0.03, CLIP 0.62 and L_ver 0.60, its bounding box, layout_backend heuristic, and a red note: L_verify = 0.40, flagged for review.",
-                "width": 1440,
-                "height": 900,
-                "caption": "A test invoice parsed into seven blocks, each with its page coordinates. The verifier re-renders every block and compares it with the original crop using SSIM, layout overlap and CLIP similarity. Blocks that differ too much are flagged for review, like the first one here."
+                "src": "/projects/documind/01-extract-review.webp",
+                "alt": "DocuMind Extract screen. The schema builder on the left defines fields invoice_no, total_due, vendor and date. On the right, the results show date 2024-01-15 and vendor Acme Corp, each with a reported confidence of 0.69, a passing presence check, a warning that the score is uncalibrated, a View source, page 1 button, and a review panel with the original and reviewed values",
+                "width": 1600,
+                "height": 1000,
+                "caption": "Fields are extracted against a JSON schema you define. Each value shows its validator results, a warning when its confidence is uncalibrated, and a link to its source. A reviewer's decision is stored apart from the original model output."
             },
             {
-                "src": "/projects/documind/02-extract-review.jpg",
-                "alt": "DocuMind Extract screen. The schema builder on the left defines fields invoice_no, total_due, vendor and date. On the right, extraction results show date 2024-01-15 and vendor Acme Corp, each with a reported confidence of 0.69, a passing presence check, a warning that the score is uncalibrated, a View source, page 1 button, and a review panel showing the original and reviewed values, approved by api with a timestamp.",
-                "width": 1440,
-                "height": 900,
-                "caption": "Fields are extracted against a user-defined JSON schema. Each value shows its validator results and a warning when its confidence score is uncalibrated, plus a link to its source. A reviewer approves, corrects or marks each field missing, and that decision is stored separately from the original output."
+                "src": "/projects/documind/02-citation-source.webp",
+                "alt": "Citation dialog over the Extract screen. The left side lists the matching text, page 1, block blk_p0_table_0 and its bounding box. The right side shows a crop of the rendered invoice page outlined in green, with the invoice number, date, vendor Acme Corp and total amount due",
+                "width": 1600,
+                "height": 1000,
+                "caption": "Opening a field's source loads the stored page image and outlines the cited region, with its page, block ID and bounding box. A reviewer checks the value against the page instead of re-reading the document."
             },
             {
-                "src": "/projects/documind/03-citation-source.jpg",
-                "alt": "Citation dialog over the Extract screen. The left side lists the matching text, page 1, block blk_p0_table_0 and bounding box 0.112, 0.057, 0.247, 0.197. The right side shows a crop of the rendered invoice page outlined in green, containing INVOICE, Invoice No: INV-912371, Date: 2024-01-15, Vendor: Acme Corp, Total Amount Due: $4,250.00 and the top of the item table.",
-                "width": 1440,
-                "height": 900,
-                "caption": "Opening a field's source loads the stored page image and outlines the cited region, with its page, block ID and bounding box. Here the region is the whole header block, because the fallback layout step grouped those lines together."
-            },
-            {
-                "src": "/projects/documind/04-parse-json-ast.jpg",
-                "alt": "DocuMind Parse screen with the JSON AST tab open, showing the first block's JSON: block_id blk_p0_table_0, page 0, type table, a bbox with x, y, w, h in page_norm coordinates, reading_order_rank 0, text and html, and a source object with native_pdf true, ocr_engine native_pdf_anchor, vlm_engine docling_cpu and verifier scores.",
-                "width": 1440,
-                "height": 900,
-                "caption": "The same run as a JSON tree. Each block records its type, position on the page, reading order, text and HTML, the engine that produced it and the verifier's scores. Extracted fields cite blocks from this tree."
+                "src": "/projects/documind/03-parse-json-ast.webp",
+                "alt": "DocuMind Parse screen with the JSON AST tab open, showing the first block's JSON: block_id, page, type table, a normalised bounding box, reading order, text and HTML, and a source object naming the OCR and layout engines and the verifier scores",
+                "width": 1600,
+                "height": 1000,
+                "caption": "The same run as a JSON tree. Each block records its type, position, reading order, text, the engine that produced it and the verifier's scores. Extracted fields cite blocks from this tree."
             }
-        ]
+        ],
+        "cover": {
+            "src": "/projects/documind/cover.webp",
+            "alt": "DocuMind Parse screen in dark mode. A test invoice has passed the Intake, Layout, Specialists, Assembly and Verifier stages, and the results list 7 blocks. The first block, a table with the invoice header, shows a confidence of 0.67, verifier scores for SSIM 0.80, IoU 0.03, CLIP 0.62 and L_ver 0.60, its bounding box, and a red note that it is flagged for review",
+            "width": 1600,
+            "height": 1000
+        }
     },
     "dsakarle": {
         "gallery": [
