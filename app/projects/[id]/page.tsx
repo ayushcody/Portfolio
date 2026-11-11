@@ -1,21 +1,21 @@
-import { cache } from "react";
+import { cache, type CSSProperties } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Asterisk } from "lucide-react";
 import type { ProjectWithMedia } from "@/src/data/projectSchema";
 import { getProjects, projectHref } from "@/lib/projects";
 import { getProjectLinks } from "@/lib/projectLinks";
-import { getProjectSystemLayers } from "@/lib/projectArchitecture";
 import { pageMetadata } from "@/lib/seo";
-import ProjectArchitecture from "@/components/ProjectArchitecture";
 import { ProjectLinks } from "@/components/ui/ProjectLinks";
 import { TechTags } from "@/components/ui/TechTags";
 import { SignatureFooter } from "@/components/SignatureFooter";
 import { CaseList, CaseStudyIndex, CaseStudySection, type CaseSectionEntry } from "@/components/projects/CaseStudySection";
-import { projectTone, type VisualTone } from "@/components/projects/ProjectDiagram";
-import { ProjectHeroMedia } from "@/components/projects/ProjectMedia";
+import { FlowDiagram } from "@/components/projects/FlowDiagram";
+import { ProjectCard } from "@/components/projects/ProjectCard";
+import { ProjectCover } from "@/components/projects/ProjectCover";
 import { ProjectShowcase } from "@/components/projects/ProjectShowcase";
+import { projectTone, statusSlug, toneClass, toneColor } from "@/components/projects/tone";
 import "@/components/secondary-pages.css";
 import "@/components/projects.css";
 
@@ -30,16 +30,14 @@ type CaseProject = ProjectWithMedia;
 
 const loadProjects = cache(async (): Promise<CaseProject[]> => getProjects());
 
-const toneClass: Record<VisualTone, string> = { 0: "tone-lilac", 1: "tone-coral", 2: "tone-sage", 3: "tone-yellow" };
-const chipColor: Record<VisualTone, string> = { 0: "var(--lilac)", 1: "var(--coral)", 2: "var(--sage)", 3: "var(--yellow)" };
-
 const isListed = (project: CaseProject) => project.status !== "Archived";
 const clean = (value?: string) => value?.trim() || "";
-const statusSlug = (status: string) => status.toLowerCase().replace(/\s+/g, "-");
+
+const RELATED_SIZES = "(min-width: 1240px) 370px, (min-width: 1100px) calc((100vw - 160px) / 3), (min-width: 700px) calc((100vw - 96px) / 2), calc(100vw - 40px)";
 
 /**
  * Tracks what the page has already printed so adjacent blocks never repeat the same sentence
- * (CMS projects often reuse the summary as the one-liner, or features as highlights and impact).
+ * (e.g. a summary that restates the outcome, or a highlight that restates a result).
  */
 function createDeduper() {
   const seen = new Set<string>();
@@ -108,121 +106,85 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
   const hasLinks = getProjectLinks(project).length > 0;
   const once = createDeduper();
 
-  // Hero
-  const lede = once.text(project.outcome) || once.text(project.summary);
-
-  // 01 Overview
-  const overviewSummary = once.text(project.summary);
-  const problem = once.text(project.problem);
-
-  // 02 What I built
+  // Header
+  const lede = once.text(project.outcome);
+  const summary = once.text(project.summary);
   const role = once.text(project.role);
-  const features: string[] = [];
 
-  // 03 System
-  const solution = once.text(project.approach);
-  const architecture = once.text(project.architecture.overview);
+  // Body, in reading order
+  const problem = once.text(project.problem);
+  const approach = once.text(project.approach);
+  const overview = once.text(project.architecture.overview);
   const highlights = once.list(project.architecture.highlights);
-  // Legacy layer map until the flow diagram replaces it.
-  const archSource = { title: project.title, category: project.category, summary: project.summary, techStack: project.stack, architecture: project.architecture.overview, architectureHighlights: project.architecture.highlights };
-  // ProjectArchitecture renders nothing when it finds no layers and gets no highlights.
-  const hasMap = highlights.length > 0 || getProjectSystemLayers(archSource).length > 0;
-
-  // 04 Technology
+  const hasFlow = project.architecture.flow.some((stage) => stage.trim());
   const stack = project.stack.filter(Boolean);
-  const themes: string[] = [];
-
-  // 05+ Reflection
-  const challenges = once.list(project.tradeoffs);
-  const proofPoint = project.metrics.map((metric) => `${metric.value} ${metric.label}`).join(" · ");
-  const impact = once.list(project.results);
+  const metrics = project.metrics.filter((metric) => clean(metric.value) && clean(metric.label));
+  const results = once.list(project.results);
+  const tradeoffs = once.list(project.tradeoffs);
   const learnings = once.list(project.learnings);
   const nextSteps = once.list(project.nextSteps);
 
   const candidates: (CaseSectionEntry | false)[] = [
-    Boolean(overviewSummary || problem) && {
-      id: "overview",
-      title: "Overview",
-      content: (
-        <>
-          {overviewSummary ? <p className="case-copy case-copy--large">{overviewSummary}</p> : null}
-          {problem ? (
-            overviewSummary ? (
-              <div className="case-callout tone-note">
-                <span className="eyebrow">The problem</span>
-                <p>{problem}</p>
-              </div>
-            ) : (
-              <p className="case-copy case-copy--large">{problem}</p>
-            )
-          ) : null}
-        </>
-      ),
+    Boolean(problem) && {
+      id: "problem",
+      title: "The problem",
+      content: <p className="case-copy case-copy--large">{problem}</p>,
     },
-    Boolean(role || features.length) && {
-      id: "what-i-built",
-      title: "What I built",
+    Boolean(approach) && {
+      id: "approach",
+      title: "The approach",
+      content: <p className="case-copy case-copy--large">{approach}</p>,
+    },
+    Boolean(overview || hasFlow || highlights.length || stack.length) && {
+      id: "architecture",
+      title: "Architecture",
       content: (
         <>
-          {role ? <p className="case-copy case-copy--large">{role}</p> : null}
-          {features.length ? (
+          {overview ? <p className="case-copy">{overview}</p> : null}
+          <FlowDiagram project={project} />
+          {highlights.length ? (
             <>
-              {role ? <h3 className="case-subhead">What it does</h3> : null}
-              <CaseList items={features} grid label="Features" />
+              <h3 className="case-subhead">Design decisions</h3>
+              <CaseList items={highlights} tone="lilac" />
+            </>
+          ) : null}
+          {stack.length ? (
+            <>
+              <h3 className="case-subhead">Stack</h3>
+              <TechTags items={stack} label={`${project.title} stack`} className="tag-list--strong case-tags" />
             </>
           ) : null}
         </>
       ),
     },
-    Boolean(solution || architecture || hasMap) && {
-      id: "system",
-      title: "System and architecture",
+    Boolean(metrics.length || results.length) && {
+      id: "results",
+      title: "Results",
       content: (
         <>
-          {solution ? <p className="case-copy case-copy--large">{solution}</p> : null}
-          {architecture ? <p className={solution ? "case-copy case-copy--muted" : "case-copy case-copy--large"}>{architecture}</p> : null}
-          <ProjectArchitecture project={archSource} highlights={highlights} />
-        </>
-      ),
-    },
-    stack.length > 0 && {
-      id: "technology",
-      title: "Technology",
-      content: (
-        <>
-          <TechTags items={stack} label={`${project.title} technology stack`} className="tag-list--strong case-tags" />
-          {themes.length ? (
-            <>
-              <h3 className="case-subhead">Themes</h3>
-              <TechTags items={themes} label={`${project.title} themes`} />
-            </>
+          {metrics.length ? (
+            <dl className="case-metrics">
+              {metrics.map((metric) => (
+                <div key={`${metric.value}-${metric.label}`} className="case-metric">
+                  <dt>{metric.label}</dt>
+                  <dd className="case-metric-value">{metric.value}</dd>
+                  {clean(metric.source) ? <dd className="case-metric-source"><span className="visually-hidden">Source: </span>{metric.source}</dd> : null}
+                </div>
+              ))}
+            </dl>
           ) : null}
+          <CaseList items={results} tone="sage" />
         </>
       ),
     },
-    challenges.length > 0 && {
-      id: "challenges",
-      title: "Challenges and trade-offs",
-      content: <CaseList items={challenges} tone="coral" />,
-    },
-    Boolean(proofPoint || impact.length) && {
-      id: "outcome",
-      title: "Outcome",
-      content: (
-        <>
-          {proofPoint ? (
-            <div className={`case-callout ${toneClass[tone]}`}>
-              <span className="eyebrow">At a glance</span>
-              <p>{proofPoint}</p>
-            </div>
-          ) : null}
-          <CaseList items={impact} tone="sage" />
-        </>
-      ),
+    tradeoffs.length > 0 && {
+      id: "tradeoffs",
+      title: "Trade-offs",
+      content: <CaseList items={tradeoffs} tone="coral" />,
     },
     learnings.length > 0 && {
       id: "learnings",
-      title: "Learnings",
+      title: "What I learned",
       content: <CaseList items={learnings} tone="lilac" />,
     },
     nextSteps.length > 0 && {
@@ -246,7 +208,8 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
           <div className="case-hero-grid">
             <div className="case-hero-copy">
               <p className="case-labels">
-                <span className="eyebrow eyebrow--chip" style={{ "--chip-color": chipColor[tone] } as React.CSSProperties}>
+                <span className="eyebrow eyebrow--chip" style={{ "--chip-color": toneColor[tone] } as CSSProperties}>
+                  <span className="visually-hidden">Category: </span>
                   {project.category}
                 </span>
                 <span className={`case-status case-status--${statusSlug(project.status)}`}>
@@ -262,13 +225,26 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
               </p>
               <h1>{project.title}</h1>
               {lede ? <p className="case-lede">{lede}</p> : null}
+              {project.recognition ? (
+                <p className="case-recognition"><Asterisk size={18} strokeWidth={2.5} aria-hidden="true" />{project.recognition}</p>
+              ) : null}
+              {summary ? <p className="case-summary">{summary}</p> : null}
+              {role ? (
+                <p className="case-role"><strong>My role.</strong> {role}</p>
+              ) : null}
               <ProjectLinks project={project} variant="full" className="case-hero-links" />
             </div>
-            <ProjectHeroMedia project={project} />
+            <figure className="case-cover">
+              <ProjectCover project={project} loading="priority" sizes="(min-width: 1100px) 500px, (min-width: 700px) 600px, calc(100vw - 40px)" />
+            </figure>
           </div>
         </header>
 
-        {shots.length > 0 ? <ProjectShowcase title={project.title} shots={shots} /> : null}
+        {shots.length > 0 ? (
+          <ProjectShowcase title={project.title} shots={shots} />
+        ) : project.media.noVisualReason ? (
+          <p className="state-note case-no-visual"><span><strong>No screenshots.</strong> {project.media.noVisualReason}</span></p>
+        ) : null}
 
         {sections.length > 0 ? (
           <div className={sections.length > 2 ? "case-body" : "case-body case-body--single"}>
@@ -287,7 +263,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
           <section className="case-links-band ink-card" aria-labelledby="case-links-heading">
             <div>
               <h2 id="case-links-heading">See it for yourself.</h2>
-              <p>Links open in a new tab.</p>
+              <p>External links open in a new tab.</p>
             </div>
             <ProjectLinks project={project} variant="full" />
           </section>
@@ -312,22 +288,10 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                     All projects <ArrowUpRight size={18} aria-hidden="true" />
                   </Link>
                 </div>
-                <ul className="case-related">
+                <ul className="pgrid case-related">
                   {related.map((item) => (
                     <li key={item.slug}>
-                      <Link href={projectHref(item.slug)} className="case-related-card ink-card ink-card--interactive">
-                        <div className={`case-related-strip ${toneClass[projectTone(item)]}`}>
-                          <span>{item.category}</span>
-                          <span>{item.status}</span>
-                        </div>
-                        <div className="case-related-body">
-                          <h3>{item.title}</h3>
-                          {clean(item.outcome) ? <p>{clean(item.outcome)}</p> : null}
-                          <span className="case-related-cta">
-                            Explore the build <ArrowUpRight size={16} aria-hidden="true" />
-                          </span>
-                        </div>
-                      </Link>
+                      <ProjectCard project={item} sizes={RELATED_SIZES} />
                     </li>
                   ))}
                 </ul>

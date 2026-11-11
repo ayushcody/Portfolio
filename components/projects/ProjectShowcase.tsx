@@ -8,16 +8,18 @@ import type { ProjectImage } from '@/src/data/projectSchema';
 const pad = (value: number) => String(value).padStart(2, '0');
 
 /**
- * Screenshots at the top of a case study: the first one large, the rest in a grid, each with a
- * caption that says what the screen shows. Any screenshot opens full size in a dialog with
- * previous/next (arrow keys work too).
+ * Screenshots near the top of a case study, in a two-column grid (the first spans both columns when
+ * the count is odd), each with a caption that says what the screen shows. Any screenshot opens full
+ * size in a dialog with previous/next (arrow keys work too); closing returns focus to the screenshot.
  */
 export function ProjectShowcase({ title, shots }: { title: string; shots: ProjectImage[] }) {
     const dialogRef = useRef<HTMLDialogElement>(null);
     const [open, setOpen] = useState<number | null>(null);
-    const [lead, ...rest] = shots;
+
+    const triggerRef = useRef<HTMLElement | null>(null);
 
     const show = useCallback((index: number) => {
+        triggerRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
         setOpen(index);
         const dialog = dialogRef.current;
         if (dialog && !dialog.open) dialog.showModal();
@@ -31,7 +33,10 @@ export function ProjectShowcase({ title, shots }: { title: string; shots: Projec
             if (event.key === 'ArrowRight') step(1);
             if (event.key === 'ArrowLeft') step(-1);
         };
-        const onClose = () => setOpen(null);
+        const onClose = () => {
+            setOpen(null);
+            triggerRef.current?.focus();
+        };
         dialog.addEventListener('keydown', onKey);
         dialog.addEventListener('close', onClose);
         return () => {
@@ -40,19 +45,22 @@ export function ProjectShowcase({ title, shots }: { title: string; shots: Projec
         };
     }, [step]);
 
-    if (!lead) return null;
+    if (shots.length === 0) return null;
     const current = open === null ? null : shots[open];
 
-    const tile = (shot: ProjectImage, index: number, isLead: boolean) => (
-        <figure className={isLead ? 'shot shot--lead' : 'shot'} key={shot.src}>
+    // The first shot spans the grid when the count is odd, so it is the large one.
+    const wide = (index: number) => index === 0 && shots.length % 2 === 1;
+
+    const tile = (shot: ProjectImage, index: number) => (
+        <figure className={wide(index) ? 'shot shot--lead' : 'shot'} key={shot.src}>
             <button type="button" className="shot-frame" onClick={() => show(index)} aria-label={`View screenshot ${index + 1} of ${shots.length} full size: ${shot.alt}`}>
                 <Image
                     src={shot.src}
                     alt={shot.alt}
                     width={shot.width}
                     height={shot.height}
-                    loading={isLead ? 'eager' : 'lazy'}
-                    sizes={isLead ? '(min-width: 1240px) 1160px, calc(100vw - 40px)' : '(min-width: 1240px) 570px, (min-width: 700px) 46vw, calc(100vw - 40px)'}
+                    loading="lazy"
+                    sizes={wide(index) ? '(min-width: 1240px) 1160px, calc(100vw - 40px)' : '(min-width: 1240px) 566px, (min-width: 700px) calc(50vw - 62px), calc(100vw - 40px)'}
                 />
                 <span className="shot-zoom" aria-hidden="true"><Maximize2 size={16} /></span>
             </button>
@@ -67,10 +75,9 @@ export function ProjectShowcase({ title, shots }: { title: string; shots: Projec
         <section className="case-showcase" aria-labelledby="case-showcase-heading">
             <div className="case-showcase-head">
                 <h2 id="case-showcase-heading">A look inside</h2>
-                <p>{shots.length} {shots.length === 1 ? 'screen' : 'screens'} from the real build. Select any to see it full size.</p>
+                <p>{shots.length} {shots.length === 1 ? 'screen' : 'screens'} from the real build. Select one to see it full size.</p>
             </div>
-            {tile(lead, 0, true)}
-            {rest.length > 0 ? <div className="shot-grid">{rest.map((shot, index) => tile(shot, index + 1, false))}</div> : null}
+            <div className="shot-grid">{shots.map((shot, index) => tile(shot, index))}</div>
 
             <dialog ref={dialogRef} className="shot-dialog" aria-label={`${title} screenshots`} onClick={(event) => { if (event.target === event.currentTarget) dialogRef.current?.close(); }}>
                 {current ? (
