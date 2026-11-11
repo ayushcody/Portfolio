@@ -66,6 +66,33 @@ export const projectMedia: Record<string, ProjectMediaSet> = {
             "alt": "Auralis Overview page: system chips showing the API online on an Apple M4 GPU with local storage, a warm-up panel with load times for the language model, speech recognition, Kokoro English and Hindi voices, knowledge search, watermark model and speaker check, and totals of 5 voices, 138 generations and 6.0 minutes synthesized",
             "width": 1600,
             "height": 1000
+        },
+        "clip": {
+            "src": "/projects/auralis/session.mp4",
+            "poster": "/projects/auralis/session-poster.webp",
+            "width": 1280,
+            "height": 704,
+            "label": "A real session",
+            "duration": "0:37",
+            "caption": "37 seconds recorded in one take from the Auralis studio's browser tab, sound included, with the app running offline on a 16 GB MacBook (the sidebar reads \"Offline, verified\"). A clinic receptionist agent answers a typed English question from its documents, then a Hindi one, speaking each answer aloud. Nothing is cut in between, so the waits are real. The clinic and its documents are the app's sample data.",
+            "transcript": [
+                {
+                    "speaker": "Typed",
+                    "text": "Which days does the paediatrician see patients, and what is the fee?"
+                },
+                {
+                    "speaker": "Agent",
+                    "text": "This is an AI assistant. The paediatrician, Dr. Rohan Deshmukh, sees patients on Tuesday, Thursday and Saturday. The consultation fee is ₹500 for a first visit and ₹300 for a follow-up within 7 days."
+                },
+                {
+                    "speaker": "Typed",
+                    "text": "रविवार को क्लिनिक कितने बजे खुलता है? (What time does the clinic open on Sunday?)"
+                },
+                {
+                    "speaker": "Agent",
+                    "text": "रविवार को क्लिनिक 10:00 बजे खुलती है। (The clinic opens at 10:00 on Sunday.)"
+                }
+            ]
         }
     },
     "contextree": {

@@ -327,7 +327,7 @@
 /* Real recording on a case study (components/projects/ProjectClip.tsx). */
 .case-clip { padding-bottom: 40px; }
 .case-clip-frame { border: var(--border); background: var(--ink-fixed); box-shadow: var(--shadow-md); overflow: hidden; }
-.case-clip-frame video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; background: var(--ink-fixed); }
+.case-clip-frame video { display: block; width: 100%; height: auto; background: var(--ink-fixed); }
 .case-clip .shot-index { background: var(--lilac); font-size: 10px; }
 .case-clip-transcript { margin-top: 18px; border: var(--border-hair); background: var(--panel); }
 .case-clip-transcript summary { display: flex; align-items: center; min-height: 46px; padding: 0 16px; font-size: 14px; font-weight: 650; cursor: pointer; }

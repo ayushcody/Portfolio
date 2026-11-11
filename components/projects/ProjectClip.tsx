@@ -11,7 +11,7 @@ export function ProjectClip({ title, clip }: { title: string; clip: Clip }) {
         <section id="clip" className="case-showcase case-clip" aria-labelledby="case-clip-heading">
             <div className="case-showcase-head">
                 <h2 id="case-clip-heading">{clip.label}</h2>
-                <p>{clip.duration} · sound on. Subtitles are in the video.</p>
+                <p>{clip.duration} · sound on.</p>
             </div>
             <figure className="shot shot--lead">
                 <div className="case-clip-frame">
@@ -22,6 +22,7 @@ export function ProjectClip({ title, clip }: { title: string; clip: Clip }) {
                         poster={clip.poster}
                         width={clip.width}
                         height={clip.height}
+                        style={{ aspectRatio: `${clip.width} / ${clip.height}` }}
                         aria-label={`${title}: ${clip.label}, ${clip.duration}`}
                         aria-describedby="case-clip-caption"
                     >
