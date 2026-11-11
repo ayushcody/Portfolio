@@ -1,9 +1,10 @@
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, ArrowUpRight, Plus } from "lucide-react";
-import type { ProjectWithMedia } from "@/src/data/projectSchema";
-import { getProjects } from "@/lib/projects";
+import type { CSSProperties } from "react";
+import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import { categorySlug, getCategoryCounts, getProjectsForIndex } from "@/lib/projects";
 import { pageMetadata } from "@/lib/seo";
-import { ProjectRow } from "@/components/projects/ProjectRow";
+import { ProjectCard } from "@/components/projects/ProjectCard";
+import { ProjectFilter } from "@/components/projects/ProjectFilter";
 import { SignatureFooter } from "@/components/SignatureFooter";
 import "@/components/secondary-pages.css";
 import "@/components/projects.css";
@@ -14,73 +15,12 @@ export const metadata = pageMetadata({
   path: "/projects",
 });
 
-type Project = ProjectWithMedia;
-const aiCategories = new Set<string>(["Agentic AI", "RAG & Retrieval", "Voice AI", "Document AI", "Security"]);
-const isArchived = (project: Project) => project.status === "Archived";
-const byPriority = (projects: Project[]) => [...projects].sort((a, b) => a.order - b.order);
-const pad = (value: number) => String(value).padStart(2, "0");
-const numberWords = ["", "One", "Two", "Three", "Four", "Five", "Six"];
-// Keeps "Four builds that show…" accurate when the CMS changes how many projects are on the homepage.
-const selectedDescription = (count: number) =>
-  count === 1
-    ? "One build that shows how I connect AI, architecture, and a useful interface."
-    : `${numberWords[count] ?? count} builds that show how I connect AI, architecture, and a useful interface.`;
+// Three columns from 1100px, two from 700px, one below (see .pgrid in projects.css).
+const CARD_SIZES = "(min-width: 1240px) 370px, (min-width: 1100px) calc((100vw - 160px) / 3), (min-width: 700px) calc((100vw - 96px) / 2), calc(100vw - 40px)";
 
-type Group = { id: string; title: string; jumpLabel: string; description: string; projects: Project[] };
-
-function ProjectGroup({ group, offset }: { group: Group; offset: number }) {
-  return (
-    <section id={group.id} className="secondary-project-group" aria-labelledby={`${group.id}-heading`}>
-      <div className="secondary-section-heading">
-        <h2 id={`${group.id}-heading`}>
-          {group.title} <span className="secondary-count"><span className="visually-hidden">(</span>{pad(group.projects.length)}<span className="visually-hidden"> projects)</span></span>
-        </h2>
-        <p>{group.description}</p>
-      </div>
-      <div className="secondary-project-list">
-        {group.projects.map((project, index) => <ProjectRow key={project.slug} project={project} index={offset + index} />)}
-      </div>
-    </section>
-  );
-}
-
-function ProjectArchive({ title, projects, offset }: { title: string; projects: Project[]; offset: number }) {
-  if (!projects.length) return null;
-  return (
-    <details className="secondary-archive">
-      <summary>
-        <span>{title} <span className="secondary-count"><span className="visually-hidden">(</span>{pad(projects.length)}<span className="visually-hidden"> projects)</span></span></span>
-        <Plus className="secondary-disclosure-icon" size={28} aria-hidden="true" />
-      </summary>
-      <div className="secondary-project-list">
-        {projects.map((project, index) => <ProjectRow key={project.slug} project={project} index={offset + index} />)}
-      </div>
-    </details>
-  );
-}
-
-export default async function ProjectsPage() {
-  const projects = getProjects();
-
-  const current = projects.filter((project) => !isArchived(project));
-  const selected = [...current.filter((project) => project.featured !== undefined)].sort((a, b) => (a.featured ?? 0) - (b.featured ?? 0));
-  const remaining = current.filter((project) => project.featured === undefined);
-  const systems = byPriority(remaining.filter((project) => aiCategories.has(project.category)));
-  const products = byPriority(remaining.filter((project) => !aiCategories.has(project.category)));
-  const labs: Project[] = [];
-  const archived = byPriority(projects.filter(isArchived));
-
-  // Empty groups are left out entirely (with their jump link), so the page never shows an empty shelf.
-  const groups: Group[] = [
-    { id: "selected-builds", title: "Start here.", jumpLabel: "Selected builds", description: selectedDescription(selected.length), projects: selected },
-    { id: "ai-systems", title: "Under the hood.", jumpLabel: "AI systems", description: "Evaluation, security workflows, and the infrastructure behind AI products.", projects: systems },
-    { id: "products-tools", title: "Made to be used.", jumpLabel: "Products & tools", description: "Learning products and small tools for everyday engineering.", projects: products },
-  ].filter((group) => group.projects.length > 0);
-
-  // Row numbers run continuously across groups, the lab notebook and the archive.
-  const offsets = groups.map((_, index) => groups.slice(0, index).reduce((sum, group) => sum + group.projects.length, 0));
-  const labsOffset = groups.reduce((sum, group) => sum + group.projects.length, 0);
-  const archiveOffset = labsOffset + labs.length;
+export default function ProjectsPage() {
+  const projects = getProjectsForIndex();
+  const categories = getCategoryCounts(projects).map(({ category, count }) => ({ id: categorySlug(category), label: category, count }));
 
   return (
     <main className="secondary-page">
@@ -93,29 +33,27 @@ export default async function ProjectsPage() {
               <div className="secondary-project-total"><strong>{projects.length}</strong><span>projects & counting</span></div>
             ) : null}
           </div>
-          <p className="secondary-lead">AI that does something useful. Products that connect the dots. A few experiments along the way.</p>
-          {groups.length > 1 ? (
-            <nav className="secondary-jump-links" aria-label="Project categories">
-              {groups.map((group) => (
-                <a key={group.id} href={`#${group.id}`}>{group.jumpLabel} <ArrowRight size={15} aria-hidden="true" /></a>
-              ))}
-            </nav>
-          ) : null}
+          <p className="secondary-lead">Voice agents, RAG and document AI, agentic workflows, and the products around them. Each card opens a case study with the architecture and what it does.</p>
         </header>
 
-        {groups.map((group, index) => <ProjectGroup key={group.id} group={group} offset={offsets[index]} />)}
-
-        {projects.length === 0 ? (
+        {projects.length > 0 ? (
+          <section className="projects-index" aria-label="All projects">
+            <ProjectFilter categories={categories} total={projects.length}>
+              {projects.map((project, index) => (
+                <li key={project.slug} data-category={categorySlug(project.category)} style={{ "--vt": `pcard-${project.slug}` } as CSSProperties}>
+                  <ProjectCard project={project} sizes={CARD_SIZES} eager={index < 3} headingLevel={2} />
+                </li>
+              ))}
+            </ProjectFilter>
+          </section>
+        ) : (
           <div className="state-note projects-empty" role="status">
             <div>
               <p><strong>No projects to show just yet.</strong></p>
               <p>Case studies are being updated. <Link href="/about#contact">Get in touch</Link> if you&apos;d like to hear about recent work.</p>
             </div>
           </div>
-        ) : null}
-
-        <ProjectArchive title="The lab notebook" projects={labs} offset={labsOffset} />
-        <ProjectArchive title="From the archive" projects={archived} offset={archiveOffset} />
+        )}
 
         <aside className="secondary-closing">
           <h2>Have a good problem?</h2>
