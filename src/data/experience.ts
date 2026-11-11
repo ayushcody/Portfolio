@@ -199,6 +199,7 @@ export const experiencesData: ExperienceEntry[] = [
         "id": "nexus",
         "chapterTitle": "Build with a team.",
         "company": "Nexus",
+        "companyLogo": "/experience/logos/nexus.svg",
         "role": "Project Lead — Internship",
         "period": "Mar 2025 – May 2025",
         "type": "Internship",

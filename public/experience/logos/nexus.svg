@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Nexus monogram">
+  <!-- Placeholder monogram for Nexus (the official logo was not available): a yellow N on a blue tile. -->
+  <rect width="100" height="100" rx="22" fill="#1f3fb8"/>
+  <!-- Hard offset shadow, like the site's cards. -->
+  <g fill="#122776" transform="translate(4 4)">
+    <rect x="23" y="21" width="15" height="58" rx="2.5"/>
+    <rect x="62" y="21" width="15" height="58" rx="2.5"/>
+    <polygon points="23,21 38,21 77,79 62,79"/>
+  </g>
+  <!-- The N: two stems and a lighter diagonal band laid over them, like a folded ribbon. -->
+  <rect x="23" y="21" width="15" height="58" rx="2.5" fill="#f4d738"/>
+  <rect x="62" y="21" width="15" height="58" rx="2.5" fill="#f4d738"/>
+  <polygon points="23,21 38,21 77,79 62,79" fill="#ffe57a"/>
+  <path d="M40 24 L75 76 M25 24 L60 76" stroke="#1f3fb8" stroke-width="2.4" stroke-linecap="round"/>
+  <!-- A small node at the top right: Nexus, a point where things connect. -->
+  <circle cx="81" cy="18" r="4.2" fill="#f4d738"/>
+</svg>

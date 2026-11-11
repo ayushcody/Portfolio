@@ -8,7 +8,6 @@ import { ArrowUpRight, Github, Linkedin, Menu, X } from 'lucide-react';
 import { profile } from '@/config/portfolio';
 import { ThemeToggle } from './ThemeToggle';
 import './navigation.css';
-import { Scribble } from '@/components/ui/Scribble';
 
 const navItems = [
     { name: 'Home', href: '/#home', match: (pathname: string) => pathname === '/' },
@@ -19,7 +18,7 @@ const navItems = [
     { name: 'About', href: '/about', match: (pathname: string) => pathname.startsWith('/about') },
 ];
 
-/** About gets a lilac hand-drawn underline so the personal page stands apart from the work links. */
+/** About is a small lilac sticker (soft corners, ink outline, hard shadow) so the personal page stands apart from the work links. */
 const ACCENT_ITEM = 'About';
 
 function isResumeActive(pathname: string) {
@@ -94,9 +93,9 @@ export default function Navbar() {
                             <Link
                                 href={item.href}
                                 aria-current={item.match(pathname) ? 'page' : undefined}
-                                className="nav-link"
+                                className={`nav-link${item.name === ACCENT_ITEM ? ' nav-link--about' : ''}`}
                             >
-                                {item.name === ACCENT_ITEM ? <Scribble color="var(--scribble-lilac)">{item.name}</Scribble> : item.name}
+                                {item.name}
                             </Link>
                         </li>
                     ))}
@@ -158,7 +157,7 @@ export default function Navbar() {
                                 onClick={closeMenu}
                                 className={`nav-mobile-link${item.name === 'Resume' ? ' nav-mobile-resume' : ''}`}
                             >
-                                <span><span className="nav-mobile-index" aria-hidden="true">0{index + 1}</span>{item.name === ACCENT_ITEM ? <Scribble color="var(--scribble-lilac)">{item.name}</Scribble> : item.name}</span>
+                                <span><span className="nav-mobile-index" aria-hidden="true">0{index + 1}</span>{item.name === ACCENT_ITEM ? <span className="nav-mobile-about">{item.name}</span> : item.name}</span>
                                 <ArrowUpRight size={18} aria-hidden="true" />
                             </Link>
                         </li>

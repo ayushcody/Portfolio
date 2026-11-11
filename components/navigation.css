@@ -53,9 +53,14 @@
 
 .nav-link:hover { background: var(--paper, #f7f4eb); color: var(--ink, #23231f); }
 .nav-link[aria-current="page"] { background: var(--ink, #23231f); color: var(--panel, #fffdf6); }
-/* About is marked by its lilac scribble (components/ui/Scribble.tsx), not a pill: it never looks like the current page. */
-.nav-desktop-links, .nav-mobile-panel { --scribble-lilac: #9b7fd4; }
-.dark .nav-desktop-links, .dark .nav-mobile-panel { --scribble-lilac: #c3b0e4; }
+/* About: a small lilac sticker with soft corners, an ink outline and a hard shadow, set at a slight tilt. It is static,
+   and it is drawn like the site's cards and buttons, so it never reads as the dark "you are here" pill. */
+.nav-link--about, .nav-link--about:hover, .nav-mobile-about { border: 1.5px solid #23231f; border-radius: 10px; background: #c3b0e4; color: #23231f; box-shadow: 2px 2px 0 #23231f; rotate: -2deg; }
+.nav-link--about { margin-inline: 6px 4px; padding: 6px 12px; }
+.nav-link--about:hover { background: #cbbbe8; }
+.nav-link--about[aria-current="page"] { background: #c3b0e4; color: #23231f; box-shadow: 2px 2px 0 #23231f, 0 0 0 2px #fffdf6, 0 0 0 3.5px #23231f; }
+.nav-mobile-about { display: inline-block; padding: 1px 10px 2px; border-radius: 8px; }
+html.dark .nav-link--about, html.dark .nav-mobile-about { box-shadow: 2px 2px 0 #f7f4eb; }
 .nav-actions { display: flex; align-items: center; gap: 5px; margin-left: auto; }
 
 .nav-icon-button {
