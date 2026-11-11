@@ -60,10 +60,10 @@ export const experiencesData: ExperienceEntry[] = [
         "techStack": [
             "Retell",
             "Vapi",
-            "Dograh",
             "ElevenLabs",
             "n8n",
             "FastAPI",
+            "Dograh",
             "WhatsApp Business API"
         ],
         "featured": true,
@@ -85,10 +85,10 @@ export const experiencesData: ExperienceEntry[] = [
         "tech": [
             "Retell",
             "Vapi",
-            "Dograh",
             "ElevenLabs",
             "n8n",
             "FastAPI",
+            "Dograh",
             "WhatsApp Business API"
         ],
         "description": "Connecting conversations to action: voice agents, backend services, and business workflows in one end-to-end system."
@@ -112,11 +112,11 @@ export const experiencesData: ExperienceEntry[] = [
             "Developed Persona Mail to model writing style from email history; refined token usage, latency, and prompt versions using measured feedback."
         ],
         "techStack": [
-            "Python",
             "RAG",
+            "LLM evaluation",
             "Gemini",
             "Google Cloud",
-            "LLM evaluation",
+            "Python",
             "Prompt engineering"
         ],
         "featured": true,
@@ -136,11 +136,11 @@ export const experiencesData: ExperienceEntry[] = [
             "Developed Persona Mail to model writing style from email history; refined token usage, latency, and prompt versions using measured feedback."
         ],
         "tech": [
-            "Python",
             "RAG",
+            "LLM evaluation",
             "Gemini",
             "Google Cloud",
-            "LLM evaluation",
+            "Python",
             "Prompt engineering"
         ],
         "description": "Building AI workflows is one half of the job. Measuring whether their answers hold up is the other."

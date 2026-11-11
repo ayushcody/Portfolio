@@ -77,7 +77,7 @@ export const profile: Profile = {
     timezone: "Asia/Kolkata",
     email,
     availability:
-        "Open to freelance projects, AI engineering opportunities, and full-time AI / software engineering roles for 2027.",
+        "Open to full-time AI and software engineering roles for 2027, and to freelance projects.",
     preferredRoles: [
         "AI Engineer · 2027 graduate roles",
         "Software Engineer · 2027 graduate roles",
