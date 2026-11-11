@@ -68,6 +68,37 @@ export const projectMedia: Record<string, ProjectMediaSet> = {
             "height": 1000
         }
     },
+    "contextree": {
+        "gallery": [
+            {
+                "src": "/projects/contextree/01-noise-filter.webp",
+                "alt": "Terminal output in the DSA Karle repo: find counts 25,226 files, contextree --stats reports 643 files, 102 folders and about 4,866 tokens, and the one-level --ai header shows framework nextjs, 276 files and about 717 tokens",
+                "width": 1600,
+                "height": 667,
+                "caption": "The DSA Karle repo has 25,226 files on disk. Contextree keeps the 643 that belong to the project and estimates about 4,866 tokens for all of them. Its one-level --ai view is about 717 tokens."
+            },
+            {
+                "src": "/projects/contextree/02-since-last-commit.webp",
+                "alt": "Terminal output of contextree --ai --since HEAD~1 in the DSA Karle repo: the recent commit messages, then a project_structure tree of only the 16 changed files, labelled page, styles, ui-component and test, about 174 tokens",
+                "width": 1600,
+                "height": 1200,
+                "caption": "--since limits the map to files changed since a commit: here the latest DSA Karle commits, 16 files and about 174 tokens. That is the context a model needs to review a change."
+            },
+            {
+                "src": "/projects/contextree/03-ignore-rules.webp",
+                "alt": "Terminal output of contextree --show-ignore in the DSA Karle repo listing 21 rules: built-in ones such as .git, node_modules and coverage, and Next.js ones such as .next, out, next-env.d.ts and .vercel",
+                "width": 1600,
+                "height": 912,
+                "caption": "--show-ignore lists every active rule and where it came from. Built-in rules always apply; the Next.js rules appear because Contextree detected a Next.js project."
+            }
+        ],
+        "cover": {
+            "src": "/projects/contextree/cover.webp",
+            "alt": "Terminal output of contextree --ai --only ts --ignore dist,docs,guide run on the killit repo: a project_structure tag reading lang typescript, framework node, 22 files, about 149 tokens, then the src and test tree with files labelled source-root, utils and test, and a footer with the token estimate",
+            "width": 1600,
+            "height": 1000
+        }
+    },
     "documind": {
         "gallery": [
             {
@@ -164,6 +195,37 @@ export const projectMedia: Record<string, ProjectMediaSet> = {
         "cover": {
             "src": "/projects/email-digital-twin/cover.webp",
             "alt": "Email Digital Twin's Build Persona dialog: Choose how many Sent emails to analyze (5 to 50), with a slider set to 20 and Cancel and Start buttons, above the extension's panel with Build Persona, Draft Reply and Sign out (Gmail API) buttons, shown signed out",
+            "width": 1600,
+            "height": 1000
+        }
+    },
+    "hitaxi-life-coach": {
+        "gallery": [
+            {
+                "src": "/projects/hitaxi-life-coach/01-services.webp",
+                "alt": "Our Wellness Services page with three cards: Customized Meal Plan, Personal Wellness Coach and Family Counselling, and Participate in Challenges, each with a photo, a category tag and a Learn More link",
+                "width": 1600,
+                "height": 1000,
+                "caption": "The services page. Each card comes from the services table, so the coach adds, edits, hides and reorders programs from the dashboard."
+            },
+            {
+                "src": "/projects/hitaxi-life-coach/02-faq.webp",
+                "alt": "Frequently Asked Questions accordion with the first question, How does the customized meal plan work, open and four more questions closed",
+                "width": 1600,
+                "height": 1025,
+                "caption": "The FAQ accordion on the home page. Questions and answers are stored in Supabase and managed from the admin dashboard."
+            },
+            {
+                "src": "/projects/hitaxi-life-coach/03-blog.webp",
+                "alt": "Wellness Blog page with a large featured post image of a salad bowl and a second post card, 5 Morning Yoga Poses for All-Day Energy, tagged Yoga",
+                "width": 1600,
+                "height": 1000,
+                "caption": "The blog. Posts are written in a rich-text editor in the dashboard, and only published posts are visible to visitors."
+            }
+        ],
+        "cover": {
+            "src": "/projects/hitaxi-life-coach/cover.webp",
+            "alt": "Hitaxi Life Coach home page: a Certified Wellness Coach badge, the headline Lose Weight Naturally and Build a Healthy Lifestyle That Lasts, Start Your Journey and Learn More buttons, and a photo of a woman at a table with a healthy meal",
             "width": 1600,
             "height": 1000
         }

@@ -1,0 +1,23 @@
+{
+  "cover": {
+    "file": "cover.webp",
+    "alt": "Terminal output of contextree --ai --only ts --ignore dist,docs,guide run on the killit repo: a project_structure tag reading lang typescript, framework node, 22 files, about 149 tokens, then the src and test tree with files labelled source-root, utils and test, and a footer with the token estimate"
+  },
+  "gallery": [
+    {
+      "file": "01-noise-filter.webp",
+      "alt": "Terminal output in the DSA Karle repo: find counts 25,226 files, contextree --stats reports 643 files, 102 folders and about 4,866 tokens, and the one-level --ai header shows framework nextjs, 276 files and about 717 tokens",
+      "caption": "The DSA Karle repo has 25,226 files on disk. Contextree keeps the 643 that belong to the project and estimates about 4,866 tokens for all of them. Its one-level --ai view is about 717 tokens."
+    },
+    {
+      "file": "02-since-last-commit.webp",
+      "alt": "Terminal output of contextree --ai --since HEAD~1 in the DSA Karle repo: the recent commit messages, then a project_structure tree of only the 16 changed files, labelled page, styles, ui-component and test, about 174 tokens",
+      "caption": "--since limits the map to files changed since a commit: here the latest DSA Karle commits, 16 files and about 174 tokens. That is the context a model needs to review a change."
+    },
+    {
+      "file": "03-ignore-rules.webp",
+      "alt": "Terminal output of contextree --show-ignore in the DSA Karle repo listing 21 rules: built-in ones such as .git, node_modules and coverage, and Next.js ones such as .next, out, next-env.d.ts and .vercel",
+      "caption": "--show-ignore lists every active rule and where it came from. Built-in rules always apply; the Next.js rules appear because Contextree detected a Next.js project."
+    }
+  ]
+}

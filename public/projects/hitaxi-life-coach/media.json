@@ -1,0 +1,23 @@
+{
+  "cover": {
+    "file": "cover.webp",
+    "alt": "Hitaxi Life Coach home page: a Certified Wellness Coach badge, the headline Lose Weight Naturally and Build a Healthy Lifestyle That Lasts, Start Your Journey and Learn More buttons, and a photo of a woman at a table with a healthy meal"
+  },
+  "gallery": [
+    {
+      "file": "01-services.webp",
+      "alt": "Our Wellness Services page with three cards: Customized Meal Plan, Personal Wellness Coach and Family Counselling, and Participate in Challenges, each with a photo, a category tag and a Learn More link",
+      "caption": "The services page. Each card comes from the services table, so the coach adds, edits, hides and reorders programs from the dashboard."
+    },
+    {
+      "file": "02-faq.webp",
+      "alt": "Frequently Asked Questions accordion with the first question, How does the customized meal plan work, open and four more questions closed",
+      "caption": "The FAQ accordion on the home page. Questions and answers are stored in Supabase and managed from the admin dashboard."
+    },
+    {
+      "file": "03-blog.webp",
+      "alt": "Wellness Blog page with a large featured post image of a salad bowl and a second post card, 5 Morning Yoga Poses for All-Day Energy, tagged Yoga",
+      "caption": "The blog. Posts are written in a rich-text editor in the dashboard, and only published posts are visible to visitors."
+    }
+  ]
+}
