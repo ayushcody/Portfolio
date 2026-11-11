@@ -332,6 +332,30 @@ export const projectMedia: Record<string, ProjectMediaSet> = {
             }
         ]
     },
+    "vakya": {
+        "gallery": [
+            {
+                "src": "/projects/vakya/01-front-desk.webp",
+                "alt": "Vakya Front desk page for a sample clinic, Green Valley Clinic Reception: Ready to answer in English, Hindi and Marathi, with its greeting and the written instructions it follows on every call",
+                "width": 1600,
+                "height": 1000,
+                "caption": "A front desk starts from a template, here a clinic. The owner edits the greeting and the instructions the agent follows on every call, such as reading the time back and booking only after the caller says yes."
+            },
+            {
+                "src": "/projects/vakya/02-report-card.webp",
+                "alt": "Vakya report card table of booking completion by audio condition (clean, 8 kHz phone line, G.711 codec, street noise at 10, 5 and 0 dB, phone line with noise), with and without keyterms, word error and median time, followed by a table of which booking field was lost",
+                "width": 1600,
+                "height": 1000,
+                "caption": "The report card plays 24 invented booking calls in Hindi, Marathi and Hinglish through phone-line and noise conditions, then scores whether the name, day and time all survived. The audio is synthetic speech, and the page says so."
+            }
+        ],
+        "cover": {
+            "src": "/projects/vakya/cover.webp",
+            "alt": "Vakya owner desk showing the Doctor consultations schedule as a week calendar. In the Ask like a caller panel, a Hinglish message asks whether a 6 pm slot tomorrow is free; the desk highlights Thursday 6 pm on the calendar and answers in Hindi that the slot is free",
+            "width": 1600,
+            "height": 1000
+        }
+    },
     "vasoli": {
         "gallery": [
             {
