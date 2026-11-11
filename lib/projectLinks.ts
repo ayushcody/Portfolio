@@ -1,26 +1,25 @@
-import type { Project, ProjectLinkSet } from "@/src/data/projects";
+import type { Project, ProjectLinks } from "@/src/data/projectSchema";
 import { safeUrl } from "@/lib/urls";
 
-export type ProjectLinkKind = "live" | "github" | "loom" | "documentation" | "caseStudy" | "demo" | "video";
+export type ProjectLinkKind = keyof ProjectLinks;
 
 export type ProjectLink = {
   kind: ProjectLinkKind;
   label: string;
   href: string;
-  /** Accessible name, e.g. "DocuMind source on GitHub (opens in a new tab)". */
+  /** Accessible name, e.g. "DocuMind source code on GitHub (opens in a new tab)". */
   ariaLabel: string;
+  /** External links open in a new tab; the write-up is an internal page. */
+  external: boolean;
   primary: boolean;
 };
 
-// Order is the visual hierarchy: the deployed product first, then source, walkthrough and docs.
+// Order is the visual hierarchy for a recruiter: try it, watch it, read the code, read the write-up.
 const LINK_ORDER: { kind: ProjectLinkKind; label: string; describe: (title: string) => string }[] = [
-  { kind: "live", label: "View live", describe: (title) => `Open the live ${title}` },
-  { kind: "github", label: "GitHub", describe: (title) => `${title} source on GitHub` },
-  { kind: "loom", label: "Loom walkthrough", describe: (title) => `Watch the ${title} walkthrough on Loom` },
-  { kind: "documentation", label: "Docs", describe: (title) => `Read the ${title} documentation` },
-  { kind: "caseStudy", label: "Case study", describe: (title) => `Read the ${title} case study` },
-  { kind: "demo", label: "Demo", describe: (title) => `Open the ${title} demo` },
-  { kind: "video", label: "Video", describe: (title) => `Watch the ${title} video` },
+  { kind: "demo", label: "Live demo", describe: (title) => `Open the live ${title} demo` },
+  { kind: "video", label: "Video", describe: (title) => `Watch the ${title} walkthrough video` },
+  { kind: "repo", label: "Code", describe: (title) => `${title} source code on GitHub` },
+  { kind: "writeup", label: "Write-up", describe: (title) => `Read the ${title} write-up` },
 ];
 
 /**
@@ -28,23 +27,18 @@ const LINK_ORDER: { kind: ProjectLinkKind; label: string; describe: (title: stri
  * Empty or unsafe values are dropped, so callers can render the list as-is
  * and skip the whole row when it is empty.
  */
-export function getProjectLinks(project: Pick<Project, "title" | "links"> & { github?: string; live?: string }): ProjectLink[] {
-  const source: ProjectLinkSet = {
-    ...project.links,
-    github: project.links?.github || project.github,
-    live: project.links?.live || project.live,
-  };
+export function getProjectLinks(project: Pick<Project, "title" | "links">): ProjectLink[] {
   const seen = new Set<string>();
   const links: ProjectLink[] = [];
 
   for (const { kind, label, describe } of LINK_ORDER) {
-    const href = safeUrl(source[kind]);
+    const href = safeUrl(project.links?.[kind]);
     if (!href || seen.has(href)) continue;
     seen.add(href);
-    links.push({ kind, label, href, ariaLabel: `${describe(project.title)} (opens in a new tab)`, primary: false });
+    const external = !href.startsWith("/");
+    links.push({ kind, label, href, external, ariaLabel: external ? `${describe(project.title)} (opens in a new tab)` : describe(project.title), primary: false });
   }
 
-  // The first link becomes the primary action only when it is a deployed product.
-  if (links[0]?.kind === "live") links[0].primary = true;
+  if (links[0]?.kind === "demo") links[0].primary = true;
   return links;
 }

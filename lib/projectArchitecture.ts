@@ -1,4 +1,4 @@
-import type { Project } from '@/src/data/projects';
+import type { Project } from '@/lib/cms/legacyProject';
 
 /**
  * Minimal shape needed to infer a project's system layers. `Project` satisfies it, and so do

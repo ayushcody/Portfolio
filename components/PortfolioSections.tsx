@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { ArrowRight, ArrowUpRight, Asterisk, BookOpen, Send, Sparkles } from 'lucide-react';
-import { projectsData, type Project } from '@/src/data/projects';
+import type { ProjectWithMedia } from '@/src/data/projectSchema';
+import { getFeaturedProjects, projectHref } from '@/lib/projects';
 import { ProjectLinks } from '@/components/ui/ProjectLinks';
 import { ProjectDiagram } from '@/components/projects/ProjectDiagram';
 import { skillCategories } from '@/src/data/skills';
@@ -8,14 +9,7 @@ import type { Profile } from '@/src/data/profile';
 import type { BlogPost } from '@/lib/markdown';
 import { formatPostDate } from '@/lib/postFormat';
 
-const projectNotes: Record<string, string> = {
-    'email-digital-twin': 'Email drafts that sound a little more like you.',
-    andhakaanun: 'Two sides of an argument. Grounded in Indian law.',
-    dsakarle: 'Making algorithms click, one visual step at a time.',
-    'research-saathi': 'A research companion that connects the dots.',
-};
-
-function ProjectVisual({ project, index }: { project: Project; index: number }) {
+function ProjectVisual({ project, index }: { project: ProjectWithMedia; index: number }) {
     return (
         <div className={`project-visual project-visual-${index % 4}`} aria-label={`${project.title} workflow illustration`} role="img">
             <div className="visual-caption"><span>{project.category}</span><span>{project.status}</span></div>
@@ -25,14 +19,13 @@ function ProjectVisual({ project, index }: { project: Project; index: number }) 
     );
 }
 
-export function SelectedWork({ projects: allProjects = projectsData }: { projects?: Project[] }) {
-    const projects = allProjects.filter(project => project.featured && project.showOnHome && !project.archived).slice(0, 4);
+export function SelectedWork({ projects = getFeaturedProjects() }: { projects?: ProjectWithMedia[] }) {
     return (
         <section id="projects" className="portfolio-section portfolio-wrap" aria-labelledby="work-heading">
             <div className="section-heading"><div><h2 id="work-heading">Ideas, made real<span className="accent-period">.</span></h2><p>A few things I’ve built. The thinking behind them, too.</p></div><Link className="text-link" href="/projects">All projects <ArrowUpRight size={18} aria-hidden="true" /></Link></div>
-            <div className="selected-work-grid">{projects.map((project, index) => <article className="work-card" key={project.id}>
-                <Link href={`/projects/${project.id}`} tabIndex={-1} aria-hidden="true" className="project-art-link"><ProjectVisual project={project} index={index} /></Link>
-                <div className="work-card-content"><div className="work-title"><h3><Link href={`/projects/${project.id}`}>{project.title}</Link></h3><ArrowUpRight size={26} aria-hidden="true" /></div><p>{projectNotes[project.id] || project.oneLine || project.summary}</p><p className="work-contribution">{project.myRole}</p><ul className="work-technologies" aria-label="Technologies">{project.techStack.slice(0, 4).map(tech => <li key={tech}>{tech}</li>)}</ul><div className="work-card-links"><Link href={`/projects/${project.id}`} className="text-link" aria-label={`Explore ${project.title}`}>Explore the build <ArrowRight size={17} aria-hidden="true" /></Link><ProjectLinks project={project} variant="compact" max={3} /></div></div>
+            <div className="selected-work-grid">{projects.map((project, index) => <article className="work-card" key={project.slug}>
+                <Link href={projectHref(project.slug)} tabIndex={-1} aria-hidden="true" className="project-art-link"><ProjectVisual project={project} index={index} /></Link>
+                <div className="work-card-content"><div className="work-title"><h3><Link href={projectHref(project.slug)}>{project.title}</Link></h3><ArrowUpRight size={26} aria-hidden="true" /></div><p>{project.outcome}</p><p className="work-contribution">{project.role}</p><ul className="work-technologies" aria-label="Technologies">{project.stack.slice(0, 4).map(tech => <li key={tech}>{tech}</li>)}</ul><div className="work-card-links"><Link href={projectHref(project.slug)} className="text-link" aria-label={`Explore ${project.title}`}>Explore the build <ArrowRight size={17} aria-hidden="true" /></Link><ProjectLinks project={project} variant="compact" max={3} /></div></div>
             </article>)}</div>
         </section>
     );

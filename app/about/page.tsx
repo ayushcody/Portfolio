@@ -5,7 +5,8 @@ import Contact from "@/components/Contact";
 import { SignatureFooter } from "@/components/SignatureFooter";
 import { ExperienceLogo } from "@/components/ui/ExperienceLogo";
 import { TechTags } from "@/components/ui/TechTags";
-import { getPublicExperience, getPublicProfile, getPublicProjects } from "@/lib/cms/publicReads";
+import { getPublicExperience, getPublicProfile } from "@/lib/cms/publicReads";
+import { getProjects } from "@/lib/projects";
 import { pageMetadata } from "@/lib/seo";
 import { profile as staticProfile } from "@/src/data/profile";
 import { skillCategories } from "@/src/data/skills";
@@ -55,14 +56,13 @@ function parseEducationTimeline(status?: string) {
 }
 
 export default async function AboutPage() {
-  const [profileResult, experienceResult, projectsResult] = await Promise.all([
+  const [profileResult, experienceResult] = await Promise.all([
     getPublicProfile(),
     getPublicExperience(),
-    getPublicProjects(),
   ]);
   const profile = profileResult.data;
   const experience = experienceResult.data;
-  const projects = projectsResult.data;
+  const projects = getProjects();
 
   const firstName = profile.firstName || profile.fullName.split(" ")[0];
   const photoSrc = profile.profilePhoto || "/profile.png";

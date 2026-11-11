@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { getPublicProjects } from "@/lib/cms/publicReads";
+import { getProjects, projectHref } from "@/lib/projects";
 import { getBlogPosts } from "@/lib/markdown";
 import { SITE_URL, absoluteUrl } from "@/lib/seo";
 
@@ -24,7 +24,7 @@ function parseDate(value: string): Date | undefined {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const { data: projects } = await getPublicProjects();
+  const projects = getProjects();
   const posts = getBlogPosts();
   const latestPost = posts.map((post) => parseDate(post.date)).find(Boolean);
 
@@ -38,9 +38,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   const projectPages: MetadataRoute.Sitemap = projects.map((project) => ({
-    url: absoluteUrl(`/projects/${encodeURIComponent(project.id)}`),
+    url: absoluteUrl(projectHref(project.slug)),
     changeFrequency: "monthly",
-    priority: project.archived || project.status === "Archived" ? 0.4 : 0.7,
+    priority: project.status === "Archived" ? 0.4 : 0.7,
   }));
 
   const postPages: MetadataRoute.Sitemap = posts.map((post) => {

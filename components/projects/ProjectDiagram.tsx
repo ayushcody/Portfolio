@@ -9,7 +9,6 @@ import {
     Check,
     FileSearch,
     FileText,
-    FlaskConical,
     Gauge,
     GitBranch,
     LayoutPanelTop,
@@ -20,10 +19,10 @@ import {
     SquareTerminal,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
-import type { Project } from '@/src/data/projects';
+import type { Project } from '@/src/data/projectSchema';
 import '@/components/projects.css';
 
-type DiagramProject = Pick<Project, 'id' | 'title' | 'category' | 'techStack'> & Partial<Pick<Project, 'shortTitle'>>;
+type DiagramProject = Pick<Project, 'slug' | 'title' | 'category' | 'stack'>;
 
 /**
  * Background slot for a project illustration: 0 lilac, 1 coral, 2 sage, 3 yellow
@@ -42,31 +41,30 @@ const toneById: Record<string, VisualTone> = {
 const toneByCategory: Record<string, VisualTone> = {
     'Agentic AI': 0,
     'Voice AI': 0,
-    'RAG Systems': 1,
-    Archive: 1,
+    'RAG & Retrieval': 1,
+    'Document AI': 1,
     'Full-Stack Product': 2,
-    Labs: 2,
-    'AI Infrastructure': 3,
+    Security: 3,
     'Developer Tooling': 3,
 };
 
 /** Stable tone for a project, independent of where it appears in a list. */
-export function projectTone(project: Pick<Project, 'id' | 'category'>): VisualTone {
-    const known = toneById[project.id] ?? toneByCategory[project.category];
+export function projectTone(project: Pick<Project, 'slug' | 'category'>): VisualTone {
+    const known = toneById[project.slug] ?? toneByCategory[project.category];
     if (known !== undefined) return known;
     let hash = 0;
-    for (const char of project.id) hash = (hash * 31 + char.charCodeAt(0)) >>> 0;
+    for (const char of project.slug) hash = (hash * 31 + char.charCodeAt(0)) >>> 0;
     return (hash % 4) as VisualTone;
 }
 
 const categoryIcons: Record<string, LucideIcon> = {
     'Agentic AI': Bot,
-    'RAG Systems': FileSearch,
+    'RAG & Retrieval': FileSearch,
+    'Document AI': FileText,
     'Voice AI': AudioLines,
-    'AI Infrastructure': Gauge,
+    Security: Gauge,
     'Full-Stack Product': LayoutPanelTop,
     'Developer Tooling': SquareTerminal,
-    Labs: FlaskConical,
 };
 
 function EmailDiagram() {
@@ -88,12 +86,12 @@ function ResearchDiagram() {
 /** Generic editorial illustration: the project as a note, pinned to its first few technologies. */
 function StackDiagram({ project }: { project: DiagramProject }) {
     const Icon = categoryIcons[project.category] ?? Boxes;
-    const stack = project.techStack.filter(Boolean).slice(0, 3);
+    const stack = project.stack.filter(Boolean).slice(0, 3);
     return (
         <div className="stack-diagram">
             <div className="diagram-sheet stack-sheet">
                 <Icon size={25} />
-                <span>{project.shortTitle || project.title}</span>
+                <span>{project.title}</span>
                 <div className="diagram-lines"><i /><i /><i /></div>
             </div>
             {stack.length > 0 ? (
@@ -120,6 +118,6 @@ const diagramsById: Record<string, () => React.JSX.Element> = {
  * with another project's illustration. Wrap it in an element with role="img" and a label.
  */
 export function ProjectDiagram({ project }: { project: DiagramProject }) {
-    const Diagram = diagramsById[project.id];
+    const Diagram = diagramsById[project.slug];
     return Diagram ? <Diagram /> : <StackDiagram project={project} />;
 }

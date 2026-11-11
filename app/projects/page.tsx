@@ -1,15 +1,12 @@
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, ArrowUpRight, Plus } from "lucide-react";
-import type { Project } from "@/src/data/projects";
-import { getPublicProjects } from "@/lib/cms/publicReads";
+import type { ProjectWithMedia } from "@/src/data/projectSchema";
+import { getProjects } from "@/lib/projects";
 import { pageMetadata } from "@/lib/seo";
 import { ProjectRow } from "@/components/projects/ProjectRow";
 import { SignatureFooter } from "@/components/SignatureFooter";
 import "@/components/secondary-pages.css";
 import "@/components/projects.css";
-
-// Static at build time; CMS changes appear within five minutes (ISR).
-export const revalidate = 300;
 
 export const metadata = pageMetadata({
   title: "Projects",
@@ -17,9 +14,10 @@ export const metadata = pageMetadata({
   path: "/projects",
 });
 
-const aiCategories = new Set(["Agentic AI", "RAG Systems", "Voice AI", "AI Infrastructure"]);
-const isArchived = (project: Project) => project.archived || project.status === "Archived";
-const byPriority = (projects: Project[]) => [...projects].sort((a, b) => (a.priority ?? 0) - (b.priority ?? 0));
+type Project = ProjectWithMedia;
+const aiCategories = new Set<string>(["Agentic AI", "RAG & Retrieval", "Voice AI", "Document AI", "Security"]);
+const isArchived = (project: Project) => project.status === "Archived";
+const byPriority = (projects: Project[]) => [...projects].sort((a, b) => a.order - b.order);
 const pad = (value: number) => String(value).padStart(2, "0");
 const numberWords = ["", "One", "Two", "Three", "Four", "Five", "Six"];
 // Keeps "Four builds that show…" accurate when the CMS changes how many projects are on the homepage.
@@ -40,7 +38,7 @@ function ProjectGroup({ group, offset }: { group: Group; offset: number }) {
         <p>{group.description}</p>
       </div>
       <div className="secondary-project-list">
-        {group.projects.map((project, index) => <ProjectRow key={project.id} project={project} index={offset + index} />)}
+        {group.projects.map((project, index) => <ProjectRow key={project.slug} project={project} index={offset + index} />)}
       </div>
     </section>
   );
@@ -55,21 +53,21 @@ function ProjectArchive({ title, projects, offset }: { title: string; projects: 
         <Plus className="secondary-disclosure-icon" size={28} aria-hidden="true" />
       </summary>
       <div className="secondary-project-list">
-        {projects.map((project, index) => <ProjectRow key={project.id} project={project} index={offset + index} />)}
+        {projects.map((project, index) => <ProjectRow key={project.slug} project={project} index={offset + index} />)}
       </div>
     </details>
   );
 }
 
 export default async function ProjectsPage() {
-  const { data: projects } = await getPublicProjects();
+  const projects = getProjects();
 
   const current = projects.filter((project) => !isArchived(project));
-  const selected = byPriority(current.filter((project) => project.showOnHome));
-  const remaining = current.filter((project) => !project.showOnHome);
+  const selected = [...current.filter((project) => project.featured !== undefined)].sort((a, b) => (a.featured ?? 0) - (b.featured ?? 0));
+  const remaining = current.filter((project) => project.featured === undefined);
   const systems = byPriority(remaining.filter((project) => aiCategories.has(project.category)));
-  const products = byPriority(remaining.filter((project) => !aiCategories.has(project.category) && project.category !== "Labs"));
-  const labs = byPriority(remaining.filter((project) => project.category === "Labs"));
+  const products = byPriority(remaining.filter((project) => !aiCategories.has(project.category)));
+  const labs: Project[] = [];
   const archived = byPriority(projects.filter(isArchived));
 
   // Empty groups are left out entirely (with their jump link), so the page never shows an empty shelf.

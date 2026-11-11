@@ -5,7 +5,7 @@ import Achievements from "@/components/Achievements";
 import { ContactInvitation, SelectedWork, Toolkit, WorkingStyle, WritingNote } from "@/components/PortfolioSections";
 import Experience from "@/components/Experience";
 import { SignatureFooter } from "@/components/SignatureFooter";
-import { getPublicExperience, getPublicProfile, getPublicProjects } from "@/lib/cms/publicReads";
+import { getPublicExperience, getPublicProfile } from "@/lib/cms/publicReads";
 import { getBlogPosts } from "@/lib/markdown";
 
 // Static at build time; admin CMS changes appear within five minutes (ISR).
@@ -18,16 +18,15 @@ export const metadata: Metadata = {
 
 export default async function Home() {
   const posts = getBlogPosts();
-  const [profileResult, projectsResult, experienceResult] = await Promise.all([
+  const [profileResult, experienceResult] = await Promise.all([
     getPublicProfile(),
-    getPublicProjects(),
     getPublicExperience(),
   ]);
 
   return (
     <main className="portfolio-home">
       <Hero profile={profileResult.data} />
-      <SelectedWork projects={projectsResult.data} />
+      <SelectedWork />
       <WorkingStyle />
       <Experience experiences={experienceResult.data} />
       <Achievements />

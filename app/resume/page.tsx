@@ -6,9 +6,10 @@ import { SignatureFooter } from "@/components/SignatureFooter";
 import { ExperienceLogo } from "@/components/ui/ExperienceLogo";
 import { ProjectLinks } from "@/components/ui/ProjectLinks";
 import { TechTags } from "@/components/ui/TechTags";
-import { getPublicExperience, getPublicProfile, getPublicProjects, type PublicExperience } from "@/lib/cms/publicReads";
+import { getPublicExperience, getPublicProfile, type PublicExperience } from "@/lib/cms/publicReads";
+import { getFeaturedProjects, projectHref } from "@/lib/projects";
 import { pageMetadata } from "@/lib/seo";
-import type { Project } from "@/src/data/projects";
+import type { Project } from "@/src/data/projectSchema";
 import { skillCategories } from "@/src/data/skills";
 import "@/components/secondary-pages.css";
 import "@/components/editorial.css";
@@ -50,7 +51,7 @@ function getExperienceBullets(exp: PublicExperience) {
 }
 
 function getProjectSummary(project: Project) {
-  return project.oneLine || project.summary || project.description;
+  return project.outcome || project.summary;
 }
 
 /** "Aug 2023 - Jul 2027" -> "Aug 2023 – Jul 2027" (typographic dash only). */
@@ -70,15 +71,14 @@ function RowHeading({ number, id, title, note }: { number: string; id: string; t
 
 export default async function ResumePage() {
   const resumeAsset = getResumeAsset();
-  const [profileResult, experienceResult, projectsResult] = await Promise.all([
+  const [profileResult, experienceResult] = await Promise.all([
     getPublicProfile(),
     getPublicExperience(),
-    getPublicProjects(),
   ]);
   const profile = profileResult.data;
   // Same selection as before: featured roles (newest first), featured non-archived projects by priority.
   const featuredExperience = experienceResult.data.filter((item) => item.featured).slice(0, 3);
-  const featuredProjects = projectsResult.data.filter((project) => project.featured && !project.archived).slice(0, 3);
+  const featuredProjects = getFeaturedProjects().slice(0, 3);
   const education = profile.education;
   const location = [profile.location, profile.timezone].filter(Boolean).join(" · ");
 
@@ -187,15 +187,15 @@ export default async function ResumePage() {
               <div className="resume-row-content">
                 <ul className="resume-projects">
                   {featuredProjects.map((project) => (
-                    <li className="resume-project" key={project.id}>
+                    <li className="resume-project" key={project.slug}>
                       <div>
                         <p className="secondary-meta">{project.category}</p>
-                        <h3><Link href={`/projects/${project.id}`}>{project.title}</Link></h3>
+                        <h3><Link href={projectHref(project.slug)}>{project.title}</Link></h3>
                       </div>
                       <div>
                         <p className="resume-project-summary">{getProjectSummary(project)}</p>
                         <div className="resume-project-actions">
-                          <Link href={`/projects/${project.id}`} className="secondary-text-link" aria-label={`Read the ${project.title} case study`}>
+                          <Link href={projectHref(project.slug)} className="secondary-text-link" aria-label={`Read the ${project.title} case study`}>
                             Read case study <ArrowRight size={17} aria-hidden="true" />
                           </Link>
                           <ProjectLinks project={project} variant="compact" max={3} />

@@ -3,8 +3,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
-import type { Project } from "@/src/data/projects";
-import { getPublicProjects } from "@/lib/cms/publicReads";
+import type { ProjectWithMedia } from "@/src/data/projectSchema";
+import { getProjects, projectHref } from "@/lib/projects";
 import { getProjectLinks } from "@/lib/projectLinks";
 import { getProjectSystemLayers } from "@/lib/projectArchitecture";
 import { pageMetadata } from "@/lib/seo";
@@ -14,29 +14,26 @@ import { TechTags } from "@/components/ui/TechTags";
 import { SignatureFooter } from "@/components/SignatureFooter";
 import { CaseList, CaseStudyIndex, CaseStudySection, type CaseSectionEntry } from "@/components/projects/CaseStudySection";
 import { projectTone, type VisualTone } from "@/components/projects/ProjectDiagram";
-import { ProjectGallery, ProjectHeroMedia, hasGallery } from "@/components/projects/ProjectMedia";
+import { ProjectHeroMedia } from "@/components/projects/ProjectMedia";
 import { ProjectShowcase } from "@/components/projects/ProjectShowcase";
-import { projectShots } from "@/src/data/projectShots";
 import "@/components/secondary-pages.css";
 import "@/components/projects.css";
 
-// Static at build time; CMS edits appear within five minutes. CMS-only projects render on demand.
-export const revalidate = 300;
+// Every project page is generated at build time from src/data/projects.ts.
+export const dynamicParams = false;
 
 type ProjectPageProps = {
   params: Promise<{ id: string }>;
 };
 
-/** Static data may still carry the legacy `architecture` / `proofPoint` notes; CMS projects may not. */
-type CaseProject = Project & { architecture?: string; proofPoint?: string };
+type CaseProject = ProjectWithMedia;
 
-// One read per request, shared by generateMetadata and the page.
-const loadProjects = cache(async (): Promise<CaseProject[]> => (await getPublicProjects()).data);
+const loadProjects = cache(async (): Promise<CaseProject[]> => getProjects());
 
 const toneClass: Record<VisualTone, string> = { 0: "tone-lilac", 1: "tone-coral", 2: "tone-sage", 3: "tone-yellow" };
 const chipColor: Record<VisualTone, string> = { 0: "var(--lilac)", 1: "var(--coral)", 2: "var(--sage)", 3: "var(--yellow)" };
 
-const isListed = (project: Project) => !project.archived && project.status !== "Archived";
+const isListed = (project: CaseProject) => project.status !== "Archived";
 const clean = (value?: string) => value?.trim() || "";
 const statusSlug = (status: string) => status.toLowerCase().replace(/\s+/g, "-");
 
@@ -57,44 +54,35 @@ function createDeduper() {
   return { text, list };
 }
 
-/** proofPoint lines that only restate the stack ("FastAPI · Celery") add nothing next to the tags. */
-function meaningfulProofPoint(project: CaseProject) {
-  const proof = clean(project.proofPoint);
-  if (!proof) return "";
-  const stack = new Set(project.techStack.map((item) => item.toLowerCase()));
-  const parts = proof.split(/\s*[·|]\s*/).filter(Boolean);
-  return parts.every((part) => stack.has(part.toLowerCase())) ? "" : proof;
-}
-
 function nextProject(projects: CaseProject[], current: CaseProject) {
-  const ring = projects.filter((item) => isListed(item) || item.id === current.id);
+  const ring = projects.filter((item) => isListed(item) || item.slug === current.slug);
   if (ring.length < 2) return undefined;
-  const index = ring.findIndex((item) => item.id === current.id);
+  const index = ring.findIndex((item) => item.slug === current.slug);
   return ring[(index + 1) % ring.length];
 }
 
 function relatedProjects(projects: CaseProject[], current: CaseProject, exclude: Set<string>) {
-  const terms = new Set([...current.techStack, ...current.tags].map((item) => item.toLowerCase()));
+  const terms = new Set([...current.stack, ...current.capabilities].map((item) => item.toLowerCase()));
   return projects
-    .filter((item) => isListed(item) && !exclude.has(item.id))
+    .filter((item) => isListed(item) && !exclude.has(item.slug))
     .map((item) => {
-      const shared = [...item.techStack, ...item.tags].filter((term) => terms.has(term.toLowerCase())).length;
+      const shared = [...item.stack, ...item.capabilities].filter((term) => terms.has(term.toLowerCase())).length;
       const score = (item.category === current.category ? 4 : 0) + Math.min(shared, 3) + (item.featured ? 0.5 : 0);
       return { item, score };
     })
-    .sort((a, b) => b.score - a.score || a.item.priority - b.item.priority)
+    .sort((a, b) => b.score - a.score || a.item.order - b.item.order)
     .slice(0, 3)
     .map(({ item }) => item);
 }
 
 export async function generateStaticParams() {
   const projects = await loadProjects();
-  return projects.map((project) => ({ id: project.id }));
+  return projects.map((project) => ({ id: project.slug }));
 }
 
 export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
   const { id } = await params;
-  const project = (await loadProjects()).find((item) => item.id === id);
+  const project = (await loadProjects()).find((item) => item.slug === id);
 
   if (!project) {
     return { title: "Project not found", robots: { index: false, follow: true } };
@@ -102,8 +90,8 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
 
   return pageMetadata({
     title: project.title,
-    description: clean(project.summary) || clean(project.oneLine) || clean(project.description) || `${project.title}, a ${project.category} project by Ayush Chougula.`,
-    path: `/projects/${project.id}`,
+    description: clean(project.summary) || clean(project.outcome) || `${project.title}, a ${project.category} project by Ayush Chougula.`,
+    path: projectHref(project.slug),
     type: "article",
   });
 }
@@ -111,43 +99,43 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
 export default async function ProjectDetailPage({ params }: ProjectPageProps) {
   const { id } = await params;
   const projects = await loadProjects();
-  const project = projects.find((item) => item.id === id);
+  const project = projects.find((item) => item.slug === id);
 
   if (!project) notFound();
 
   const tone = projectTone(project);
-  // Captioned screenshots lead the page; the CMS gallery is only the fallback when a project has none.
-  const shots = projectShots[project.id] ?? [];
+  const shots = project.media.gallery;
   const hasLinks = getProjectLinks(project).length > 0;
   const once = createDeduper();
 
   // Hero
-  const lede = once.text(project.oneLine) || once.text(project.summary) || once.text(project.description);
+  const lede = once.text(project.outcome) || once.text(project.summary);
 
   // 01 Overview
   const overviewSummary = once.text(project.summary);
   const problem = once.text(project.problem);
 
   // 02 What I built
-  const role = once.text(project.myRole);
-  const features = once.list(project.features);
+  const role = once.text(project.role);
+  const features: string[] = [];
 
   // 03 System
-  const solution = once.text(project.solution);
-  const architecture = once.text(project.architecture);
-  const highlights = once.list(project.architectureHighlights);
+  const solution = once.text(project.approach);
+  const architecture = once.text(project.architecture.overview);
+  const highlights = once.list(project.architecture.highlights);
+  // Legacy layer map until the flow diagram replaces it.
+  const archSource = { title: project.title, category: project.category, summary: project.summary, techStack: project.stack, architecture: project.architecture.overview, architectureHighlights: project.architecture.highlights };
   // ProjectArchitecture renders nothing when it finds no layers and gets no highlights.
-  const hasMap = highlights.length > 0 || getProjectSystemLayers(project).length > 0;
+  const hasMap = highlights.length > 0 || getProjectSystemLayers(archSource).length > 0;
 
   // 04 Technology
-  const stack = project.techStack.filter(Boolean);
-  const stackKeys = new Set(stack.map((item) => item.toLowerCase()));
-  const themes = project.tags.filter((tag) => tag && !stackKeys.has(tag.toLowerCase()));
+  const stack = project.stack.filter(Boolean);
+  const themes: string[] = [];
 
   // 05+ Reflection
-  const challenges = once.list(project.challenges);
-  const proofPoint = once.text(meaningfulProofPoint(project));
-  const impact = once.list(project.impact);
+  const challenges = once.list(project.tradeoffs);
+  const proofPoint = project.metrics.map((metric) => `${metric.value} ${metric.label}`).join(" · ");
+  const impact = once.list(project.results);
   const learnings = once.list(project.learnings);
   const nextSteps = once.list(project.nextSteps);
 
@@ -193,7 +181,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
         <>
           {solution ? <p className="case-copy case-copy--large">{solution}</p> : null}
           {architecture ? <p className={solution ? "case-copy case-copy--muted" : "case-copy case-copy--large"}>{architecture}</p> : null}
-          <ProjectArchitecture project={project} highlights={highlights} />
+          <ProjectArchitecture project={archSource} highlights={highlights} />
         </>
       ),
     },
@@ -242,16 +230,11 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
       title: "Next steps",
       content: <CaseList items={nextSteps} />,
     },
-    shots.length === 0 && hasGallery(project) && {
-      id: "gallery",
-      title: "Gallery",
-      content: <ProjectGallery project={project} />,
-    },
   ];
   const sections = candidates.filter((section): section is CaseSectionEntry => Boolean(section));
 
   const next = nextProject(projects, project);
-  const related = relatedProjects(projects, project, new Set([project.id, next?.id ?? ""]));
+  const related = relatedProjects(projects, project, new Set([project.slug, next?.slug ?? ""]));
 
   return (
     <main className="secondary-page case-study">
@@ -313,10 +296,10 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
         {next || related.length > 0 ? (
           <nav className="case-more" aria-label="More projects">
             {next ? (
-              <Link href={`/projects/${next.id}`} className={`case-next ink-card ink-card--interactive ${toneClass[projectTone(next)]}`}>
+              <Link href={projectHref(next.slug)} className={`case-next ink-card ink-card--interactive ${toneClass[projectTone(next)]}`}>
                 <span className="case-next-label">Next project</span>
                 <h2 className="case-next-title">{next.title}</h2>
-                {clean(next.oneLine) || clean(next.summary) ? <span className="case-next-copy">{clean(next.oneLine) || clean(next.summary)}</span> : null}
+                {clean(next.outcome) ? <span className="case-next-copy">{clean(next.outcome)}</span> : null}
                 <ArrowUpRight className="case-next-arrow" strokeWidth={2.25} aria-hidden="true" />
               </Link>
             ) : null}
@@ -331,15 +314,15 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                 </div>
                 <ul className="case-related">
                   {related.map((item) => (
-                    <li key={item.id}>
-                      <Link href={`/projects/${item.id}`} className="case-related-card ink-card ink-card--interactive">
+                    <li key={item.slug}>
+                      <Link href={projectHref(item.slug)} className="case-related-card ink-card ink-card--interactive">
                         <div className={`case-related-strip ${toneClass[projectTone(item)]}`}>
                           <span>{item.category}</span>
                           <span>{item.status}</span>
                         </div>
                         <div className="case-related-body">
                           <h3>{item.title}</h3>
-                          {clean(item.oneLine) || clean(item.summary) ? <p>{clean(item.oneLine) || clean(item.summary)}</p> : null}
+                          {clean(item.outcome) ? <p>{clean(item.outcome)}</p> : null}
                           <span className="case-related-cta">
                             Explore the build <ArrowUpRight size={16} aria-hidden="true" />
                           </span>

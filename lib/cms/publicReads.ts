@@ -2,7 +2,6 @@ import type { Achievement } from "@/src/data/achievements";
 import type { ExperienceItem } from "@/src/data/experience";
 import type { SystemEntry } from "@/src/data/interests";
 import type { Profile } from "@/src/data/profile";
-import type { Project } from "@/src/data/projects";
 import type { SkillCategory } from "@/src/data/skills";
 import { cmsFallbacks } from "./fallbacks";
 import { CMS_PATHS } from "./paths";
@@ -13,30 +12,12 @@ import {
   normalizeExperienceItem,
   normalizeInterests,
   normalizeProfile,
-  normalizeProject,
   normalizeSkills,
 } from "./normalize";
 import type { CmsReadResult } from "./types";
 
 export async function getPublicProfile(): Promise<CmsReadResult<Profile>> {
   return readCmsDocument(CMS_PATHS.profilePublished, cmsFallbacks.profile, normalizeProfile);
-}
-
-const byPriority = (items: Project[]) => [...items].sort((a, b) => (a.priority ?? 0) - (b.priority ?? 0));
-
-/** Static projects merged with published CMS overrides, sorted by priority (ascending). */
-export async function getPublicProjects(): Promise<CmsReadResult<Project[]>> {
-  return readMergedCmsCollection<Project>(
-    CMS_PATHS.projects,
-    [...cmsFallbacks.projects],
-    (record, base) => normalizeProject(record, base),
-    byPriority,
-  );
-}
-
-export async function getPublicProject(id: string): Promise<Project | undefined> {
-  const { data } = await getPublicProjects();
-  return data.find((project) => project.id === id);
 }
 
 export type PublicExperience = ExperienceItem & { order?: number };

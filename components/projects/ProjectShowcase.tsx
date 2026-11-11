@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, Maximize2, X } from 'lucide-react';
-import type { ProjectShot } from '@/src/data/projectShots';
+import type { ProjectImage } from '@/src/data/projectSchema';
 
 const pad = (value: number) => String(value).padStart(2, '0');
 
@@ -12,7 +12,7 @@ const pad = (value: number) => String(value).padStart(2, '0');
  * caption that says what the screen shows. Any screenshot opens full size in a dialog with
  * previous/next (arrow keys work too).
  */
-export function ProjectShowcase({ title, shots }: { title: string; shots: ProjectShot[] }) {
+export function ProjectShowcase({ title, shots }: { title: string; shots: ProjectImage[] }) {
     const dialogRef = useRef<HTMLDialogElement>(null);
     const [open, setOpen] = useState<number | null>(null);
     const [lead, ...rest] = shots;
@@ -43,7 +43,7 @@ export function ProjectShowcase({ title, shots }: { title: string; shots: Projec
     if (!lead) return null;
     const current = open === null ? null : shots[open];
 
-    const tile = (shot: ProjectShot, index: number, isLead: boolean) => (
+    const tile = (shot: ProjectImage, index: number, isLead: boolean) => (
         <figure className={isLead ? 'shot shot--lead' : 'shot'} key={shot.src}>
             <button type="button" className="shot-frame" onClick={() => show(index)} aria-label={`View screenshot ${index + 1} of ${shots.length} full size: ${shot.alt}`}>
                 <Image
@@ -58,7 +58,7 @@ export function ProjectShowcase({ title, shots }: { title: string; shots: Projec
             </button>
             <figcaption>
                 <span className="shot-index" aria-hidden="true">{pad(index + 1)}</span>
-                <span>{shot.caption}</span>
+                <span>{shot.caption ?? shot.alt}</span>
             </figcaption>
         </figure>
     );
@@ -90,7 +90,7 @@ export function ProjectShowcase({ title, shots }: { title: string; shots: Projec
                         <div className="shot-dialog-image">
                             <Image src={current.src} alt={current.alt} width={current.width} height={current.height} sizes="100vw" />
                         </div>
-                        <p className="shot-dialog-caption">{current.caption}</p>
+                        <p className="shot-dialog-caption">{current.caption ?? current.alt}</p>
                     </div>
                 ) : null}
             </dialog>

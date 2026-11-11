@@ -1,6 +1,6 @@
 import type { Achievement } from "@/src/data/achievements";
 import type { ExperienceItem } from "@/src/data/experience";
-import type { Project, ProjectLinkSet, ProjectVisuals } from "@/src/data/projects";
+import type { Project, ProjectLinkSet, ProjectVisuals } from "@/lib/cms/legacyProject";
 import type { Profile } from "@/src/data/profile";
 import type { SkillCategory } from "@/src/data/skills";
 import type { SystemEntry } from "@/src/data/interests";

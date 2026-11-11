@@ -1,6 +1,6 @@
 import type { Achievement } from "@/src/data/achievements";
 import type { ExperienceItem } from "@/src/data/experience";
-import type { Project, ProjectLinkSet, ProjectStatus, ProjectVisuals } from "@/src/data/projects";
+import type { Project, ProjectLinkSet, ProjectStatus, ProjectVisuals } from "@/lib/cms/legacyProject";
 import type { Profile } from "@/src/data/profile";
 import type { SkillCategory } from "@/src/data/skills";
 import type { SystemEntry } from "@/src/data/interests";
@@ -8,7 +8,7 @@ import { safeUrl } from "@/lib/urls";
 
 type UnknownRecord = Record<string, unknown>;
 
-const projectStatuses: ProjectStatus[] = ["Live", "Prototype", "Case Study", "Archived"];
+const projectStatuses: ProjectStatus[] = ["Live", "Pilot", "Working build", "Prototype", "Case Study", "Archived"];
 
 function isRecord(value: unknown): value is UnknownRecord {
   return typeof value === "object" && value !== null && !Array.isArray(value);

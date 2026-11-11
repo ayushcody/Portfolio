@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { Project } from "@/src/data/projects";
+import type { Project } from "@/lib/cms/legacyProject";
 import { CmsWorkspace, type EditorFieldsProps, type WorkspaceConfig } from "./CmsWorkspace";
 import { CheckboxField, FormSection, ListField, SelectField, TextAreaField, TextField } from "./fields";
 import { slugify, slugifyWhileTyping } from "./format";

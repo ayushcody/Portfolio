@@ -1,7 +1,7 @@
 import { asNumber, normalizeProject } from "@/lib/cms/normalize";
 import type { CmsProject } from "@/lib/cms/types";
 import { checkExternalUrl, type UrlKind } from "@/lib/urls";
-import { projectsData, type Project, type ProjectLinkSet, type ProjectStatus } from "@/src/data/projects";
+import { projectsData, type Project, type ProjectLinkSet, type ProjectStatus } from "@/lib/cms/legacyProject";
 import type { FieldErrors } from "./fields";
 import { fromCsv, fromLines, SLUG_PATTERN, toCsv, toLines } from "./format";
 import type { CmsAdapter } from "./useCmsCollection";
@@ -20,6 +20,8 @@ export const PROJECT_LINK_FIELDS: readonly { key: ProjectLinkKey; label: string;
 
 export const PROJECT_STATUS_OPTIONS: readonly { value: ProjectStatus; label: string }[] = [
   { value: "Live", label: "Live" },
+  { value: "Pilot", label: "Pilot" },
+  { value: "Working build", label: "Working build" },
   { value: "Prototype", label: "Prototype" },
   { value: "Case Study", label: "Case study" },
   { value: "Archived", label: "Archived" },

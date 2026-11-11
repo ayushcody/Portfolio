@@ -1,23 +1,20 @@
-import { ArrowUpRight, BookText, FileText, Github, Globe, PlayCircle, Video } from "lucide-react";
+import { ArrowUpRight, FileText, Github, Globe, PlayCircle } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { getProjectLinks, type ProjectLinkKind } from "@/lib/projectLinks";
-import type { Project } from "@/src/data/projects";
+import type { Project } from "@/src/data/projectSchema";
 import { cn } from "@/lib/utils";
 
 const icons: Record<ProjectLinkKind, LucideIcon> = {
-  live: Globe,
-  github: Github,
-  loom: PlayCircle,
-  documentation: BookText,
-  caseStudy: FileText,
   demo: Globe,
-  video: Video,
+  video: PlayCircle,
+  repo: Github,
+  writeup: FileText,
 };
 
 type ProjectLinksProps = {
-  project: Pick<Project, "title" | "links"> & { github?: string; live?: string };
+  project: Pick<Project, "title" | "links">;
   /**
-   * `full`: primary brutal button for the live product + text links (case study pages).
+   * `full`: primary brutal button for the live demo + secondary buttons (case study pages).
    * `compact`: square icon buttons (cards and rows).
    */
   variant?: "full" | "compact";
@@ -38,7 +35,7 @@ export function ProjectLinks({ project, variant = "full", className, max }: Proj
           const Icon = icons[link.kind];
           return (
             <li key={link.kind}>
-              <a href={link.href} target="_blank" rel="noopener noreferrer" aria-label={link.ariaLabel} title={link.label} className="icon-button">
+              <a href={link.href} {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})} aria-label={link.ariaLabel} title={link.label} className="icon-button">
                 <Icon size={18} aria-hidden="true" />
               </a>
             </li>
@@ -56,8 +53,7 @@ export function ProjectLinks({ project, variant = "full", className, max }: Proj
           <li key={link.kind}>
             <a
               href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
+              {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
               aria-label={link.ariaLabel}
               className={link.primary ? "brutal-button" : "brutal-button brutal-button--secondary"}
             >
