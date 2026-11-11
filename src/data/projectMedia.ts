@@ -52,6 +52,37 @@ export const projectMedia: Record<string, ProjectMediaSet> = {
             }
         ]
     },
+    "auralis": {
+        "gallery": [
+            {
+                "src": "/projects/auralis/01-preset-voices.webp",
+                "alt": "Auralis home page with the headline Your voice, in eleven languages, and a player listing preset voices in English and Hindi, with the Heart voice's waveform and the line it reads",
+                "width": 1600,
+                "height": 1000,
+                "caption": "The home page plays real, unedited output from the open Kokoro-82M model running in Auralis. Visitors can hear English and Hindi preset voices before they open the studio."
+            },
+            {
+                "src": "/projects/auralis/02-clone-with-consent.webp",
+                "alt": "Clone a voice dialog at step 1 of 3 (Sample, Transcript, Review), with a passage to read aloud in English, Hindi, Hinglish or Marathi, and options to upload an audio file or record",
+                "width": 1600,
+                "height": 1000,
+                "caption": "Cloning starts with a short read-aloud sample. A separate spoken consent sentence with a one-time code is checked against the sample's speaker before the voice can be used."
+            },
+            {
+                "src": "/projects/auralis/03-analytics.webp",
+                "alt": "Auralis Analytics page with a bar chart of generations by engine (Indic-Speak, Qwen3 0.6B, DhVaani, Kokoro), a language mix led by Hindi, and a line chart of generations per day over the last 7 days",
+                "width": 1600,
+                "height": 1000,
+                "caption": "Analytics counts every generation by engine, language and day. Most of this week's output was Hindi, rendered by the Indian-language engines."
+            }
+        ],
+        "cover": {
+            "src": "/projects/auralis/cover.webp",
+            "alt": "Auralis Overview page: system chips showing the API online on an Apple M4 GPU with local storage, a warm-up panel with load times for the language model, speech recognition, Kokoro English and Hindi voices, knowledge search, watermark model and speaker check, and totals of 5 voices, 138 generations and 6.0 minutes synthesized",
+            "width": 1600,
+            "height": 1000
+        }
+    },
     "documind": {
         "gallery": [
             {
