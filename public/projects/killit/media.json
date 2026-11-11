@@ -1,0 +1,28 @@
+{
+  "cover": {
+    "file": "cover.webp",
+    "alt": "Terminal output of a real killit session: killit inspect 5150 reports a node server as SAFE, ki 5150 5151 5152 kills two node servers and a Python server, and killit 5000 refuses to touch macOS ControlCenter with a warning and exit code 2"
+  },
+  "gallery": [
+    {
+      "file": "01-inspect-and-kill.webp",
+      "alt": "Terminal output of killit inspect 5150 listing port, PID, name, command, path, owner, protocol, project type node and safety SAFE, then killit 5150 printing Killed node, then a second run printing Nothing listening on specified port(s) and exit 0",
+      "caption": "killit inspect shows what holds a port: the PID, the command, the owner, a guess at the project type, and a safety level with its reason. A SAFE process stops with a plain killit 5150. Running it again exits 0, because an empty port is not an error."
+    },
+    {
+      "file": "02-multi-port-dry-run.webp",
+      "alt": "Terminal output of killit kill 5150 5151 5152 --dry-run listing three processes it would kill, then ki 5150 5151 5152 printing Killed for two node processes and one Python process",
+      "caption": "Several ports go in one command. --dry-run lists what would be killed without sending a signal. The short alias ki then stops two Node servers and a Python http.server."
+    },
+    {
+      "file": "03-safety-tiers.webp",
+      "alt": "Terminal output of killit inspect 5000 showing macOS ControlCenter with safety WARN because its binary is in a system directory, then killit 5000 refusing with a warning and exit 2",
+      "caption": "macOS ControlCenter holds port 5000. Its binary lives under /System, so killit classes it WARN and refuses to kill it without --force. The exit code is 2, so scripts can tell a refusal from a success."
+    },
+    {
+      "file": "04-tree-kill.webp",
+      "alt": "Terminal output: killit 5160 kills a node process, killit inspect 5160 then shows a new node process with a different PID on the same port, killit 5160 --tree kills it, and inspect reports Nothing listening on this port",
+      "caption": "The server on port 5160 runs under a small watcher script that restarts it, like nodemon. A plain kill frees the port only until the watcher starts a new process. --tree signals the whole process group, watcher included, so the port stays free."
+    }
+  ]
+}

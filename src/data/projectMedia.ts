@@ -2,6 +2,10 @@
 import type { ProjectMediaSet } from "./projectSchema";
 
 export const projectMedia: Record<string, ProjectMediaSet> = {
+    "agentic-soc": {
+        "gallery": [],
+        "noVisualReason": "Backend scoring service built at a 24-hour hackathon. The code lives in a teammate's repository, and no screenshots of it were kept."
+    },
     "andhakaanun": {
         "gallery": [
             {
@@ -179,34 +183,40 @@ export const projectMedia: Record<string, ProjectMediaSet> = {
     "killit": {
         "gallery": [
             {
-                "src": "/projects/killit/01-inspect-and-kill.jpg",
-                "alt": "Terminal output of killit inspect 4120 listing port, PID, name, command, path, owner, protocol, project node and safety SAFE, followed by killit 4120 printing Killed node, and a second run printing Nothing listening on specified port(s) with exit code 0",
+                "src": "/projects/killit/01-inspect-and-kill.webp",
+                "alt": "Terminal output of killit inspect 5150 listing port, PID, name, command, path, owner, protocol, project type node and safety SAFE, then killit 5150 printing Killed node, then a second run printing Nothing listening on specified port(s) and exit 0",
                 "width": 1600,
-                "height": 711,
-                "caption": "killit inspect shows what holds a port: the PID, command, owner, a guess at the project type, and a safety level with its reason. A SAFE process is stopped with a plain killit 4120. Running it again exits 0, because an empty port is not an error."
+                "height": 1000,
+                "caption": "killit inspect shows what holds a port: the PID, the command, the owner, a guess at the project type, and a safety level with its reason. A SAFE process stops with a plain killit 5150. Running it again exits 0, because an empty port is not an error."
             },
             {
-                "src": "/projects/killit/02-multi-port-dry-run.jpg",
-                "alt": "Terminal output of killit kill 4101 4121 4122 --dry-run listing three processes that would be killed, followed by ki 4101 4121 4122 printing Killed for two node processes and one Python process",
+                "src": "/projects/killit/02-multi-port-dry-run.webp",
+                "alt": "Terminal output of killit kill 5150 5151 5152 --dry-run listing three processes it would kill, then ki 5150 5151 5152 printing Killed for two node processes and one Python process",
                 "width": 1600,
-                "height": 503,
-                "caption": "Several ports can go in one command. --dry-run lists what would be killed without sending a signal, and the short alias ki then stops a Vite dev server, a Node server and a Python http.server."
+                "height": 1000,
+                "caption": "Several ports go in one command. --dry-run lists what would be killed without sending a signal. The short alias ki then stops two Node servers and a Python http.server."
             },
             {
-                "src": "/projects/killit/03-safety-tiers.jpg",
-                "alt": "Terminal output of killit inspect 5000 showing macOS ControlCenter with safety WARN because its binary is in a system directory, then killit 5000 refusing with a warning and exit code 2, then killit 4130 --force refusing to terminate a zsh process with exit code 2",
+                "src": "/projects/killit/03-safety-tiers.webp",
+                "alt": "Terminal output of killit inspect 5000 showing macOS ControlCenter with safety WARN because its binary is in a system directory, then killit 5000 refusing with a warning and exit 2",
                 "width": 1600,
-                "height": 831,
-                "caption": "macOS ControlCenter holds port 5000. It is classed WARN because its binary lives under /System, so killit refuses without --force and exits 2. Shells are on a protected list, so a zsh process holding port 4130 is refused even with --force."
+                "height": 1000,
+                "caption": "macOS ControlCenter holds port 5000. Its binary lives under /System, so killit classes it WARN and refuses to kill it without --force. The exit code is 2, so scripts can tell a refusal from a success."
             },
             {
-                "src": "/projects/killit/04-tree-kill.jpg",
-                "alt": "Terminal output: killit 4140 kills a node process, a second later killit inspect 4140 shows a new node process with a different PID on the same port, then killit 4140 --tree kills it and inspect reports Nothing listening on this port",
+                "src": "/projects/killit/04-tree-kill.webp",
+                "alt": "Terminal output: killit 5160 kills a node process, killit inspect 5160 then shows a new node process with a different PID on the same port, killit 5160 --tree kills it, and inspect reports Nothing listening on this port",
                 "width": 1600,
-                "height": 800,
-                "caption": "The server on port 4140 runs under a small watcher script that restarts it, like nodemon. A plain kill frees the port only until the watcher starts a new process. --tree signals the whole process group, watcher included, so the port stays free."
+                "height": 1000,
+                "caption": "The server on port 5160 runs under a small watcher script that restarts it, like nodemon. A plain kill frees the port only until the watcher starts a new process. --tree signals the whole process group, watcher included, so the port stays free."
             }
-        ]
+        ],
+        "cover": {
+            "src": "/projects/killit/cover.webp",
+            "alt": "Terminal output of a real killit session: killit inspect 5150 reports a node server as SAFE, ki 5150 5151 5152 kills two node servers and a Python server, and killit 5000 refuses to touch macOS ControlCenter with a warning and exit code 2",
+            "width": 1600,
+            "height": 1000
+        }
     },
     "research-saathi": {
         "gallery": [
