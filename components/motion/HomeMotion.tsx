@@ -6,12 +6,13 @@ import { animate, inView, scroll, stagger, type AnimationPlaybackControls } from
 /*
  * Motion for the home page (motion.dev, vanilla API). Sections stay server-rendered and readable
  * without JavaScript; this component only enhances them after hydration:
- * - blocks below the fold rise into view, in sequence, the first time they are scrolled to;
+ * - blocks below the fold rise into view, in sequence, the first time they are scrolled to
+ *   (project cards also un-crop from the top, like a print being laid down);
  * - the focus band scrolls as a marquee that speeds up, and reverses, with page scroll;
  * - the portrait tilts toward the pointer;
  * - the decorative asterisks turn with scroll;
  * - the footer name draws its outline when it comes into view.
- * The hero entrance is plain CSS (portfolio.css) so it never waits for this bundle.
+ * The hero entrance is plain CSS (portfolio.css) and never hides text, so it never waits for this bundle.
  * Nothing runs when the visitor prefers reduced motion.
  */
 
@@ -21,9 +22,8 @@ const RISE = 'translateY(28px)';
 /** [container, children]: the children reveal in sequence once the container enters the viewport. */
 const REVEAL_GROUPS: Array<[string, string]> = [
     ['#projects .section-heading', ':scope > *'],
-    ['.selected-work-grid', '.work-card'],
-    ['.approach-intro', ':scope > *'],
-    ['.process-list', ':scope > li'],
+    ['.selected-work-grid', ':scope > li'],
+    ['.work-footnote', ':scope > *'],
     ['.career-heading', ':scope > *'],
     ['.achievement-heading-row', ':scope > *'],
     ['.achievement-gallery', '.achievement-card'],
@@ -35,7 +35,6 @@ const REVEAL_GROUPS: Array<[string, string]> = [
 
 /** Decorative glyphs that turn with scroll: [selector, start angle, end angle]. */
 const SCROLL_SPINS: Array<[string, number, number]> = [
-    ['.approach-intro > svg', -30, 150],
     ['.contact-asterisk', 10, 190],
 ];
 
@@ -73,10 +72,11 @@ function setupReveals(cleanups: Array<() => void>) {
                 for (const period of container.querySelectorAll<HTMLElement>('.accent-period')) {
                     releaseWhenDone(animate(period, { transform: ['scale(0)', 'scale(1)'] }, { type: 'spring', stiffness: 420, damping: 14, delay: 0.35 }), [period], ['transform']);
                 }
-                for (const badge of container.querySelectorAll<HTMLElement>('.process-number')) {
-                    const index = children.findIndex((child) => child.contains(badge));
-                    releaseWhenDone(animate(badge, { transform: ['scale(0.4) rotate(-20deg)', 'scale(1) rotate(0deg)'] }, { type: 'spring', stiffness: 380, damping: 16, delay: 0.15 + Math.max(index, 0) * 0.08 }), [badge], ['transform']);
-                }
+                // Project covers un-crop from the top as their card arrives.
+                const covers = Array.from(container.querySelectorAll<HTMLElement>('.pcard-media'));
+                covers.forEach((cover, index) => {
+                    releaseWhenDone(animate(cover, { clipPath: ['inset(0 0 100% 0)', 'inset(0 0 0% 0)'] }, { duration: 0.9, ease: EASE, delay: 0.12 + index * 0.08 }), [cover], ['clip-path']);
+                });
                 return undefined;
             }, { margin: '0px 0px -12% 0px' });
             cleanups.push(() => {
