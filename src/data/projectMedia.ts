@@ -87,27 +87,40 @@ export const projectMedia: Record<string, ProjectMediaSet> = {
     "dsakarle": {
         "gallery": [
             {
-                "src": "/projects/dsakarle/01-home.jpg",
-                "alt": "DSA Karle home page with a sliding-window walkthrough playing beside the headline Watch algorithms think",
-                "width": 1440,
-                "height": 620,
-                "caption": "The home page runs a real walkthrough instead of a hero image. Press the arrow key and the sliding window moves one decision at a time."
+                "src": "/projects/dsakarle/01-home-predict.webp",
+                "alt": "DSA Karle home page with the headline Watch algorithms think. Beside it a sliding-window walkthrough has paused at step 5 of 15 with a Your turn: predict question, What happens next?, and two answers to choose from",
+                "width": 1600,
+                "height": 1000,
+                "caption": "The home page runs a real walkthrough instead of a hero image. At key steps it stops and asks you to predict the next move before it shows you."
             },
             {
-                "src": "/projects/dsakarle/02-lesson-two-pointers.jpg",
-                "alt": "The Two Pointers lesson: a sidebar of topics, the seven lesson steps, and a diagram of a sorted array with left and right pointers labelled smallest and largest",
-                "width": 1440,
-                "height": 900,
-                "caption": "Every lesson follows the same seven moves, from picture and hook to code and practice. Here the diagram labels the pointers smallest and largest, and states the rule: move the one that helps."
+                "src": "/projects/dsakarle/02-lesson-and-code.webp",
+                "alt": "The Sliding Window lesson's Watch it run section at step 7 of 15: the array with the window bracket under it, the step explanation, the numbered rules with rule 3 highlighted, playback controls, and the Python code panel open below",
+                "width": 1600,
+                "height": 1111,
+                "caption": "Each lesson has a stepper. The diagram, the explanation and the highlighted rule all come from the same step object, so they always agree. The code is underneath in Python, Java or C++."
             },
             {
-                "src": "/projects/dsakarle/03-pattern-map.jpg",
+                "src": "/projects/dsakarle/03-pattern-map.webp",
                 "alt": "The DSA Karle pattern map: data structures as round nodes and algorithms as square nodes, connected by arrows showing which topic to learn first",
-                "width": 1440,
-                "height": 900,
+                "width": 1600,
+                "height": 1000,
                 "caption": "The pattern map shows what each topic builds on. Round nodes are data structures, square nodes are algorithms, and arrows point from what to learn first to what it unlocks."
+            },
+            {
+                "src": "/projects/dsakarle/04-pattern-gym.webp",
+                "alt": "The Pattern gym on question 1 of 10: a problem about finding two numbers in a sorted array that add up to a target, Binary Search marked wrong, Two Pointers marked correct, and an explanation of why",
+                "width": 1600,
+                "height": 889,
+                "caption": "The Pattern gym trains you to name the pattern from a problem statement. A wrong answer shows the right one, explains the difference in two sentences, and links to the lesson."
             }
-        ]
+        ],
+        "cover": {
+            "src": "/projects/dsakarle/cover.webp",
+            "alt": "DSA Karle Graphs lesson at step 10 of 17 of its walkthrough: a five-node graph beside its adjacency list being filled in, the current rule 'Undirected: also add u to the list of v' highlighted, and live counters for the edge being stored, edges stored and list entries",
+            "width": 1600,
+            "height": 1000
+        }
     },
     "email-digital-twin": {
         "gallery": [
