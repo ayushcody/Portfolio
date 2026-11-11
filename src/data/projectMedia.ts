@@ -347,6 +347,15 @@ export const projectMedia: Record<string, ProjectMediaSet> = {
             "height": 1000
         }
     },
+    "veda": {
+        "gallery": [],
+        "cover": {
+            "src": "/projects/veda/cover.webp",
+            "alt": "VedaAI upload screen on the live site with the bundled sample Question_Paper.pdf and Answer_sheet.pdf loaded, the Gemini engine selected over Mistral, and Start Mapping and Load Sample buttons",
+            "width": 1600,
+            "height": 1000
+        }
+    },
     "voice-cloning": {
         "gallery": [
             {
