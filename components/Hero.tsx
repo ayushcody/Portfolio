@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Fragment, useState } from 'react';
 import { ArrowDownRight, ArrowUpRight, Asterisk, MapPin } from 'lucide-react';
 import { profile as fallbackProfile, type Profile } from '@/src/data/profile';
+import { Scribble } from '@/components/ui/Scribble';
 
 // Hosts allowed by images.remotePatterns in next.config.ts; anything else is served as-is.
 const OPTIMIZABLE_HOSTS = new Set(['firebasestorage.googleapis.com', 'storage.googleapis.com']);
@@ -27,7 +28,7 @@ const MOTTO_LAST = 'Ship it.';
 export default function Hero({ profile = fallbackProfile }: { profile?: Profile }) {
     const [photoFailed, setPhotoFailed] = useState(false);
     const photoSrc = photoFailed ? '/profile.png' : profile.profilePhoto || '/profile.png';
-    const stack = profile.coreStack ?? [];
+    const traits = profile.traits ?? [];
 
     return (
         <section id="home" className="portfolio-hero" aria-labelledby="hero-heading">
@@ -36,7 +37,7 @@ export default function Hero({ profile = fallbackProfile }: { profile?: Profile 
                     <h1 id="hero-heading" className="hero-title">
                         <span className="hero-name">{profile.fullName}</span>
                         <span className="visually-hidden">, </span>
-                        <span className="hero-role">{profile.role}</span>
+                        <span className="hero-role"><Scribble color="var(--coral)">{profile.role}</Scribble></span>
                     </h1>
                     <p className="hero-place"><MapPin size={14} aria-hidden="true" /> {profile.locationShort || profile.location}</p>
 
@@ -45,9 +46,9 @@ export default function Hero({ profile = fallbackProfile }: { profile?: Profile 
                         <strong>{MOTTO_LAST}</strong>
                     </p>
 
-                    {stack.length > 0 ? (
-                        <ul className="hero-stack" aria-label="What I build with">
-                            {stack.map((tool) => <li key={tool}>{tool}</li>)}
+                    {traits.length > 0 ? (
+                        <ul className="hero-stack" aria-label="How I work">
+                            {traits.map((trait) => <li key={trait}>{trait}</li>)}
                         </ul>
                     ) : null}
 
