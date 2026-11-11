@@ -1,0 +1,23 @@
+{
+  "cover": {
+    "file": "cover.webp",
+    "alt": "Vasoli Payday planning page with demo data: daily allowance ₹600, next payday 2026-11-30 and additional spending room ₹61,272, a Salary Account confirmed at ₹94,521 with a lowest projected balance of ₹90,672, a Next useful steps panel and the start of a Try an extra expense form"
+  },
+  "gallery": [
+    {
+      "file": "01-payday-plan.webp",
+      "alt": "Try an extra expense form with a Preview expense button, and the Payday plan form: next payday 30/11/2026, daily spending allowance 600, minimum reserve 5000, Emergency fund goal reserve 10000, and Salary Account selected as the account included in the plan",
+      "caption": "The payday plan holds the inputs behind the spending-room number: payday, daily allowance, a protected reserve, money set aside for a goal, and which accounts count. The Go backend does the maths in integer paise, and the extra-expense preview reruns it without saving anything."
+    },
+    {
+      "file": "02-activity.webp",
+      "alt": "Vasoli Activity page with month totals (net flow ₹52,521, income ₹85,000, expenses ₹32,479), Import statement, Transfer and Add transaction buttons, server-side search and filters, and a table of November 2026 transactions on the Salary Account",
+      "caption": "Activity after importing a sample bank statement in CSV. The server checked the opening and closing balances, held back a row that duplicated a manual entry, and saved only the rows that were reviewed."
+    },
+    {
+      "file": "03-obligations.webp",
+      "alt": "Vasoli Obligations page headed Your financial commitments, with 5 rules and an estimated commitment of ₹27,908, an empty Upcoming Reminders panel, and a Recurring Obligations table listing Netflix, Bike insurance and Rent with cadence, next due date, paying account, amount and a Mark paid button",
+      "caption": "Recurring bills are tied to the account that pays them, so the forecast can reserve money for each one before its due date. Marking a bill paid links it to an existing transaction instead of adding a second expense."
+    }
+  ]
+}

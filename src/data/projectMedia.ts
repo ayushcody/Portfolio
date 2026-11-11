@@ -319,34 +319,33 @@ export const projectMedia: Record<string, ProjectMediaSet> = {
     "vasoli": {
         "gallery": [
             {
-                "src": "/projects/vasoli/01-today.jpg",
-                "alt": "Vasoli Today screen with a sidebar of sections and a card showing daily allowance ₹600, next payday 2026-11-30, additional spending room ₹61,272, a Salary Account balance confirmed at ₹94,521 with lowest projected ₹90,672, and a Next useful steps panel.",
+                "src": "/projects/vasoli/01-payday-plan.webp",
+                "alt": "Try an extra expense form with a Preview expense button, and the Payday plan form: next payday 30/11/2026, daily spending allowance 600, minimum reserve 5000, Emergency fund goal reserve 10000, and Salary Account selected as the account included in the plan",
                 "width": 1600,
-                "height": 922,
-                "caption": "The Today screen turns recorded balances, upcoming bills and the payday plan into one number: how much extra can be spent before payday. It names the account it used and says which inputs, such as unrecorded spending, can change the estimate."
+                "height": 847,
+                "caption": "The payday plan holds the inputs behind the spending-room number: payday, daily allowance, a protected reserve, money set aside for a goal, and which accounts count. The Go backend does the maths in integer paise, and the extra-expense preview reruns it without saving anything."
             },
             {
-                "src": "/projects/vasoli/02-payday-plan.jpg",
-                "alt": "Vasoli Payday planning page showing the payday summary, a Try an extra expense form, and a Payday plan form with next payday 30/11/2026, daily allowance 600, minimum reserve 5000, Emergency fund goal reserve 10000, and Salary Account selected as the paying account.",
+                "src": "/projects/vasoli/02-activity.webp",
+                "alt": "Vasoli Activity page with month totals (net flow ₹52,521, income ₹85,000, expenses ₹32,479), Import statement, Transfer and Add transaction buttons, server-side search and filters, and a table of November 2026 transactions on the Salary Account",
                 "width": 1600,
-                "height": 1667,
-                "caption": "The payday plan holds the inputs behind the Today number: payday date, daily allowance, a protected minimum reserve, money set aside for a goal, and which accounts count. The Go backend does the calculation in integer paise, and the extra-expense preview reruns it without saving anything."
+                "height": 1200,
+                "caption": "Activity after importing a sample bank statement in CSV. The server checked the opening and closing balances, held back a row that duplicated a manual entry, and saved only the rows that were reviewed."
             },
             {
-                "src": "/projects/vasoli/03-activity.jpg",
-                "alt": "Vasoli Activity page with month totals (net flow ₹52,521, income ₹85,000, expenses ₹32,479), Import statement, Transfer and Add transaction buttons, server-side search and filters, and a table of November 2026 transactions on the Salary Account.",
+                "src": "/projects/vasoli/03-obligations.webp",
+                "alt": "Vasoli Obligations page headed Your financial commitments, with 5 rules and an estimated commitment of ₹27,908, an empty Upcoming Reminders panel, and a Recurring Obligations table listing Netflix, Bike insurance and Rent with cadence, next due date, paying account, amount and a Mark paid button",
                 "width": 1600,
-                "height": 1311,
-                "caption": "Activity after importing a sample HDFC-format CSV statement. The server parsed the file, checked the opening and closing balances, held back a row that duplicated a manual entry and a malformed row, and committed only the rows that were reviewed."
-            },
-            {
-                "src": "/projects/vasoli/04-obligations.jpg",
-                "alt": "Vasoli Obligations page headed Your financial commitments, showing 5 rules and an estimated commitment of ₹27,908, an empty Upcoming Reminders panel, and a Recurring Obligations table listing Netflix, Bike insurance, Rent, Airtel postpaid and BESCOM electricity with cadence, next due date, paying account, amount and a Mark paid button.",
-                "width": 1600,
-                "height": 1444,
-                "caption": "Recurring bills are tied to the account that pays them, so the payday forecast can reserve money for each one before its due date. Marking a bill paid links it to an existing Activity record instead of adding a second expense."
+                "height": 1200,
+                "caption": "Recurring bills are tied to the account that pays them, so the forecast can reserve money for each one before its due date. Marking a bill paid links it to an existing transaction instead of adding a second expense."
             }
-        ]
+        ],
+        "cover": {
+            "src": "/projects/vasoli/cover.webp",
+            "alt": "Vasoli Payday planning page with demo data: daily allowance ₹600, next payday 2026-11-30 and additional spending room ₹61,272, a Salary Account confirmed at ₹94,521 with a lowest projected balance of ₹90,672, a Next useful steps panel and the start of a Try an extra expense form",
+            "width": 1600,
+            "height": 1000
+        }
     },
     "voice-cloning": {
         "gallery": [
