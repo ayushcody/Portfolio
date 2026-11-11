@@ -63,8 +63,9 @@
 .pcard-cta { display: inline-flex; align-items: center; gap: 7px; min-height: 46px; font-size: 13px; font-weight: 750; }
 .pcard-cta svg { transition: transform var(--dur) var(--ease-out); }
 .pcard-links { position: relative; z-index: 2; display: flex; flex-wrap: wrap; gap: 0 11px; margin: 0 0 0 auto; padding: 0; list-style: none; }
-.pcard-links a { display: inline-flex; align-items: center; gap: 4px; min-height: 46px; color: var(--ink); font-size: 13px; font-weight: 650; text-decoration: underline; text-decoration-color: var(--rule); text-decoration-thickness: 1.5px; text-underline-offset: 5px; transition: text-decoration-color var(--dur-fast) ease; }
-.pcard-links a:hover { text-decoration-color: currentColor; }
+.pcard-links a { display: inline-flex; align-items: center; gap: 4px; min-height: 46px; color: var(--ink); font-size: 13px; font-weight: 650; text-decoration: none; text-decoration-thickness: 1.5px; text-underline-offset: 5px; }
+/* Links read as links through their arrows; the underline only appears on hover or keyboard focus. */
+.pcard-links a:hover, .pcard-links a:focus-visible { text-decoration-line: underline; }
 .pcard-links a svg { transition: transform var(--dur-fast) ease; }
 .pcard-links a:hover svg { transform: translate(1px, -1px); }
 
@@ -336,6 +337,6 @@
 .case-clip-transcript dl > div { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 12px; font-size: 14px; line-height: 1.6; }
 .case-clip-transcript dt { color: var(--muted-ink); font-weight: 650; }
 .case-clip-transcript dd { margin: 0; }
-.pcard-links a.pcard-clip { gap: 5px; text-decoration-color: currentColor; }
+.pcard-links a.pcard-clip { gap: 5px; }
 .pcard-clip svg { flex: none; }
 .pcard-clip-time { color: var(--muted-ink); font-weight: 600; font-variant-numeric: tabular-nums; }

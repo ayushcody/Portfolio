@@ -7,7 +7,6 @@ import Experience from "@/components/Experience";
 import { SignatureFooter } from "@/components/SignatureFooter";
 import { getPublicExperience, getPublicProfile } from "@/lib/cms/publicReads";
 import { getBlogPosts } from "@/lib/markdown";
-import { getSkillGroups } from "@/lib/projects";
 
 // Static at build time; admin CMS changes appear within five minutes (ISR).
 export const revalidate = 300;
@@ -24,16 +23,11 @@ export default async function Home() {
     getPublicExperience(),
   ]);
   const experience = experienceResult.data;
-  // Only what the hero needs crosses into the client bundle.
-  const heroRoles = experience.map(({ company, role, period, techStack }) => ({ company, role, period, techStack }));
-  const specialties = getSkillGroups()
-    .filter((group) => group.specialty)
-    .map((group) => ({ label: group.specialty as string, href: `/skills#${group.id}` }));
 
-  // Visitor path: who and what now, the work, the roles, recognition, writing, tools, then contact.
+  // Visitor path: who, the work, the roles, recognition, writing, tools, then contact.
   return (
     <main className="portfolio-home">
-      <Hero profile={profileResult.data} experience={heroRoles} specialties={specialties} />
+      <Hero profile={profileResult.data} />
       <SelectedWork />
       <Experience experiences={experience} />
       <Achievements />

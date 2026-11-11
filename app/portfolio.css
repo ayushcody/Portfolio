@@ -45,24 +45,15 @@ html.dark .accent-period { color: var(--coral); }
 .portfolio-hero { padding-top: 128px; }
 .hero-layout { position: relative; display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); align-items: center; gap: 56px; }
 .hero-copy { min-width: 0; }
-.hero-title { display: block; }
-.hero-id { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; font-size: 24px; line-height: 1.2; letter-spacing: -.03em; }
-.hero-role-tag { display: inline-block; padding: 3px 10px 4px; border: 2px solid var(--ink-fixed); background: var(--yellow); color: var(--ink-fixed); box-shadow: 3px 3px 0 var(--ink); font-size: 15px; letter-spacing: -.01em; rotate: -2deg; }
-.hero-place { display: inline-flex; align-items: center; gap: 5px; color: var(--muted-ink); font-family: var(--font-inter), sans-serif; font-size: 13px; font-weight: 500; letter-spacing: 0; }
-.hero-headline { display: block; margin-top: 22px; font-size: clamp(42px, 4.15vw, 60px); line-height: 1.04; letter-spacing: -.04em; text-wrap: balance; }
-/* Marker strokes under the three things the AI does; colors match the specialty chips below. */
-.hero-mark { --mark: var(--yellow); background-image: linear-gradient(var(--mark), var(--mark)); background-repeat: no-repeat; background-position: 0 88%; background-size: 100% .24em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
-.hero-mark--2 { --mark: var(--lilac); }
-.hero-mark--3 { --mark: var(--coral); }
-.hero-specialties { display: flex; flex-wrap: wrap; gap: 9px; margin: 28px 0 0; padding: 0; list-style: none; }
-.hero-specialties a { --chip: var(--yellow); display: inline-flex; align-items: center; gap: 7px; min-height: 42px; padding: 7px 10px 7px 9px; border: 1.5px solid var(--ink); background: var(--panel); font-size: 13.5px; font-weight: 650; line-height: 1.2; transition: transform var(--dur-fast) ease, box-shadow var(--dur-fast) ease; }
-.hero-specialties a::before { content: ''; width: 10px; height: 10px; flex: none; border: 1.5px solid var(--ink-fixed); background: var(--chip); }
-.hero-specialties li:nth-child(2) a { --chip: var(--sage); }
-.hero-specialties li:nth-child(3) a { --chip: var(--lilac); }
-.hero-specialties li:nth-child(4) a { --chip: var(--coral); }
-.hero-specialties a svg { color: var(--muted-ink); transition: transform var(--dur-fast) ease; }
-.hero-specialties a:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 var(--ink); }
-.hero-specialties a:hover svg { transform: translate(1px, -1px); }
+.hero-title { display: flex; flex-direction: column; gap: 12px; margin: 0; }
+.hero-name { font-size: clamp(64px, 7.2vw, 112px); line-height: .92; letter-spacing: -.055em; text-wrap: balance; }
+.hero-role { font-size: clamp(24px, 2.2vw, 34px); font-weight: 600; line-height: 1.15; letter-spacing: -.03em; }
+.hero-place { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; color: var(--muted-ink); font-size: 14px; font-weight: 500; }
+/* The working loop: the first three steps are quieter, the last one is the point. */
+.hero-motto { max-width: 34ch; margin-top: 32px; color: var(--muted-ink); font-family: var(--font-display), sans-serif; font-size: clamp(22px, 2vw, 30px); font-weight: 600; line-height: 1.25; letter-spacing: -.03em; text-wrap: balance; }
+.hero-motto strong { color: var(--ink); font-weight: 700; }
+.hero-stack { display: flex; flex-wrap: wrap; gap: 8px; margin: 28px 0 0; padding: 0; list-style: none; }
+.hero-stack li { display: inline-flex; align-items: center; min-height: 34px; padding: 5px 11px; border: 1.5px solid var(--ink); background: var(--panel); font-size: 13.5px; font-weight: 600; line-height: 1.2; }
 .hero-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 14px 26px; margin-top: 30px; }
 
 .hero-photo-area { position: relative; width: 100%; max-width: 340px; padding: 10px 14px 0; justify-self: end; }
@@ -74,21 +65,6 @@ html.dark .accent-period { color: var(--coral); }
 .hero-note { position: absolute; right: 22px; top: -50px; display: flex; align-items: center; gap: 8px; font-family: var(--font-display), sans-serif; font-size: 12px; rotate: 7deg; }
 .hero-note svg { transform: rotate(27deg) translateY(7px); }
 
-/* Now / Before / Open to work: the facts a recruiter scans for, in one strip. */
-.hero-ledger { display: grid; grid-template-columns: 1fr 1fr 1.12fr; margin: 44px 0 0; border: var(--border); background: var(--panel); box-shadow: var(--shadow-md); }
-.hero-ledger-cell { display: flex; flex-direction: column; gap: 10px; min-width: 0; padding: 15px 20px 17px; }
-.hero-ledger-cell + .hero-ledger-cell { border-left: var(--border); }
-.hero-ledger dt { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 10px; }
-.hero-ledger-tag { display: inline-flex; align-items: center; gap: 7px; padding: 2px 8px; border: 1.5px solid var(--ink); font-size: 12px; font-weight: 750; line-height: 1.5; }
-.hero-ledger-cell--now .hero-ledger-tag { border-color: var(--ink-fixed); background: var(--yellow); color: var(--ink-fixed); }
-.hero-ledger-when { color: var(--muted-ink); font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums; }
-.hero-ledger dd { display: flex; flex-direction: column; gap: 2px; margin: 0; }
-.hero-ledger dd strong { font-family: var(--font-display), sans-serif; font-size: 19px; font-weight: 700; line-height: 1.25; letter-spacing: -.025em; }
-.hero-ledger-role { font-size: 14px; font-weight: 600; line-height: 1.45; }
-.hero-ledger-tools { margin-top: 5px; color: var(--muted-ink); font-size: 13px; line-height: 1.5; }
-.hero-ledger-cell--open { --muted-ink: #3d3c36; background: var(--lilac); color: var(--ink-fixed); }
-.hero-ledger-cell--open .hero-ledger-tag { border-color: var(--ink-fixed); background: #fffdf6; }
-.hero-live { position: relative; width: 8px; height: 8px; border-radius: 50%; background: #2f6b34; }
 
 /* Focus band: two identical sets side by side. HomeMotion loops the track; without it the first set fills the width. */
 .discipline-band { overflow: hidden; margin-top: 52px; padding-block: 20px; border-block: 2px solid #23231f; background: var(--yellow); color: #23231f; font-family: var(--font-display), sans-serif; font-size: 17px; font-weight: 600; }
@@ -146,27 +122,16 @@ html.dark .accent-period { color: var(--coral); }
 
 @media (prefers-reduced-motion: no-preference) {
   .portfolio-hero { --ease-out-expo: cubic-bezier(.16, 1, .3, 1); }
-  .hero-mark { animation: hero-mark-draw 700ms var(--ease-out-expo) backwards; }
-  .hero-mark--1 { animation-delay: 280ms; }
-  .hero-mark--2 { animation-delay: 520ms; }
-  .hero-mark--3 { animation-delay: 760ms; }
-  .hero-role-tag { animation: tag-stamp 600ms 120ms var(--ease-out-expo) backwards; }
   .hero-print { animation: portrait-settle 950ms 60ms var(--ease-out-expo) backwards; }
-  .hero-live::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: inherit; animation: live-ping 1.8s 1s var(--ease-out-expo) 4; }
 
-  @keyframes hero-mark-draw { from { background-size: 0% .24em; } }
-  @keyframes tag-stamp { from { scale: 1.45; rotate: 8deg; } }
   @keyframes portrait-settle { from { translate: 0 -30px; rotate: -7deg; } }
-  @keyframes live-ping { from { scale: 1; opacity: .7; } to { scale: 2.8; opacity: 0; } }
 }
 
 @media (min-width: 1500px) { .portfolio-hero { padding-top: 150px; } }
 @media (max-width: 1000px) {
   .portfolio-wrap { width: calc(100% - 64px); }
   .hero-layout { gap: 32px; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); }
-  .hero-headline { font-size: clamp(36px, 5vw, 48px); }
-  .hero-ledger { grid-template-columns: 1fr 1fr; }
-  .hero-ledger-cell--open { grid-column: 1 / -1; border-left: 0 !important; border-top: var(--border); }
+  .hero-name { font-size: clamp(52px, 8vw, 76px); }
   .discipline-band { font-size: 14px; }
   .discipline-set { --band-gap: 22px; }
   .toolkit-layout { gap: 45px; }
@@ -181,29 +146,17 @@ html.dark .accent-period { color: var(--coral); }
   .hero-print { padding: 4px; box-shadow: 3px 3px 0 #23231f; --settle: 5deg; }
   .hero-print:hover { --settle: 5deg; --lift: 0px; }
   .hero-print figcaption, .hero-note { display: none; }
-  .hero-id { flex-direction: column; align-items: flex-start; justify-content: center; gap: 8px; min-height: 92px; padding-right: 96px; font-size: 25px; }
-  .hero-role-tag { font-size: 14px; }
-  .hero-place { font-size: 12px; }
-  .hero-headline { margin-top: 12px; font-size: clamp(28px, 7.7vw, 34px); line-height: 1.07; }
-  .hero-specialties { gap: 8px; margin-top: 16px; }
-  .hero-specialties a { min-height: 36px; padding: 6px 9px 6px 8px; font-size: 13px; gap: 7px; }
-  .hero-specialties a svg { display: none; }
+  .hero-title { gap: 8px; min-height: 92px; padding-right: 92px; justify-content: center; }
+  .hero-name { font-size: clamp(40px, 11.5vw, 50px); line-height: .95; }
+  .hero-role { font-size: 21px; }
+  .hero-place { margin-top: 10px; font-size: 12px; }
+  .hero-motto { margin-top: 18px; font-size: 21px; line-height: 1.25; }
+  .hero-stack { gap: 6px; margin-top: 18px; }
+  .hero-stack li { min-height: 30px; padding: 4px 9px; font-size: 12.5px; }
   .hero-actions { gap: 10px 20px; margin-top: 18px; }
   .hero-actions .brutal-button { min-height: 46px; padding-block: 11px; }
   .hero-actions .text-link { font-size: 12px; }
   .brutal-button { padding-inline: 16px; font-size: 12px; gap: 12px; }
-  .hero-ledger { grid-template-columns: minmax(0, 1fr); margin-top: 24px; box-shadow: 4px 4px 0 var(--ink); }
-  .hero-ledger-cell { gap: 5px; padding: 9px 12px 10px; }
-  .hero-ledger-cell + .hero-ledger-cell, .hero-ledger-cell--open { border-left: 0 !important; border-top: var(--border); grid-column: auto; }
-  .hero-ledger dt { justify-content: flex-start; }
-  .hero-ledger-tag { padding: 0 6px; font-size: 11px; }
-  .hero-ledger-when { font-size: 11px; line-height: 1.35; }
-  /* Phones keep the essentials: the current stack, the previous role, the availability. */
-  .hero-ledger-cell--before .hero-ledger-tools { display: none; }
-  .hero-ledger-cell--open .hero-ledger-when { display: none; }
-  .hero-ledger dd strong { font-size: 16px; }
-  .hero-ledger-role { font-size: 13px; line-height: 1.35; }
-  .hero-ledger-tools { margin-top: 2px; font-size: 12px; line-height: 1.4; }
   .discipline-band { margin-top: 40px; padding-block: 16px; font-size: 13px; }
   .discipline-set { --band-gap: 20px; }
   .discipline-band svg { width: 18px; height: 18px; }

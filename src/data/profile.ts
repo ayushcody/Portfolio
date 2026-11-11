@@ -21,6 +21,8 @@ export type Profile = {
     availability?: string;
     preferredRoles: string[];
     currentFocus: string[];
+    /** The everyday tools shown in the hero, by their common names. Each one is used in a project or role on the site. */
+    coreStack?: string[];
     engineeringStyle: string[];
     education?: {
         degree?: string;
@@ -91,6 +93,7 @@ export const profile: Profile = {
         "LLM evaluation & hallucination detection",
         "Shipping AI into real products",
     ],
+    coreStack: ["Python", "TypeScript", "Go", "React", "Next.js", "Node.js", "FastAPI", "PostgreSQL"],
     engineeringStyle: [
         "Product-first engineering",
         "Clean system architecture",
