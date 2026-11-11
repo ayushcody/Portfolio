@@ -1,0 +1,23 @@
+{
+  "cover": {
+    "file": "cover.webp",
+    "alt": "Email Digital Twin's Build Persona dialog: Choose how many Sent emails to analyze (5 to 50), with a slider set to 20 and Cancel and Start buttons, above the extension's panel with Build Persona, Draft Reply and Sign out (Gmail API) buttons, shown signed out"
+  },
+  "gallery": [
+    {
+      "file": "01-extension-panel.webp",
+      "alt": "The extension's dark floating panel with the status Ready, a blue Build Persona button, a green Draft Reply button, a Sign out (Gmail API) button and the text (not signed in)",
+      "caption": "The extension adds this panel to the corner of Gmail: build a persona, draft a reply, or sign out. It is shown signed out, on a blank stand-in page instead of a real inbox."
+    },
+    {
+      "file": "02-progress-panel.webp",
+      "alt": "A Persona Builder progress panel reading Listing with a short green progress bar, over the main panel whose status reads Fetching Sent (20)",
+      "caption": "After Start, the panel follows each phase: listing sent mail, fetching messages, analyzing, done. This is the first phase, captured while the extension waits for Google sign-in."
+    },
+    {
+      "file": "03-server-routes.webp",
+      "alt": "Terminal output in two windows: the server starts with npm run dev on port 4150 and logs three requests; the client's curl calls return ok true for the health check and errors for two empty POST requests",
+      "caption": "The Node server has a health check and two routes, /persona/build and /drafts/generate, each with its own prompt for Gemini. Both reject incomplete requests before any model call. This run had no Gemini key."
+    }
+  ]
+}

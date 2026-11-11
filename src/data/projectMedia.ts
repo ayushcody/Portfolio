@@ -140,34 +140,33 @@ export const projectMedia: Record<string, ProjectMediaSet> = {
     "email-digital-twin": {
         "gallery": [
             {
-                "src": "/projects/email-digital-twin/01-toolbar.jpg",
-                "alt": "A dark floating panel with the status Ready, a blue Build Persona button, a green Draft Reply button, a Sign out (Gmail API) button, and the text (not signed in)",
+                "src": "/projects/email-digital-twin/01-extension-panel.webp",
+                "alt": "The extension's dark floating panel with the status Ready, a blue Build Persona button, a green Draft Reply button, a Sign out (Gmail API) button and the text (not signed in)",
                 "width": 1600,
                 "height": 1080,
-                "caption": "The extension adds this panel to the bottom-right corner of Gmail: Build Persona, Draft Reply, sign-out, and the connected account. It is shown signed out, on a blank stand-in page instead of a real inbox."
+                "caption": "The extension adds this panel to the corner of Gmail: build a persona, draft a reply, or sign out. It is shown signed out, on a blank stand-in page instead of a real inbox."
             },
             {
-                "src": "/projects/email-digital-twin/02-build-persona-dialog.jpg",
-                "alt": "A Build Persona dialog above the panel, with the text Choose how many Sent emails to analyze (5 to 50), a slider set to 20, and Cancel and Start buttons",
-                "width": 1620,
-                "height": 1020,
-                "caption": "Build Persona asks how many sent emails to learn from, between 5 and 50. On Start, the extension reads that many sent messages from the past year through the read-only Gmail API and sends their text to the server for style analysis."
+                "src": "/projects/email-digital-twin/02-progress-panel.webp",
+                "alt": "A Persona Builder progress panel reading Listing with a short green progress bar, over the main panel whose status reads Fetching Sent (20)",
+                "width": 1600,
+                "height": 1007,
+                "caption": "After Start, the panel follows each phase: listing sent mail, fetching messages, analyzing, done. This is the first phase, captured while the extension waits for Google sign-in."
             },
             {
-                "src": "/projects/email-digital-twin/03-progress-panel.jpg",
-                "alt": "A Persona Builder progress panel reading Listing with a short green progress bar, overlapping the main panel whose status reads Fetching Sent (20)",
-                "width": 1620,
-                "height": 1020,
-                "caption": "After Start, the status line and the progress panel follow each phase: listing, fetching messages one by one, analyzing, done. This is the first phase, captured while the extension waits for Google sign-in."
-            },
-            {
-                "src": "/projects/email-digital-twin/04-server-routes.jpg",
-                "alt": "Two terminal windows. The server window shows npm run dev starting on port 4150 and logging three requests. The client window shows curl calls returning ok true for the health check and errors for two empty POST requests",
+                "src": "/projects/email-digital-twin/03-server-routes.webp",
+                "alt": "Terminal output in two windows: the server starts with npm run dev on port 4150 and logs three requests; the client's curl calls return ok true for the health check and errors for two empty POST requests",
                 "width": 1600,
                 "height": 699,
-                "caption": "The Node server has a health check and two routes, /persona/build and /drafts/generate. Each route has its own prompt file and calls Gemini 2.5 Flash, and both reject incomplete requests before any model call. Here it runs on a local test port with no Gemini key."
+                "caption": "The Node server has a health check and two routes, /persona/build and /drafts/generate, each with its own prompt for Gemini. Both reject incomplete requests before any model call. This run had no Gemini key."
             }
-        ]
+        ],
+        "cover": {
+            "src": "/projects/email-digital-twin/cover.webp",
+            "alt": "Email Digital Twin's Build Persona dialog: Choose how many Sent emails to analyze (5 to 50), with a slider set to 20 and Cancel and Start buttons, above the extension's panel with Build Persona, Draft Reply and Sign out (Gmail API) buttons, shown signed out",
+            "width": 1600,
+            "height": 1000
+        }
     },
     "hushh": {
         "gallery": [
