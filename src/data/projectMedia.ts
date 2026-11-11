@@ -278,34 +278,19 @@ export const projectMedia: Record<string, ProjectMediaSet> = {
     "synergylearn": {
         "gallery": [
             {
-                "src": "/projects/synergylearn/01-landing.jpg",
-                "alt": "SynergyLearn landing page with the headline Master Tech Skills With AI Guidance and buttons to start learning or explore topics",
-                "width": 1440,
-                "height": 640,
-                "caption": "The landing page. SynergyLearn pairs AI-generated topic lessons with a real code editor, so learners read, practice and get hints in one place."
-            },
-            {
-                "src": "/projects/synergylearn/02-career-paths.jpg",
-                "alt": "A row of career path cards: Full Stack, AI/ML, DevOps, Blockchain, Mobile and Data Science",
-                "width": 1216,
-                "height": 466,
-                "caption": "Learning starts with a career path. Each one is backed by its own roadmap of topics, from Full Stack to Data Science."
-            },
-            {
-                "src": "/projects/synergylearn/03-features.jpg",
-                "alt": "Six feature cards: AI-Powered Learning, Interactive Coding, Gamified Progress, Lightning Fast, Career-Focused and Community Driven",
-                "width": 1216,
-                "height": 854,
-                "caption": "What sits behind each topic: Gemini-generated lessons cached in Firestore, a Monaco editor that runs code through Judge0, and progress, streaks and badges saved per user."
-            },
-            {
-                "src": "/projects/synergylearn/04-signup.jpg",
-                "alt": "SynergyLearn sign-up screen with email and password fields",
-                "width": 1440,
-                "height": 900,
-                "caption": "Sign-up through Firebase Auth. Everything after this point is per-user, and every API call carries a verified ID token. The signed-in screens are in the walkthrough video."
+                "src": "/projects/synergylearn/01-career-paths.webp",
+                "alt": "SynergyLearn Choose Your Career Path section with cards for Full Stack, AI/ML, DevOps, Blockchain, Mobile and Data Science, and a link to view all 16 paths",
+                "width": 1600,
+                "height": 522,
+                "caption": "Learners start by picking a career path; each one opens a structured roadmap. The lessons, IDE and progress pages sit behind Firebase sign-in, so only the public pages are shown here."
             }
-        ]
+        ],
+        "cover": {
+            "src": "/projects/synergylearn/cover.webp",
+            "alt": "SynergyLearn home page section Everything You Need to Succeed, with six feature cards: AI-Powered Learning with Gemini roadmaps, Interactive Coding in an embedded IDE, Gamified Progress, Lightning Fast, Career-Focused and Community Driven",
+            "width": 1600,
+            "height": 1000
+        }
     },
     "vakya": {
         "gallery": [

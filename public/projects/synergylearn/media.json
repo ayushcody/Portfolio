@@ -1,0 +1,13 @@
+{
+  "cover": {
+    "file": "cover.webp",
+    "alt": "SynergyLearn home page section Everything You Need to Succeed, with six feature cards: AI-Powered Learning with Gemini roadmaps, Interactive Coding in an embedded IDE, Gamified Progress, Lightning Fast, Career-Focused and Community Driven"
+  },
+  "gallery": [
+    {
+      "file": "01-career-paths.webp",
+      "alt": "SynergyLearn Choose Your Career Path section with cards for Full Stack, AI/ML, DevOps, Blockchain, Mobile and Data Science, and a link to view all 16 paths",
+      "caption": "Learners start by picking a career path; each one opens a structured roadmap. The lessons, IDE and progress pages sit behind Firebase sign-in, so only the public pages are shown here."
+    }
+  ]
+}
