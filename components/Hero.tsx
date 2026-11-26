@@ -59,10 +59,12 @@ export default function Hero({ profile = fallbackProfile }: { profile?: Profile 
 
                 <div className="hero-photo-area">
                     <figure className="hero-print">
-                        <div className="hero-photo"><Image src={photoSrc} alt={`${profile.fullName}, in a suit and glasses, standing in a warmly lit library`} fill loading="eager" unoptimized={!canOptimize(photoSrc)} sizes="(max-width: 700px) 96px, (max-width: 1000px) 34vw, 320px" onError={() => setPhotoFailed(true)} /></div>
+                        <div className="hero-photo"><Image src={photoSrc} alt={`${profile.fullName}, in a suit and glasses, standing in a warmly lit library`} fill loading="eager" unoptimized={!canOptimize(photoSrc)} sizes="(max-width: 700px) 110px, (max-width: 1000px) 38vw, 400px" onError={() => setPhotoFailed(true)} /></div>
                         <figcaption><span>Engineer. Curious human.</span><ArrowUpRight size={22} aria-hidden="true" /></figcaption>
                     </figure>
-                    <div className="hero-note" aria-hidden="true">A face to the code.<ArrowDownRight size={28} /></div>
+                    {/* Shine marks: three strokes fanning out from two corners of the print. Decorative and still. */}
+                    <svg className="hero-shine hero-shine--top" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="M36.6 15.3 L29 31.6 M33.4 12.6 L15.4 25.2 M32 8.7 L14.1 10.3" /></svg>
+                    <svg className="hero-shine hero-shine--bottom" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="M36.6 15.3 L29 31.6 M33.4 12.6 L15.4 25.2 M32 8.7 L14.1 10.3" /></svg>
                 </div>
             </div>
 
