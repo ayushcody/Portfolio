@@ -104,7 +104,7 @@ export const profile: Profile = {
         degree: "B.Tech Computer Science & Engineering",
         institution: "MIT ADT University",
         status: "Aug 2023 - Jul 2027",
-        cgpa: "8.3 / 10",
+        cgpa: "8.5 / 10",
         location: "Pune, India",
     },
     links: {

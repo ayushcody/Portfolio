@@ -17,4 +17,4 @@ User requests a well structured, subtly playful and vibrant neo-brutalist redesi
 ## Evidence on Hand
 Profile, projects, skills, experience and four achievements are recorded in src/data. Portrait and resume PDF are present. Achievement photos have not been supplied. Project claims and statuses must remain grounded in existing data; no invented results or personal hobbies.
 
-Portfolio factual reference: user-supplied ayush_master_resume_v2.pdf, reconciled September 2026. Current role: Quensulting AI LLP, May 2026–present. MIT ADT CSE, July 2027 graduation, CGPA 8.3/10. Keep public/resume.pdf and its download target unchanged; the master reference is not a public asset.
+Portfolio factual reference: user-supplied ayush_master_resume_v2.pdf, reconciled September 2026. Current role: Quensulting AI LLP, May 2026–present. MIT ADT CSE, July 2027 graduation, CGPA 8.5/10. Keep public/resume.pdf and its download target unchanged; the master reference is not a public asset.
