@@ -3,6 +3,10 @@ title: "The AYUSH Framework: Architect Your UX, System, and Handoff"
 date: "2026-06-21"
 description: "How to build full-stack products with AI without losing control of the codebase: plan the product, map the system, and hand off to an AI IDE one tested slice at a time."
 tags: ["agents", "ai-engineering", "frameworks"]
+companion:
+  title: "The AYUSH Framework"
+  where: "Notion"
+  url: "https://shiny-lilac-bc0.notion.site/framework"
 ---
 
 *Yes, the framework is named after me. In my defense, the acronym works, and naming it after someone else felt like plagiarism.*

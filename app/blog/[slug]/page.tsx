@@ -154,6 +154,8 @@ export default async function BlogPostPage({ params }: PageProps) {
                 <article aria-labelledby="article-title">
                     <header className="secondary-intro">
                         <Link href="/blog" className="secondary-back"><ArrowLeft size={16} aria-hidden="true" /> Back to all blogs</Link>
+                        <div className={post.companion ? 'article-intro article-intro--companion' : 'article-intro'}>
+                        <div className="article-intro-copy">
                         <p className="post-meta article-meta">
                             {post.date ? (
                                 <>
@@ -165,6 +167,21 @@ export default async function BlogPostPage({ params }: PageProps) {
                         </p>
                         <h1 id="article-title" className="article-title">{post.title}</h1>
                         {post.description ? <p className="secondary-lead">{post.description}</p> : null}
+                        </div>
+                        {post.companion ? (
+                            <a
+                                href={post.companion.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="article-companion ink-card ink-card--interactive"
+                                aria-label={`Open ${post.companion.title} on ${post.companion.where} (opens in a new tab)`}
+                            >
+                                <span className="article-companion-where">Also on {post.companion.where}</span>
+                                <span className="article-companion-title">{post.companion.title}</span>
+                                <span className="article-companion-cta">Click here to open it <ArrowUpRight size={16} strokeWidth={2.4} aria-hidden="true" /></span>
+                            </a>
+                        ) : null}
+                        </div>
                     </header>
 
                     <div className="article-layout">

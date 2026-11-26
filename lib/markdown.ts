@@ -10,9 +10,22 @@ export interface BlogPost {
     tags: string[];
     readingTime: string;
     content: string;
+    /** Optional link to where the post lives in fuller form (front matter `companion: { title, where, url }`). */
+    companion?: { title: string; where: string; url: string };
 }
 
 export type BlogPostSummary = Omit<BlogPost, 'content'>;
+
+/** `companion: { title, where, url }` from front matter, kept only when every part is there and the URL is https. */
+function readCompanion(value: unknown): Pick<BlogPost, 'companion'> {
+    if (!value || typeof value !== 'object') return {};
+    const record = value as Record<string, unknown>;
+    const title = typeof record.title === 'string' ? record.title.trim() : '';
+    const where = typeof record.where === 'string' ? record.where.trim() : '';
+    const url = typeof record.url === 'string' ? record.url.trim() : '';
+    return title && where && /^https:\/\//.test(url) ? { companion: { title, where, url } } : {};
+}
+
 
 export { formatPostDate } from './postFormat';
 
@@ -60,6 +73,7 @@ export function getBlogPosts(): BlogPost[] {
                         tags,
                         readingTime: estimateReadingTime(content),
                         content,
+                        ...readCompanion(data.companion),
                     };
                 } catch (error) {
                     console.error(`Error parsing blog post ${fileName}`, error);

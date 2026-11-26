@@ -315,3 +315,15 @@
 .prose ul.contains-task-list { padding-left: 0.2em; }
 .prose li.task-list-item::before { display: none; }
 .prose li.task-list-item input { margin: 0 10px 0 0; accent-color: var(--ink); vertical-align: -1px; }
+
+/* Optional companion link beside the article title (front matter `companion`), e.g. the AYUSH Framework on Notion. */
+.article-intro--companion { display: grid; grid-template-columns: minmax(0, 1fr); gap: 36px; }
+.article-companion { display: flex; flex-direction: column; gap: 8px; max-width: 320px; padding: 20px 22px 18px; border-color: var(--ink-fixed); background: var(--lilac); color: var(--ink-fixed); rotate: 1.5deg; }
+.article-companion-where { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.article-companion-title { font-family: var(--font-display-stack); font-size: 26px; font-weight: 700; line-height: 1.08; letter-spacing: -.035em; }
+.article-companion-cta { display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; font-size: 14px; font-weight: 700; }
+.article-companion:hover .article-companion-cta, .article-companion:focus-visible .article-companion-cta { text-decoration: underline; text-underline-offset: 4px; }
+@media (min-width: 1000px) {
+  .article-intro--companion { grid-template-columns: minmax(0, 1fr) 300px; align-items: center; gap: 48px; }
+  .article-companion { justify-self: end; width: 100%; }
+}
